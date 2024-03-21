@@ -8,6 +8,7 @@ use craft\db\Query;
 use craft\db\Table;
 use craft\helpers\Db;
 use craft\helpers\Json;
+use craft\helpers\StringHelper;
 
 /**
  * This migration must come after the Reports migration as
@@ -67,8 +68,8 @@ class m211101_000007_migrate_forms_tables extends Migration
             'redirectUri',
             'submissionMethod',
             'errorDisplayMethod',
-            'successMessage', // messageOnSuccess
-            'errorMessage', // messageOnError
+            'successMessage AS messageOnSuccess', // messageOnSuccess
+            'errorMessage AS messageOnError', // messageOnError
             'submitButtonText',
             'saveData',
             'enableCaptchas',
@@ -109,18 +110,23 @@ class m211101_000007_migrate_forms_tables extends Migration
                 ->all();
 
             foreach ($rows as $key => $row) {
-                if (isset($row[$key]['fieldLayoutId'])) {
-                    $layoutId = $row[$key]['fieldLayoutId'];
+
+                $rows[$key]['submissionFieldLayout'] = null;
+
+                if (isset($row['fieldLayoutId'])) {
+                    $layoutId = $row['fieldLayoutId'];
+
+                    // get field layout from project config
                     $layout = Craft::$app->getFields()->getLayoutById($layoutId);
 
                     if ($layout) {
                         // @todo - review. Is this all we need to do?
-                        $row[$key]['submissionFieldLayout'] = Json::encode($layout->getConfig());
+                        $rows[$key]['submissionFieldLayout'] = Json::encode($layout->getConfig());
                     }
                 }
 
-                /** @todo - figure out formTemplateUid */
-                $rows[$key]['formTemplateUid'] = 'REPLACE_ME';
+                /** @todo - figure out formTemplateUid. UUID should not be hard coded. */
+                $rows[$key]['formTemplateUid'] = StringHelper::UUID();
 
                 unset(
                     $rows[$key]['fieldLayoutId'],
