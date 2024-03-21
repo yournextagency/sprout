@@ -17,7 +17,6 @@ use BarrelStrength\Sprout\sentemail\SentEmailModule;
 use BarrelStrength\Sprout\sitemaps\SitemapsModule;
 use BarrelStrength\Sprout\transactional\TransactionalModule;
 use craft\helpers\StringHelper;
-use yii\base\Module;
 use yii\di\ServiceLocator;
 
 /**

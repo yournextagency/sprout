@@ -70,5 +70,5 @@ return [
     'Upgrade to Sprout Sitemaps PRO for unlimited Content and Custom Query sitemaps.' => 'Upgrade to Sprout Sitemaps PRO for unlimited Content and Custom Query sitemaps.',
     'Twig expression matches if evaluates to \'true\', \'1\', \'on\', or \'yes\'.' => 'Twig expression matches if evaluates to \'true\', \'1\', \'on\', or \'yes\'.',
     '{% if object.field == \'send\' %}true{% endif %}' => '{% if object.field == \'send\' %}true{% endif %}',
-    'Is Draft' => 'Is Draft'
+    'Is Draft' => 'Is Draft',
 ];
