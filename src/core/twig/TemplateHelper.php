@@ -3,7 +3,6 @@
 namespace BarrelStrength\Sprout\core\twig;
 
 use BarrelStrength\Sprout\core\modules\SproutModuleInterface;
-use BarrelStrength\Sprout\core\modules\SproutModuleTrait;
 use BarrelStrength\Sprout\core\Sprout;
 use BarrelStrength\Sprout\core\SproutSettings;
 use Craft;
@@ -18,7 +17,6 @@ use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
-use yii\base\Module;
 
 class TemplateHelper
 {

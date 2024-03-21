@@ -9,7 +9,6 @@ use BarrelStrength\Sprout\core\SproutSettings;
 use Craft;
 use craft\config\BaseConfig;
 use craft\helpers\StringHelper;
-use yii\base\Module;
 
 trait SproutModuleTrait
 {

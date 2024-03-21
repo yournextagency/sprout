@@ -3,7 +3,6 @@
 namespace BarrelStrength\Sprout\core\db;
 
 use craft\db\Migration;
-use craft\helpers\Db;
 
 /**
  * Extend this class when creating a Sprout plugin migration

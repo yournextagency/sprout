@@ -2,8 +2,6 @@
 
 namespace BarrelStrength\Sprout\core\modules;
 
-use BarrelStrength\Sprout\datastudio\components\elements\DataSetElement;
-use craft\base\SavableComponentInterface;
 use craft\config\BaseConfig;
 use yii\base\Module;
 

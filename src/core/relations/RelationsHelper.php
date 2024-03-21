@@ -3,7 +3,6 @@
 namespace BarrelStrength\Sprout\core\relations;
 
 use Craft;
-use craft\base\Element;
 use craft\base\ElementInterface;
 use craft\commerce\elements\Product;
 use craft\elements\Asset;

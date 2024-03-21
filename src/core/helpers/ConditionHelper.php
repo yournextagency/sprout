@@ -3,7 +3,7 @@
 namespace BarrelStrength\Sprout\core\helpers;
 
 use BarrelStrength\Sprout\core\components\elements\conditions\TwigExpressionConditionRule;
-use BarrelStrength\Sprout\transactional\components\elements\TransactionalEmailElement;
+use craft\base\Element;
 use craft\events\RegisterConditionRuleTypesEvent;
 
 class ConditionHelper

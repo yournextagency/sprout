@@ -3,7 +3,6 @@
 namespace BarrelStrength\Sprout\core;
 
 use BarrelStrength\Sprout\core\modules\SproutModuleInterface;
-use BarrelStrength\Sprout\core\modules\SproutModuleTrait;
 use Craft;
 use craft\config\BaseConfig;
 
