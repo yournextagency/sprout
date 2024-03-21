@@ -23,12 +23,14 @@ class MailerHelper
             return;
         }
 
+        if (!is_subclass_of($fieldLayout->type, MailerInterface::class)) {
+            return;
+        }
+
         /** @var MailerInterface $type */
         $type = new $fieldLayout->type();
 
-        if ($type instanceof MailerInterface) {
-            $event->fields = array_merge($event->fields, $type::defineNativeFields($event));
-        }
+        $event->fields = array_merge($event->fields, $type::defineNativeFields($event));
     }
 
     public static function defineNativeElements(DefineFieldLayoutElementsEvent $event): void
