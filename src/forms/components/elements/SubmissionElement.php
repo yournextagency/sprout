@@ -138,7 +138,7 @@ class SubmissionElement extends Element
             $saveData = FormsModule::getInstance()->submissions->isSaveDataEnabled($form);
             if ($saveData) {
                 $sources[] = [
-                    'key' => 'id:' . $form->id,
+                    'key' => 'formId:' . $form->id,
                     'label' => $form->name,
                     'data' => [
                         'formId' => $form->id,
