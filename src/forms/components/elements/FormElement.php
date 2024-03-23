@@ -119,11 +119,6 @@ class FormElement extends Element
         return Craft::t('sprout-module-forms', 'forms');
     }
 
-    public static function hasContent(): bool
-    {
-        return true;
-    }
-
     public static function hasStatuses(): bool
     {
         return true;
@@ -346,14 +341,14 @@ class FormElement extends Element
         ];
     }
 
-    public static function createCondition(): ElementConditionInterface
-    {
-        return Craft::createObject(FormCondition::class, [static::class]);
-    }
-
     public static function find(): FormElementQuery
     {
         return new FormElementQuery(static::class);
+    }
+
+    public static function createCondition(): ElementConditionInterface
+    {
+        return Craft::createObject(FormCondition::class, [static::class]);
     }
 
     protected static function defineSources(string $context = null): array
