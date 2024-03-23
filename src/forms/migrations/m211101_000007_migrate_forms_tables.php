@@ -6,6 +6,7 @@ use Craft;
 use craft\db\Migration;
 use craft\db\Query;
 use craft\db\Table;
+use craft\helpers\DateTimeHelper;
 use craft\helpers\Db;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
@@ -59,25 +60,26 @@ class m211101_000007_migrate_forms_tables extends Migration
         }
 
         $cols = [
-            'id',
-            'fieldLayoutId', // Convert to submissionFieldLayout config
-            'name',
-            'handle',
-            'titleFormat',
-            'displaySectionTitles',
-            'redirectUri',
-            'submissionMethod',
-            'errorDisplayMethod',
-            'successMessage AS messageOnSuccess', // messageOnSuccess
-            'errorMessage AS messageOnError', // messageOnError
-            'submitButtonText',
-            'saveData',
-            'enableCaptchas',
-            'dateCreated',
-            'dateUpdated',
-            'uid',
+            'old_forms_table.id',
+            'old_forms_table.fieldLayoutId', // Convert to submissionFieldLayout config
+            'old_forms_table.name',
+            'old_forms_table.handle',
+            'old_forms_table.titleFormat',
+            'old_forms_table.displaySectionTitles',
+            'old_forms_table.redirectUri',
+            'old_forms_table.submissionMethod',
+            'old_forms_table.errorDisplayMethod',
+            'old_forms_table.successMessage AS messageOnSuccess', // messageOnSuccess
+            'old_forms_table.errorMessage AS messageOnError', // messageOnError
+            'old_forms_table.submitButtonText',
+            'old_forms_table.saveData',
+            'old_forms_table.enableCaptchas',
+            'old_forms_table.dateCreated',
+            'old_forms_table.dateUpdated',
+            'old_forms_table.uid',
 
-            'formTemplateId', // @todo - create form type and insert UID
+            'old_forms_table.formTemplateId', // @todo - create form type and insert UID
+            'elements_sites.siteId AS siteId',
         ];
 
         $colsNew = [
@@ -106,8 +108,13 @@ class m211101_000007_migrate_forms_tables extends Migration
         if ($this->getDb()->tableExists(self::OLD_FORMS_TABLE)) {
             $rows = (new Query())
                 ->select($cols)
-                ->from([self::OLD_FORMS_TABLE])
+                ->from(['old_forms_table' => self::OLD_FORMS_TABLE])
+                ->innerJoin(['elements_sites' => Table::ELEMENTS_SITES],
+                    '[[old_forms_table.id]] = [[elements_sites.elementId]]')
                 ->all();
+
+            // Duplicate rows so we can use all values queried from old table in content table migration
+            $rowsForContentMigration = $rows;
 
             foreach ($rows as $key => $row) {
 
@@ -131,6 +138,7 @@ class m211101_000007_migrate_forms_tables extends Migration
                 unset(
                     $rows[$key]['fieldLayoutId'],
                     $rows[$key]['formTemplateId'],
+                    $rows[$key]['siteId'],
                 );
             }
 
@@ -138,7 +146,7 @@ class m211101_000007_migrate_forms_tables extends Migration
                 ->batchInsert(self::FORMS_TABLE, $colsNew, $rows)
                 ->execute();
 
-            $this->createFormContentTables($rows);
+            $this->createFormContentTables($rowsForContentMigration);
         }
 
         $cols = [
@@ -252,6 +260,19 @@ class m211101_000007_migrate_forms_tables extends Migration
             if (!$formId = $form['id'] ?? null) {
                 continue;
             }
+
+            // create a new row in the {{%content}} table
+            $now = Db::prepareDateForDb(DateTimeHelper::now());
+
+            // Create a row in the content table for each element to support custom fields
+            $this->insert(Table::CONTENT, [
+                'elementId' => $form['id'],
+                'siteId' => $form['siteId'],
+                'dateCreated' => $now,
+                'dateUpdated' => $now,
+                'uid' => StringHelper::UUID(),
+            ]);
+
 
             // Establish our old table and new table names
             $oldContentTable = "{{%sproutformscontent_$formHandle}}";

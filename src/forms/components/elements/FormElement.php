@@ -129,6 +129,11 @@ class FormElement extends Element
         return 'form';
     }
 
+    public static function hasContent(): bool
+    {
+        return true;
+    }
+
     public function getFormType(): FormType
     {
         if ($this->_formType) {
