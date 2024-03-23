@@ -249,9 +249,13 @@ class m211101_000007_migrate_forms_tables extends Migration
                 continue;
             }
 
+            if (!$formId = $form['id'] ?? null) {
+                continue;
+            }
+
             // Establish our old table and new table names
             $oldContentTable = "{{%sproutformscontent_$formHandle}}";
-            $newContentTable = "{{%sprout_formcontent_$formHandle}}";
+            $newContentTable = "{{%sprout_formcontent_$formId}}";
 
             // If the new table already exists, carry on
             if ($this->db->tableExists($newContentTable)) {
