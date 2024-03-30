@@ -18,17 +18,17 @@ class WorkflowTabFormFeature implements RelationsTableInterface
 {
     public static function defineFormTypeSettings(DefineFormFeatureSettingsEvent $event): void
     {
-        $integrationTypes = IntegrationTypeHelper::getIntegrationTypes();
-
-        $integrationSettings = [];
-        foreach ($integrationTypes as $uid => $integrationType) {
-            $integrationSettings[$uid] = $integrationType->name;
-        }
-
-        $event->featureSettings[self::class] = [
-            'label' => Craft::t('sprout-module-forms', 'Enable Integrations'),
-            'settings' => $integrationSettings,
-        ];
+        //$integrationTypes = IntegrationTypeHelper::getIntegrationTypes();
+        //
+        //$integrationSettings = [];
+        //foreach ($integrationTypes as $uid => $integrationType) {
+        //    $integrationSettings[$uid] = $integrationType->name;
+        //}
+        //
+        //$event->featureSettings[self::class] = [
+        //    'label' => Craft::t('sprout-module-forms', 'Enable Integrations'),
+        //    'settings' => $integrationSettings,
+        //];
     }
 
     public static function registerWorkflowTab(RegisterFormFeatureTabsEvent $event): void
