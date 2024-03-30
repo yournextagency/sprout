@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.3 - UNRELEASED
+
+### Fixed
+
+- Fixed syntax error in ChangeEmailType action
+
 ## 4.2.2 - 2024-03-30
 
 ### Added 
