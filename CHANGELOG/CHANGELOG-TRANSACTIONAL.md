@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.2 - 2024-03-30
+
+### Fixed
+
+- Fixed class reference when initializing some Notification Event Condition Rules ([#318])
+
+[#318]: https://github.com/barrelstrength/sprout/issues/318
+
 ## 4.1.8 - 2024-03-09
 
 ### Fixed
