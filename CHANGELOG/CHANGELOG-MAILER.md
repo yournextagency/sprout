@@ -8,7 +8,9 @@
 
 ### Fixed
 
-- Improves native field logic so layouts aren’t initialized before subclass is checked
+- Improved behavior when adding and removing non-credentialed users from Subscriber List Audience Types
+- Improved native field logic so layouts aren’t initialized before subclass is checked
+- Fixed logic when checking if a subscriber is subscribed by email
 
 ## 4.1.8 - 2024-03-09
 

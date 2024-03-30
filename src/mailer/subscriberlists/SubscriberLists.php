@@ -16,6 +16,7 @@ class SubscriberLists extends Component
         $transaction = Craft::$app->getDb()->beginTransaction();
 
         try {
+            $user = null;
 
             // Prefer User ID over email
             if ($subscription->userId) {
@@ -34,7 +35,7 @@ class SubscriberLists extends Component
                 }
             }
 
-            if (!$subscription->validate()) {
+            if (!$user || !$subscription->validate()) {
                 return false;
             }
 
@@ -45,6 +46,9 @@ class SubscriberLists extends Component
 
             if (!$subscriptionExists) {
                 $subscription->save();
+
+                // Resave user to ensure Element Indexes are updated when refreshed
+                Craft::$app->elements->saveElement($user, false);
             }
 
             $transaction->commit();
@@ -59,6 +63,8 @@ class SubscriberLists extends Component
 
     public function remove(SubscriptionRecord $subscription): bool
     {
+        $user = null;
+
         if ($subscription->userId) {
             $user = Craft::$app->getUsers()->getUserById($subscription->userId);
             if (!$user) {
@@ -84,6 +90,11 @@ class SubscriberLists extends Component
             'subscriberListId' => $subscription->subscriberListId,
             'userId' => $subscription->userId,
         ])?->delete();
+
+        if ($user) {
+            // Resave user to ensure Element Indexes are updated when refreshed
+            Craft::$app->elements->saveElement($user, false);
+        }
 
         return true;
     }

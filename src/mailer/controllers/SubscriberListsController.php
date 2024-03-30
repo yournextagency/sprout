@@ -10,6 +10,11 @@ use yii\web\Response;
 
 class SubscriberListsController extends Controller
 {
+    protected array|bool|int $allowAnonymous = [
+        'add',
+        'remove'
+    ];
+
     /**
      * Adds a User to a Subscriber List
      */

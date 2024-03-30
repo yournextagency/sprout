@@ -369,7 +369,7 @@ class AudienceElement extends Element
             $criteria['userId'] = $identifier->id;
         } elseif (is_numeric($identifier)) {
             $criteria['userId'] = $identifier;
-        } elseif (!filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+        } elseif (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
             $user = User::find()
                 ->email($identifier)
                 ->one();
