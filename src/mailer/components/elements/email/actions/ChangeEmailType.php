@@ -17,6 +17,10 @@ class ChangeEmailType extends ElementAction
         return true;
     }
 
+    /**
+     * @noinspection UnterminatedStatementJS UnterminatedStatementJS
+     * @noinspection JSUnnecessarySemicolon JSUnnecessarySemicolon
+     */
     public function getTriggerHtml(): ?string
     {
         Craft::$app->getView()->registerJsWithVars(fn($type) => <<<JS
@@ -30,8 +34,8 @@ class ChangeEmailType extends ElementAction
             }).get();
             const slideout = new  Craft.CpScreenSlideout('sprout-module-mailer/email-types/change-email-type-slideout', {
                 params: {
-                    elementIds: elementIds
-                }
+                    elementIds: elementIds,
+                },
             });
             slideout.on('submit', function() {
                 Craft.elementIndex.updateElements();

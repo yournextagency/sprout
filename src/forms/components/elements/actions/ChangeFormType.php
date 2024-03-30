@@ -17,6 +17,10 @@ class ChangeFormType extends ElementAction
         return true;
     }
 
+    /**
+     * @noinspection UnterminatedStatementJS UnterminatedStatementJS
+     * @noinspection JSUnnecessarySemicolon JSUnnecessarySemicolon
+     */
     public function getTriggerHtml(): ?string
     {
         Craft::$app->getView()->registerJsWithVars(fn($type) => <<<JS
@@ -30,8 +34,8 @@ class ChangeFormType extends ElementAction
             }).get();
             const slideout = new  Craft.CpScreenSlideout('sprout-module-forms/form-types/change-form-type-slideout', {
                 params: {
-                    elementIds: elementIds
-                }
+                    elementIds: elementIds,
+                },
             });
             slideout.on('submit', function() {
                 Craft.elementIndex.updateElements();

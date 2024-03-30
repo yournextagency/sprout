@@ -206,5 +206,5 @@ return [
     '_emails/theme/email.txt' => '_emails/theme/email.txt',
     'None' => 'None',
     'Change Email Type' => 'Change Email Type',
-    'System Mailer' => 'System Mailer'
+    'System Mailer' => 'System Mailer',
 ];
