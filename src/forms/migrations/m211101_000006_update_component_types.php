@@ -9,14 +9,6 @@ class m211101_000006_update_component_types extends Migration
     public function safeUp(): void
     {
         $components = [
-            //            'sproutforms_rules' => [
-            //                'type' => [
-            //                    [
-            //                        'oldType' => 'barrelstrength\sproutforms\rules\FieldRule',
-            //                        'newType' => 'BarrelStrength\Sprout\forms\components\rules\FieldRule',
-            //                    ],
-            //                ],
-            //            ],
             'sproutforms_integrations' => [
                 'type' => [
                     [

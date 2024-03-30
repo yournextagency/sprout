@@ -4,9 +4,14 @@ namespace BarrelStrength\Sprout\forms\migrations;
 
 use craft\db\Migration;
 use craft\helpers\Db;
+use Craft;
 
 class m211101_000008_remove_old_tables_from_db extends Migration
 {
+    public const SPROUT_KEY = 'sprout';
+
+    public const MODULE_ID = 'sprout-module-forms';
+
     public const OLD_FORM_GROUPS_TABLE = '{{%sproutforms_formgroups}}';
     public const OLD_FORMS_TABLE = '{{%sproutforms_forms}}';
     public const OLD_FORM_INTEGRATIONS_TABLE = '{{%sproutforms_integrations}}';
@@ -18,6 +23,14 @@ class m211101_000008_remove_old_tables_from_db extends Migration
 
     public function safeUp(): void
     {
+        $moduleSettingsKey = self::SPROUT_KEY . '.' . self::MODULE_ID;
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.trackRemoteIp');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.saveDataByDefault');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.enableSaveDataDefaultValue');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.enablePayloadForwarding');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.pluginNameOverride');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.formTypeUid');
+
         Db::dropAllForeignKeysToTable(self::OLD_FORMS_TABLE);
         Db::dropAllForeignKeysToTable(self::OLD_FORM_INTEGRATIONS_TABLE);
         Db::dropAllForeignKeysToTable(self::OLD_FORM_INTEGRATIONS_LOG_TABLE);
