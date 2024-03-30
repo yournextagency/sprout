@@ -12,7 +12,7 @@ class SubscriberListsController extends Controller
 {
     protected array|bool|int $allowAnonymous = [
         'add',
-        'remove'
+        'remove',
     ];
 
     /**

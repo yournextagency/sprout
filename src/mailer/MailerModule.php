@@ -13,7 +13,6 @@ use BarrelStrength\Sprout\core\modules\TranslatableTrait;
 use BarrelStrength\Sprout\core\Sprout;
 use BarrelStrength\Sprout\core\twig\SproutVariable;
 use BarrelStrength\Sprout\datastudio\datasources\DataSources;
-use BarrelStrength\Sprout\datastudio\DataStudioModule;
 use BarrelStrength\Sprout\mailer\audience\Audiences;
 use BarrelStrength\Sprout\mailer\components\datasources\SubscriberListDataSource;
 use BarrelStrength\Sprout\mailer\components\elements\audience\AudienceElement;

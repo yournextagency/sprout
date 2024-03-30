@@ -32,7 +32,7 @@ class EmailTypeConditionRule extends BaseMultiSelectConditionRule implements Ele
     public function modifyQuery(QueryInterface $query): void
     {
         /** @var EmailElementQuery $query */
-        $query->andWhere(Db::parseParam( '[[sprout_emails.emailTypeUid]]', $this->paramValue()));
+        $query->andWhere(Db::parseParam('[[sprout_emails.emailTypeUid]]', $this->paramValue()));
     }
 
     public function matchElement(ElementInterface $element): bool

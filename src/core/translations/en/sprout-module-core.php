@@ -75,5 +75,5 @@ return [
     'Delete selected group' => 'Delete selected group',
     'Could not delete the group.' => 'Could not delete the group.',
     'Group renamed.' => 'Group renamed.',
-    'Are you sure you want to delete this group? {name} in this group will not be deleted' => 'Are you sure you want to delete this group? {name} in this group will not be deleted'
+    'Are you sure you want to delete this group? {name} in this group will not be deleted' => 'Are you sure you want to delete this group? {name} in this group will not be deleted',
 ];
