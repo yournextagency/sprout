@@ -35,7 +35,9 @@ class ChangeEmailType extends ElementAction
                     elementIds: elementIds
                 }
             });
-            
+            slideout.on('submit', function() {
+                Craft.elementIndex.updateElements();
+            });
         },
     });
 })();

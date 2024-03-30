@@ -4,7 +4,6 @@ namespace BarrelStrength\Sprout\mailer\controllers;
 
 use BarrelStrength\Sprout\core\helpers\ComponentHelper;
 use BarrelStrength\Sprout\mailer\components\elements\email\EmailElement;
-use BarrelStrength\Sprout\mailer\db\SproutTable;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailType;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
 use BarrelStrength\Sprout\mailer\MailerModule;
@@ -181,19 +180,19 @@ class EmailTypesController extends Controller
 
         $emailType = EmailTypeHelper::getEmailTypeByUid($emailTypeUid);
 
-        $targetElementIds = EmailElement::find()
+        $emailElements = EmailElement::find()
             ->id($selectedElementIds)
             ->where(['not', ['emailTypeUid' => $emailTypeUid]])
-            ->ids();
+            ->all();
 
-        $affected = Craft::$app->getDb()->createCommand()
-            ->update(SproutTable::EMAILS, [
-                'emailTypeUid' => $emailTypeUid,
-            ],
-                ['in', 'id', $targetElementIds],
-            )->execute();
+        $affected = 0;
+        foreach ($emailElements as $emailElement) {
+            $emailElement->emailTypeUid = $emailTypeUid;
+            Craft::$app->getElements()->saveElement($emailElement);
+            $affected++;
+        }
 
-        if (!$affected) {
+        if ($affected === 0) {
             return $this->asSuccess(Craft::t('sprout-module-mailer', 'Emails already use selected Email Type.'));
         }
 
