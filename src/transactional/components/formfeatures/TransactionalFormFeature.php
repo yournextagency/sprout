@@ -149,7 +149,7 @@ class TransactionalFormFeature implements RelationsTableInterface
             }
 
             foreach ($rules as $key => $rule) {
-                if ($rule['class'] !== SubmissionFormConditionRule::class) {
+                if ($rule instanceof SubmissionFormConditionRule) {
                     unset($rules[$key]);
                 }
             }
