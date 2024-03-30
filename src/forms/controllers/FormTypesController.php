@@ -168,7 +168,6 @@ class FormTypesController extends Controller
         return $this->asCpScreen()
             ->title(Craft::t('sprout-module-forms', 'Change Form Type'))
             ->action('sprout-module-forms/form-types/change-form-type')
-            ->redirectUrl('sprout/forms/forms')
             ->contentTemplate('sprout-module-forms/forms/_changeFormTypeSlideout.twig', [
                 'elementIds' => implode(',', $elementIds),
                 'formTypeOptions' => $formTypeOptions,
