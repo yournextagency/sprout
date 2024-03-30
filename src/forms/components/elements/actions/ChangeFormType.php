@@ -35,7 +35,9 @@ class ChangeFormType extends ElementAction
                     elementIds: elementIds
                 }
             });
-            
+            slideout.on('submit', function() {
+                Craft.elementIndex.updateElements();
+            });
         },
     });
 })();

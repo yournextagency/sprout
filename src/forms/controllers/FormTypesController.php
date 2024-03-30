@@ -5,7 +5,6 @@ namespace BarrelStrength\Sprout\forms\controllers;
 use BarrelStrength\Sprout\core\helpers\ComponentHelper;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\components\events\DefineFormFeatureSettingsEvent;
-use BarrelStrength\Sprout\forms\db\SproutTable;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
@@ -185,19 +184,19 @@ class FormTypesController extends Controller
 
         $formType = FormTypeHelper::getFormTypeByUid($formTypeUid);
 
-        $targetElementIds = FormElement::find()
+        $formElements = FormElement::find()
             ->id($selectedElementIds)
             ->where(['not', ['formTypeUid' => $formTypeUid]])
-            ->ids();
+            ->all();
 
-        $affected = Craft::$app->getDb()->createCommand()
-            ->update(SproutTable::FORMS, [
-                'formTypeUid' => $formTypeUid,
-            ],
-                ['in', 'id', $targetElementIds],
-            )->execute();
+        $affected = 0;
+        foreach ($formElements as $formElement) {
+            $formElement->formTypeUid = $formTypeUid;
+            Craft::$app->getElements()->saveElement($formElement);
+            $affected++;
+        }
 
-        if (!$affected) {
+        if ($affected === 0) {
             return $this->asSuccess(Craft::t('sprout-module-forms', 'Forms already use selected Form Type.'));
         }
 

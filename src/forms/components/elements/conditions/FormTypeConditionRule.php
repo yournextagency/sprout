@@ -2,12 +2,14 @@
 
 namespace BarrelStrength\Sprout\forms\components\elements\conditions;
 
+use BarrelStrength\Sprout\forms\components\elements\db\FormElementQuery;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
 use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\helpers\Db;
 use yii\db\QueryInterface;
 
 class FormTypeConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
@@ -36,7 +38,8 @@ class FormTypeConditionRule extends BaseMultiSelectConditionRule implements Elem
 
     public function modifyQuery(QueryInterface $query): void
     {
-        // No changes
+        /** @var FormElementQuery $query */
+        $query->andWhere(Db::parseParam( '[[sprout_forms.formTypeUid]]', $this->paramValue()));
     }
 
     public function matchElement(ElementInterface $element): bool

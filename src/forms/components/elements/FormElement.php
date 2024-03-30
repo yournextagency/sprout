@@ -416,6 +416,7 @@ class FormElement extends Element
         return [
             'name' => ['label' => Craft::t('sprout-module-forms', 'Name')],
             'handle' => ['label' => Craft::t('sprout-module-forms', 'Handle')],
+            'formType' => ['label' => Craft::t('sprout-module-forms', 'Form Type')],
             //'numberOfFields' => ['label' => Craft::t('sprout-module-forms', 'Number of Fields')],
             'totalSubmissions' => ['label' => Craft::t('sprout-module-forms', 'Total Submissions')],
             'formSettings' => ['label' => Craft::t('sprout-module-forms', 'Settings'), 'icon' => 'settings'],
@@ -1013,6 +1014,7 @@ class FormElement extends Element
     {
         return match ($attribute) {
             'handle' => '<code>' . $this->handle . '</code>',
+            'formType' => $this->getFormType()->name,
             //'numberOfFields' => (new Query())
             //    ->select('COUNT(*)')
             //    ->from([Table::FIELDLAYOUTFIELDS])
