@@ -39,7 +39,7 @@ class FormTypeConditionRule extends BaseMultiSelectConditionRule implements Elem
     public function modifyQuery(QueryInterface $query): void
     {
         /** @var FormElementQuery $query */
-        $query->andWhere(Db::parseParam( '[[sprout_forms.formTypeUid]]', $this->paramValue()));
+        $query->andWhere(Db::parseParam('[[sprout_forms.formTypeUid]]', $this->paramValue()));
     }
 
     public function matchElement(ElementInterface $element): bool

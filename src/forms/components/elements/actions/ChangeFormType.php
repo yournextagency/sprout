@@ -2,10 +2,8 @@
 
 namespace BarrelStrength\Sprout\forms\components\elements\actions;
 
-use BarrelStrength\Sprout\forms\FormsModule;
 use Craft;
 use craft\base\ElementAction;
-use craft\elements\db\ElementQueryInterface;
 
 class ChangeFormType extends ElementAction
 {
