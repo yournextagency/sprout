@@ -4,6 +4,7 @@ namespace BarrelStrength\Sprout\forms\components\elements;
 
 use BarrelStrength\Sprout\core\helpers\ComponentHelper;
 use BarrelStrength\Sprout\core\relations\RelationsHelper;
+use BarrelStrength\Sprout\forms\components\elements\actions\ChangeFormType;
 use BarrelStrength\Sprout\forms\components\elements\conditions\FormCondition;
 use BarrelStrength\Sprout\forms\components\elements\db\FormElementQuery;
 use BarrelStrength\Sprout\forms\components\elements\fieldlayoutelements\FormBuilderField;
@@ -371,6 +372,10 @@ class FormElement extends Element
     protected static function defineActions(string $source = null): array
     {
         $actions = parent::defineActions($source);
+
+        if (Craft::$app->getUser()->getIsAdmin()) {
+            $actions[] = ChangeFormType::class;
+        }
 
         $actions[] = Duplicate::class;
         $actions[] = Delete::class;

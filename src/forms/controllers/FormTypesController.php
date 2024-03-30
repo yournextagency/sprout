@@ -5,10 +5,12 @@ namespace BarrelStrength\Sprout\forms\controllers;
 use BarrelStrength\Sprout\core\helpers\ComponentHelper;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\components\events\DefineFormFeatureSettingsEvent;
+use BarrelStrength\Sprout\forms\db\SproutTable;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
 use Craft;
+use craft\helpers\ArrayHelper;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\web\assets\userpermissions\UserPermissionsAsset;
@@ -152,5 +154,57 @@ class FormTypesController extends Controller
         $formType->formTemplate = Craft::$app->request->getBodyParam('formTemplate');
 
         return $formType;
+    }
+
+    public function actionChangeFormTypeSlideout(): Response
+    {
+        $this->requireAdmin();
+
+        $elementIds = Craft::$app->request->getQueryParam('elementIds');
+
+        $formTypes = FormTypeHelper::getFormTypes();
+        $formTypeOptions = ArrayHelper::map($formTypes, 'uid', 'name');
+
+        return $this->asCpScreen()
+            ->title(Craft::t('sprout-module-forms', 'Change Form Type'))
+            ->action('sprout-module-forms/form-types/change-form-type')
+            ->redirectUrl('sprout/forms/forms')
+            ->contentTemplate('sprout-module-forms/forms/_changeFormTypeSlideout.twig', [
+                'elementIds' => implode(',', $elementIds),
+                'formTypeOptions' => $formTypeOptions,
+            ]);
+    }
+
+    public function actionChangeFormType(): Response
+    {
+        $this->requireAdmin();
+        $this->requirePostRequest();
+
+        $formTypeUid = Craft::$app->request->getRequiredBodyParam('formTypeUid');
+        $elementIds = Craft::$app->request->getRequiredBodyParam('elementIds');
+        $selectedElementIds = explode(',', $elementIds);
+
+        $formType = FormTypeHelper::getFormTypeByUid($formTypeUid);
+
+        $targetElementIds = FormElement::find()
+            ->id($selectedElementIds)
+            ->where(['not', ['formTypeUid' => $formTypeUid]])
+            ->ids();
+
+        $affected = Craft::$app->getDb()->createCommand()
+            ->update(SproutTable::FORMS, [
+                'formTypeUid' => $formTypeUid,
+            ],
+                ['in', 'id', $targetElementIds],
+            )->execute();
+
+        if (!$affected) {
+            return $this->asSuccess(Craft::t('sprout-module-forms', 'Forms already use selected Form Type.'));
+        }
+
+        return $this->asSuccess(Craft::t('sprout-module-forms', 'Updated {count} Forms to use Form Type {name}', [
+            'count' => $affected,
+            'name' => $formType::displayName(),
+        ]));
     }
 }
