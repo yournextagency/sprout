@@ -4,11 +4,13 @@ namespace BarrelStrength\Sprout\mailer\controllers;
 
 use BarrelStrength\Sprout\core\helpers\ComponentHelper;
 use BarrelStrength\Sprout\mailer\components\elements\email\EmailElement;
+use BarrelStrength\Sprout\mailer\db\SproutTable;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailType;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
 use BarrelStrength\Sprout\mailer\MailerModule;
 use BarrelStrength\Sprout\mailer\mailers\MailerHelper;
 use Craft;
+use craft\helpers\ArrayHelper;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\web\Controller;
@@ -148,5 +150,56 @@ class EmailTypesController extends Controller
         $emailType->copyPasteEmailTemplate = Craft::$app->request->getBodyParam('copyPasteEmailTemplate');
 
         return $emailType;
+    }
+
+    public function actionChangeEmailTypeSlideout(): Response
+    {
+        $this->requireAdmin();
+
+        $elementIds = Craft::$app->request->getQueryParam('elementIds');
+
+        $emailTypes = EmailTypeHelper::getEmailTypes();
+        $emailTypeOptions = ArrayHelper::map($emailTypes, 'uid', 'name');
+
+        return $this->asCpScreen()
+            ->title(Craft::t('sprout-module-mailer', 'Change Email Type'))
+            ->action('sprout-module-mailer/email-types/change-email-type')
+            ->contentTemplate('sprout-module-mailer/email/_changeEmailTypeSlideout.twig', [
+                'elementIds' => implode(',', $elementIds),
+                'emailTypeOptions' => $emailTypeOptions,
+            ]);
+    }
+
+    public function actionChangeEmailType(): Response
+    {
+        $this->requireAdmin();
+        $this->requirePostRequest();
+
+        $emailTypeUid = Craft::$app->request->getRequiredBodyParam('emailTypeUid');
+        $elementIds = Craft::$app->request->getRequiredBodyParam('elementIds');
+        $selectedElementIds = explode(',', $elementIds);
+
+        $emailType = EmailTypeHelper::getEmailTypeByUid($emailTypeUid);
+
+        $targetElementIds = EmailElement::find()
+            ->id($selectedElementIds)
+            ->where(['not', ['emailTypeUid' => $emailTypeUid]])
+            ->ids();
+
+        $affected = Craft::$app->getDb()->createCommand()
+            ->update(SproutTable::EMAILS, [
+                'emailTypeUid' => $emailTypeUid,
+            ],
+                ['in', 'id', $targetElementIds],
+            )->execute();
+
+        if (!$affected) {
+            return $this->asSuccess(Craft::t('sprout-module-mailer', 'Emails already use selected Email Type.'));
+        }
+
+        return $this->asSuccess(Craft::t('sprout-module-mailer', 'Updated {count} Emails to use Email Type {name}', [
+            'count' => $affected,
+            'name' => $emailType::displayName(),
+        ]));
     }
 }

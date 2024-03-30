@@ -3,6 +3,7 @@
 namespace BarrelStrength\Sprout\mailer\components\elements\email;
 
 use BarrelStrength\Sprout\core\Sprout;
+use BarrelStrength\Sprout\mailer\components\elements\email\actions\ChangeEmailType;
 use BarrelStrength\Sprout\mailer\components\elements\email\conditions\PreheaderTextConditionRule;
 use BarrelStrength\Sprout\mailer\components\elements\email\fieldlayoutelements\PreheaderTextField;
 use BarrelStrength\Sprout\mailer\components\elements\email\fieldlayoutelements\SubjectLineField;
@@ -200,6 +201,10 @@ class EmailElement extends Element implements EmailPreviewInterface
     protected static function defineActions(string $source = null): array
     {
         $actions = parent::defineActions($source);
+
+        if (Craft::$app->getUser()->getIsAdmin()) {
+            $actions[] = ChangeEmailType::class;
+        }
 
         $actions[] = SetStatus::class;
         $actions[] = Delete::class;
