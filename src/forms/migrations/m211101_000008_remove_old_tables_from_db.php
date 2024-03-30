@@ -25,12 +25,12 @@ class m211101_000008_remove_old_tables_from_db extends Migration
     {
         $moduleSettingsKey = self::SPROUT_KEY . '.' . self::MODULE_ID;
 
-        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.trackRemoteIp');
-        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.saveDataByDefault');
-        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.enableSaveDataDefaultValue');
-        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.enablePayloadForwarding');
-        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.pluginNameOverride');
-        Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.formTypeUid');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.trackRemoteIp');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.saveDataByDefault');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.enableSaveDataDefaultValue');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.enablePayloadForwarding');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.pluginNameOverride');
+        Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.formTypeUid');
 
         Db::dropAllForeignKeysToTable(self::OLD_FORMS_TABLE);
         Db::dropAllForeignKeysToTable(self::OLD_FORM_INTEGRATIONS_TABLE);
