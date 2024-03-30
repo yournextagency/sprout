@@ -23,8 +23,8 @@ class ChangeEmailType extends ElementAction
 (() => {
     new Craft.ElementActionTrigger({
         type: $type,
-        validateSelection;: \$selectedItems => Garnish.hasAttr(\$selectedItems.find('.element'), 'data-savable'),
-        activate;: \$selectedItems => {
+        validateSelection: \$selectedItems => Garnish.hasAttr(\$selectedItems.find('.element'), 'data-savable'),
+        activate: \$selectedItems => {
             const elementIds = \$selectedItems.map((index, element) => {
                 return $(element).data('id');
             }).get();
@@ -37,7 +37,7 @@ class ChangeEmailType extends ElementAction
                 Craft.elementIndex.updateElements();
             });
         },
-    })
+    });
 })();
 JS, [static::class]);
 
