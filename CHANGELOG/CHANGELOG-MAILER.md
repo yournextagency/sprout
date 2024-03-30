@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.2.2 - UNRELEASED
+
+### Added 
+
+- Added element action `BarrelStrength\Sprout\mailer\components\elements\email\actions\ChangeEmailType`
+
+### Fixed
+
+- Improves native field logic so layouts aren’t initialized before subclass is checked
+
 ## 4.1.8 - 2024-03-09
 
 ### Fixed

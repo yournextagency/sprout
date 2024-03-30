@@ -32,7 +32,7 @@ abstract class BaseElementNotificationEvent extends NotificationEvent implements
                 throw new InvalidArgumentException('Unable to assign ElementCondition attributes to a non-ElementCondition.');
             }
 
-            $condition->elementType = static::getEventClassName();
+            $condition->elementType = static::elementType();
 
             $this->condition = $condition;
 
