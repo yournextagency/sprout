@@ -2,9 +2,9 @@
 
 namespace BarrelStrength\Sprout\forms\migrations;
 
+use Craft;
 use craft\db\Migration;
 use craft\helpers\Db;
-use Craft;
 
 class m211101_000008_remove_old_tables_from_db extends Migration
 {
@@ -24,6 +24,7 @@ class m211101_000008_remove_old_tables_from_db extends Migration
     public function safeUp(): void
     {
         $moduleSettingsKey = self::SPROUT_KEY . '.' . self::MODULE_ID;
+
         Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.trackRemoteIp');
         Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.saveDataByDefault');
         Craft::$app->getProjectConfig()->remove($moduleSettingsKey.'.enableSaveDataDefaultValue');

@@ -170,22 +170,22 @@ class m211101_000007_migrate_forms_tables extends Migration
                     $rows[$key]['formTemplateUid'] = $customTemplatesFormTypeUUID;
                 }
 
-                $oldRedirectUri =  $row['redirectUri'] ?? null;
+                $oldRedirectUri = $row['redirectUri'] ?? null;
 
                 if (filter_var($oldRedirectUri, FILTER_VALIDATE_URL)) {
                     $rows[$key]['redirectUri'] = Json::encode([
                         'url' => $oldRedirectUri,
-                        'type' => 'BarrelStrength\Sprout\uris\components\links\AbsoluteUrl'
+                        'type' => 'BarrelStrength\Sprout\uris\components\links\AbsoluteUrl',
                     ]);
                 } elseif (!empty($oldRedirectUri)) {
                     $rows[$key]['redirectUri'] = Json::encode([
                         'url' => $oldRedirectUri,
-                        'type' => 'BarrelStrength\Sprout\uris\components\links\RelativeUrl'
+                        'type' => 'BarrelStrength\Sprout\uris\components\links\RelativeUrl',
                     ]);
                 } else {
                     $rows[$key]['redirectUri'] = Json::encode([
                         'url' => null,
-                        'type' => 'BarrelStrength\\Sprout\\uris\\components\\links\\CurrentPageUrl'
+                        'type' => 'BarrelStrength\\Sprout\\uris\\components\\links\\CurrentPageUrl',
                     ]);
                 }
 
@@ -364,7 +364,7 @@ class m211101_000007_migrate_forms_tables extends Migration
         //'old_forms_table.enableCaptchas',
 
         // plugin settings
-                    //      formTemplateId: barrelstrength\sproutforms\formtemplates\BasicTemplates
+        //      formTemplateId: barrelstrength\sproutforms\formtemplates\BasicTemplates
 
         $saveDataGlobal = $projectConfigSettings['saveDataByDefault'] ?? $projectConfigSettings['enableSaveDataDefaultValue'] ?? false;
         $isNotificationsTabEnabled = isset($projectConfigSettings['showNotificationsTab']) && !empty($projectConfigSettings['showNotificationsTab']) ? '1' : '';
@@ -380,7 +380,7 @@ class m211101_000007_migrate_forms_tables extends Migration
                     'enabled' => $isNotificationsTabEnabled,
                 ],
                 'BarrelStrength\Sprout\datastudio\components\formfeatures\DataStudioTabFormFeature' => [
-                    'enabled' =>$isReportsTabEnabled,
+                    'enabled' => $isReportsTabEnabled,
                 ],
             ],
             'enabledFormFieldTypes' => [
