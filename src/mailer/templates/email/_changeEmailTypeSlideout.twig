@@ -1,0 +1,14 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.selectField({
+    label: "Email Type"|t('sprout-module-mailer'),
+    instructions: "Choose the Email Type that will be used for the selected forms."|t('sprout-module-mailer'),
+    warning: "Updating the Email Type may change your field layout and result in data loss."|t('sprout-module-mailer'),
+    name: 'emailTypeUid',
+    options: emailTypeOptions,
+    value: null,
+    errors: null,
+    first: true
+}) }}
+
+{{ hiddenInput('elementIds', elementIds) }}
