@@ -3,11 +3,13 @@
 namespace BarrelStrength\Sprout\mailer\components\elements\email\conditions;
 
 use BarrelStrength\Sprout\mailer\components\elements\email\EmailElement;
+use BarrelStrength\Sprout\mailer\components\elements\email\EmailElementQuery;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
 use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\helpers\Db;
 use yii\db\QueryInterface;
 
 class EmailTypeConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
@@ -29,7 +31,8 @@ class EmailTypeConditionRule extends BaseMultiSelectConditionRule implements Ele
 
     public function modifyQuery(QueryInterface $query): void
     {
-        // No changes
+        /** @var EmailElementQuery $query */
+        $query->andWhere(Db::parseParam( '[[sprout_emails.emailTypeUid]]', $this->paramValue()));
     }
 
     public function matchElement(ElementInterface $element): bool
