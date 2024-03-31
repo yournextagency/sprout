@@ -229,7 +229,7 @@ class m211101_000007_migrate_forms_tables extends Migration
                 ->execute();
         }
 
-        $cols = [
+        $oldCols = [
             'id',
             'entryId',
             'type',
@@ -239,14 +239,24 @@ class m211101_000007_migrate_forms_tables extends Migration
             'uid',
         ];
 
+        $newCols = [
+            'id',
+            'submissionId', // entryId
+            'type',
+            'errors',
+            'dateCreated',
+            'dateUpdated',
+            'uid',
+        ];
+
         if ($this->getDb()->tableExists(self::OLD_FORM_SUBMISSIONS_SPAM_LOG_TABLE)) {
             $rows = (new Query())
-                ->select($cols)
+                ->select($oldCols)
                 ->from([self::OLD_FORM_SUBMISSIONS_SPAM_LOG_TABLE])
                 ->all();
 
             Craft::$app->getDb()->createCommand()
-                ->batchInsert(self::FORM_SUBMISSIONS_SPAM_LOG_TABLE, $cols, $rows)
+                ->batchInsert(self::FORM_SUBMISSIONS_SPAM_LOG_TABLE, $newCols, $rows)
                 ->execute();
         }
 
@@ -274,7 +284,7 @@ class m211101_000007_migrate_forms_tables extends Migration
                 ->execute();
         }
 
-        $cols = [
+        $oldCols = [
             'id',
             'entryId',
             'integrationId',
@@ -286,14 +296,26 @@ class m211101_000007_migrate_forms_tables extends Migration
             'uid',
         ];
 
+        $newCols = [
+            'id',
+            'submissionId', // entryId
+            'integrationId',
+            'success',
+            'status',
+            'message',
+            'dateCreated',
+            'dateUpdated',
+            'uid',
+        ];
+
         if ($this->getDb()->tableExists(self::OLD_FORM_INTEGRATIONS_LOG_TABLE)) {
             $rows = (new Query())
-                ->select($cols)
+                ->select($oldCols)
                 ->from([self::OLD_FORM_INTEGRATIONS_LOG_TABLE])
                 ->all();
 
             Craft::$app->getDb()->createCommand()
-                ->batchInsert(self::FORM_INTEGRATIONS_LOG_TABLE, $cols, $rows)
+                ->batchInsert(self::FORM_INTEGRATIONS_LOG_TABLE, $newCols, $rows)
                 ->execute();
         }
     }
