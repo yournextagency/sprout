@@ -369,6 +369,17 @@ class SubmissionElement extends Element
         ];
     }
 
+    public function beforeSave(bool $isNew): bool
+    {
+        $form = $this->getForm();
+        $title = Craft::$app->getView()->renderObjectTemplate($form->titleFormat, $this);
+        if ($title !== '') {
+            $this->title = $title;
+        }
+
+        return parent::beforeSave($isNew);
+    }
+
     public function afterSave(bool $isNew): void
     {
         if (!$isNew) {

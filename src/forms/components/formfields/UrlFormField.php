@@ -2,6 +2,7 @@
 
 namespace BarrelStrength\Sprout\forms\components\formfields;
 
+use BarrelStrength\Sprout\fields\FieldsModule;
 use BarrelStrength\Sprout\forms\components\elements\SubmissionElement;
 use BarrelStrength\Sprout\forms\formfields\FormFieldHelper;
 use BarrelStrength\Sprout\forms\formfields\FormFieldInterface;
@@ -86,7 +87,7 @@ class UrlFormField extends CraftUrl implements FormFieldInterface
 
     public function getFrontEndInputVariables($value, SubmissionElement $submission, array $renderingOptions = null): array
     {
-        $errorMessage = FormsModule::getInstance()->urlField->getErrorMessage($this);
+        $errorMessage = $this->getErrorMessage($this);
         $placeholder = $this->placeholder ?? '';
 
         return [
