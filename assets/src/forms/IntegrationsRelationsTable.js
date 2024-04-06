@@ -54,11 +54,12 @@ class IntegrationsRelationsTable {
 
     createSlideout(integrationUid, integrationTypeUid) {
         let self = this;
+        let FormBuilder = window.FormBuilder;
 
-        console.log('createSlideout', window.formBuilder.integrationsFormFieldMetadata);
+        console.log('createSlideout', FormBuilder.integrationsFormFieldMetadata);
 
-        let integrationsFormFieldMetadata = formBuilder.integrationsFormFieldMetadata.length > 0
-            ? JSON.parse(formBuilder.integrationsFormFieldMetadata)
+        let integrationsFormFieldMetadata = FormBuilder.integrationsFormFieldMetadata.length > 0
+            ? JSON.parse(FormBuilder.integrationsFormFieldMetadata)
             : [];
 
         Craft.sendActionRequest('POST', 'sprout-module-forms/form-integrations/edit-integration-slideout', {

@@ -44,12 +44,17 @@ class FormBuilderController extends BaseController
         ]);
     }
 
-    public function actionGetFormTabSettingsHtml(): Response
+    public function actionEditFormTabSlideoutViaCpScreen(): Response
     {
-        $this->requirePostRequest();
         $this->requireAcceptsJson();
 
-        $formId = Craft::$app->getRequest()->getRequiredBodyParam('formId');
+        $currentUser = Craft::$app->getUser()->getIdentity();
+
+        if (!$currentUser->can(FormsModule::p('editForms'))) {
+            throw new ForbiddenHttpException('User is not authorized to perform this action.');
+        }
+
+        $formId = Craft::$app->getRequest()->getRequiredParam('formId');
         $form = Craft::$app->getElements()->getElementById($formId, FormElement::class);
 
         if (!$form) {
@@ -59,47 +64,26 @@ class FormBuilderController extends BaseController
             ]);
         }
 
-        $tabSettings = Craft::$app->getRequest()->getRequiredBodyParam('tab');
-
-        $fieldLayout = $form->getSubmissionFieldLayout();
+        $tabConfig = Craft::$app->getRequest()->getRequiredParam('tab');
+        $tabConfig = Json::decode($tabConfig);
 
         $tab = new FormFieldLayoutTab();
-        $tab->setLayout($fieldLayout);
-
-        $tab->name = $tabSettings['name'] ?? null;
-        //$tab->setUserCondition($tabSettings['userCondition']);
-        //$tab->setElementCondition($tabSettings['elementCondition']);
-        $tab->uid = $tabSettings['uid'];
-
-        $fieldLayout->setTabs([$tab]);
+        $tab->name = $tabConfig['name'] ?? Craft::t('sprout-module-forms', 'Page');
 
         $view = Craft::$app->getView();
         $view->startJsBuffer();
+
         $settingsHtml = $tab->getSettingsHtml();
         $tabSettingsJs = $view->clearJsBuffer();
 
-        return $this->asJson([
-            'success' => true,
-            'tabUid' => $tabSettings['uid'],
-            'settingsHtml' => $settingsHtml,
-            'tabSettingsJs' => $tabSettingsJs,
-        ]);
-    }
+        $html =
+            Template::raw($settingsHtml) .
+            Template::raw($tabSettingsJs);
 
-    public function actionGetFormTabObject(): Response
-    {
-        $this->requirePostRequest();
-        $this->requireAcceptsJson();
-
-        $name = Craft::$app->getRequest()->getRequiredBodyParam('name');
-        //$userCondition = Craft::$app->getRequest()->getRequiredBodyParam('userCondition');
-        //$elementCondition = Craft::$app->getRequest()->getRequiredBodyParam('elementCondition');
-
-        return $this->asJson([
-            'name' => $name,
-            //'userCondition' => $userCondition,
-            //'elementCondition' => $elementCondition,
-        ]);
+        return $this->asCpScreen()
+            ->submitButtonLabel('Apply')
+            ->action('sprout-module-forms/form-builder/edit-form-tab-slideout-response')
+            ->content($html);
     }
 
     public function actionEditFormFieldSlideoutViaCpScreen(): Response
@@ -230,6 +214,26 @@ class FormBuilderController extends BaseController
             ->content($html);
     }
 
+    public function actionEditFormTabSlideoutResponse(): Response
+    {
+        // get field from params
+        $name = $this->request->getRequiredBodyParam('name');
+        //$userCondition = $this->request->getRequiredBodyParam('userCondition');
+        //$elementCondition = $this->request->getRequiredBodyParam('elementCondition');
+
+        // Return params and let JS update field model in layout
+        return $this->asJson([
+            'success' => true,
+            'message' => Craft::t('sprout-module-forms', 'Tab updated.'),
+            'tab' => [
+                'name' => $name,
+                //'userCondition' => $userCondition,
+                //'elementCondition' => $elementCondition,
+            ],
+            'params' => $this->request->getBodyParams(),
+        ]);
+    }
+
     public function actionEditFormFieldSlideoutResponse(): Response
     {
         // get field from params
@@ -252,7 +256,7 @@ class FormBuilderController extends BaseController
                     'settings' => $settings,
                 ],
             ],
-            'params' => $this->request->getBodyParams(),
+            //'params' => $this->request->getBodyParams(),
         ]);
     }
 

@@ -39,8 +39,8 @@ export const FormField = (element) => ({
             'x-bind:class="[dragHover ? \'drag-hover\' : \'\', element.field.sortOrder % 2 == 0 ? \'even\' : \'odd\']"\n' +
             'x-on:mouseover="dragHover = true"\n' +
             'x-on:mouseleave="dragHover = false"\n' +
-            'x-on:dragstart.self="dragStartSourceField"\n' +
-            'x-on:dragend.self="dragEndSourceField"\n' +
+            'x-on:dragstart.self="DragDropHelper.dragStartSourceField"\n' +
+            'x-on:dragend.self="DragDropHelper.dragEndSourceField"\n' +
             'x-bind:data-type="element.field.type"' +
             '>' +
             '<h3>' +
