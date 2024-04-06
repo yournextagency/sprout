@@ -61,7 +61,7 @@ export const FormBuilder = (formId) => ({
 
         let self = this;
         // Get the saved fieldLayout data
-        Craft.sendActionRequest('POST', 'sprout-module-forms/forms/get-submission-field-layout', {
+        Craft.sendActionRequest('POST', 'sprout-module-forms/form-builder/get-submission-field-layout', {
             data: {
                 formId: this.formId,
             },
@@ -344,6 +344,8 @@ export const FormBuilder = (formId) => ({
             let dropBeforeTargetFieldUid = e.target.dataset.fieldUid;
             this.updateFieldPosition(originTabUid, this.selectedTabUid, self.isDraggingFormFieldUid, dropBeforeTargetFieldUid);
         }
+
+        console.log('tabs', this.tabs);
     },
 
     dragEnterLayoutField(e) {
@@ -474,22 +476,19 @@ export const FormBuilder = (formId) => ({
         }
     },
 
-    updateFieldSettings(fieldUid, fieldSettings) {
+    updateFieldLayoutElement(fieldUid, fieldLayoutElement) {
 
         let tabIndex = this.getTabIndexByTabUid(this.selectedTabUid);
         let tab = this.tabs[tabIndex];
-
         let fieldIndex = this.getFieldIndexByFieldUid(tab, fieldUid);
-        let targetField = tab.elements[fieldIndex];
+        let targetFieldLayoutElement = tab.elements[fieldIndex];
 
-        targetField.name = fieldSettings.name;
-        targetField.instructions = fieldSettings.instructions;
-        targetField.required = fieldSettings.required;
-        targetField.settings = fieldSettings.settings;
-        // loop through fieldSettings.settings and update the targetField.settings
-        // console.log(fieldSettings);
+        targetFieldLayoutElement.required = fieldLayoutElement.required;
 
-        tab.elements[fieldIndex] = targetField;
+        // Merge updated values into existing field
+        targetFieldLayoutElement.field = Object.assign(targetFieldLayoutElement.field, fieldLayoutElement.field);
+
+        tab.elements[fieldIndex] = targetFieldLayoutElement;
     },
 
     updateTabPosition(tabUid, beforeTabUid = null) {
@@ -668,7 +667,7 @@ export const FormBuilder = (formId) => ({
 
         this.editTabUid = tab.uid;
 
-        Craft.sendActionRequest('POST', 'sprout-module-forms/forms/get-form-tab-settings-html', {
+        Craft.sendActionRequest('POST', 'sprout-module-forms/form-builder/get-form-tab-settings-html', {
             data: {
                 formId: this.formId,
                 tab: tab,
@@ -751,13 +750,13 @@ export const FormBuilder = (formId) => ({
 
             let formData = new FormData($form[0]);
 
-            Craft.sendActionRequest('POST', 'sprout-module-forms/forms/get-form-tab-object', {
+            Craft.sendActionRequest('POST', 'sprout-module-forms/form-builder/get-form-tab-object', {
                 data: formData,
             }).then((response) => {
                 self.updateTabSettings(self.editTabUid, {
                     name: response.data.name,
-                    userCondition: response.data.userCondition,
-                    elementCondition: response.data.elementCondition,
+                    // userCondition: response.data.userCondition,
+                    // elementCondition: response.data.elementCondition,
                 });
             });
 
@@ -794,15 +793,6 @@ export const FormBuilder = (formId) => ({
     },
 
     editFormField(layoutElement) {
-
-        // Testing CP Screen Slideout
-        this.editFormFieldViaCpScreen(layoutElement);
-
-        // Testing DIY Slideout
-        // this.editFormFieldViaSettingsHtml(layoutElement);
-    },
-
-    editFormFieldViaCpScreen(layoutElement) {
         let self = this;
 
         self.editFieldUid = layoutElement.fieldUid;
@@ -812,7 +802,9 @@ export const FormBuilder = (formId) => ({
             layoutElement: layoutElement,
         };
 
-        let slideout = new Craft.CpScreenSlideout('sprout-module-forms/forms/edit-form-field-slideout-via-cp-screen', {
+        console.log('Edit Form Field Layout Element', layoutElement);
+
+        let slideout = new Craft.CpScreenSlideout('sprout-module-forms/form-builder/edit-form-field-slideout-via-cp-screen', {
             hasTabs: true,
             tabManager: '',
             params: {
@@ -821,135 +813,40 @@ export const FormBuilder = (formId) => ({
             },
         });
 
-        // let settingsHtml = self.swapPlaceholders(response.data.settingsHtml, response.data.fieldUid);
-
-        slideout.on('close', () => {
-            console.log('waaa');
-        });
-    },
-
-    editFormFieldViaSettingsHtml(layoutElement) {
-        let self = this;
-
-        Craft.sendActionRequest('POST', 'sprout-module-forms/forms/get-form-field-settings-html', {
-            data: {
-                formId: this.formId,
-                layoutElement: layoutElement,
-            },
-        }).then((response) => {
-
-            self.openFieldSlideout(response);
-
-        }).catch((error) => {
-            console.log(error);
-            console.log('No form field data found.');
-        });
-    },
-
-    openFieldSlideout(response) {
-
-        let self = this;
-
-        const $body = $('<div/>', {class: 'fld-element-settings-body'});
-        const $fields = $('<div/>', {class: 'fields'}).appendTo($body);
-        const $footer = $('<div/>', {class: 'fld-element-settings-footer'});
-
         const $removeBtn = Craft.ui.createButton({
             class: 'icon',
-            attr: {
-                'data-icon': 'trash',
-            },
             label: Craft.t('app', 'Remove'),
             spinner: true,
         });
 
         $removeBtn.attr('data-icon', 'trash');
 
-        // Copied from Craft's FieldLayoutDesigner.js
-        const $cancelBtn = Craft.ui.createButton({
-            data: {
-                trashed: true,
-            },
-            label: Craft.t('app', 'Close'),
-            spinner: true,
-        });
+        // Place remove button before flex-grow div to keep it on the left
+        slideout.$footer.find('.flex-grow').before($removeBtn);
 
-        const $applyButton = Craft.ui.createSubmitButton({
-            class: 'secondary',
-            label: Craft.t('app', 'Apply'),
-            spinner: true,
-        });
-
-        $removeBtn.appendTo($footer);
-        $('<div/>', {class: 'flex-grow'}).appendTo($footer);
-        $cancelBtn.appendTo($footer);
-        $applyButton.appendTo($footer);
-
-        let settingsHtml = self.swapPlaceholders(response.data.settingsHtml, response.data.fieldUid);
-
-        $(response.data.requiredSettingsHtml).appendTo($fields);
-        $(settingsHtml).appendTo($fields);
-        // $(response.data.additionalSettingsHtml).appendTo($fields);
-
-        const $contents = $body.add($footer);
-
-        // Make sure condition builder js is only added once
-        $('.sprout-conditionbuilder-slideout').remove();
-
-        const slideout = new Craft.Slideout($contents, {
-            containerElement: 'form',
-            containerAttributes: {
-                method: 'post',
-                action: '',
-                class: 'fld-element-settings slideout sprout-conditionbuilder-slideout',
-                id: 'sprout-field-modal',
-            },
-        });
-
-        const $form = slideout.$container;
-
-        Craft.initUiElements($body);
-
-        let fieldSettingsJs = self.swapPlaceholders(response.data.fieldSettingsJs, response.data.fieldUid);
-        Craft.appendBodyHtml(fieldSettingsJs);
-
-        $form.on('submit', function(event) {
-            event.preventDefault();
-
-            let formData = new FormData($form[0]);
-            // let fieldSettings = JSON.stringify(Object.fromEntries(formData));
-            // console.log(fieldSettings);
-
-            Craft.sendActionRequest('POST', 'sprout-module-forms/forms/get-form-field-object', {
-                data: formData,
-            }).then((response) => {
-
-                // self.updateTabSettings(self.editTabUid, {
-                //     name: response.data.name,
-                //     userCondition: response.data.userCondition,
-                //     elementCondition: response.data.elementCondition,
-                // });
-                //
-                self.updateFieldSettings(self.editFieldUid, JSON.parse(response.data.fieldSettings));
-            });
-
-            slideout.close();
-        });
+        // remove slideout.$footer primary button class primary
+        slideout.$footer.find('.submit').addClass('secondary');
 
         $removeBtn.on('click', () => {
-            let tabIndex = self.getTabIndexByTabUid(self.selectedTabUid);
-            let tab = self.tabs[tabIndex];
-            let fieldIndex = self.getFieldIndexByFieldUid(tab, self.editFieldUid);
-            self.tabs[tabIndex].elements.splice(fieldIndex, 1);
-            self.editFieldUid = null;
-
-            slideout.close();
+           console.log('waa');
+           slideout.close();
         });
 
-        $cancelBtn.on('click', () => {
-            slideout.close();
-            self.editFieldUid = null;
+        // let settingsHtml = self.swapPlaceholders(response.data.settingsHtml, response.data.fieldUid);
+        slideout.on('submit', ev => {
+            let layoutElement = ev.response.data.layoutElement ?? {};
+           console.log('layoutElement', layoutElement);
+           self.updateFieldLayoutElement(self.editFieldUid, layoutElement);
+            console.log('tabs', self.tabs);
         });
+
+        slideout.on('close', () => {
+            console.log('Close Edit Form Field Slideout');
+        });
+
+        // init ui elements on slideout
+        Craft.initUiElements(slideout);
+
     },
 
     // The js output by the condition builder

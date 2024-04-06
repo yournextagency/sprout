@@ -94,7 +94,7 @@ class SubmissionsController extends BaseController
         $fieldsLocation = $this->request->getParam('fieldsLocation', 'fields');
         $submission->setFieldValuesFromRequest($fieldsLocation);
 
-        $this->addHiddenValuesBasedOnFieldRules($submission);
+        //$this->addHiddenValuesBasedOnFieldRules($submission);
 
         // Populate the submission with post data
         $this->populateSubmissionModel($submission);
