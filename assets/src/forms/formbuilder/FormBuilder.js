@@ -109,20 +109,6 @@ export const FormBuilder = (formId) => ({
         return window.FormBuilder.sourceFields.filter(item => item.groupName === handle);
     },
 
-    addFormPageButton() {
-        let newUid = Craft.uuid();
-        let tab = {
-            uid: newUid,
-            name: 'New Page',
-            userCondition: null,
-            elementCondition: null,
-            elements: [],
-        };
-
-        this.tabs.push(tab);
-        this.selectedTabUid = newUid;
-    },
-
     // scrollFieldLayout(stepY) {
     //   let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
     //   window.scrollTo(0, (scrollY + stepY));

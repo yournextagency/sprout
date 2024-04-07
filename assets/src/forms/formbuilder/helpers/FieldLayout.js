@@ -62,7 +62,73 @@ const FieldLayout = {
         return window.FormBuilder.tabs.findIndex(item => item.uid === tabUid);
     },
 
-    updateTabSettings(tabUid, data) {
+    addTab() {
+        let newUid = Craft.uuid();
+        let tab = {
+            uid: newUid,
+            name: 'New Page',
+            userCondition: null,
+            elementCondition: null,
+            elements: [],
+        };
+
+        this.tabs.push(tab);
+        this.selectedTabUid = newUid;
+    },
+
+    editTab(tab) {
+        let self = this;
+        let FormBuilder = window.FormBuilder;
+
+        FormBuilder.editTabUid = tab.uid;
+
+        let slideout = new Craft.CpScreenSlideout('sprout-module-forms/form-builder/edit-form-tab-slideout-via-cp-screen', {
+            hasTabs: false,
+            params: {
+                formId: FormBuilder.formId,
+                tab: tab,
+            },
+        });
+
+        const $removeBtn = this.getRemoveButtonHtml();
+        slideout.$footer.find('.flex-grow').before($removeBtn);
+        slideout.$footer.find('.submit').addClass('secondary');
+
+        $removeBtn.on('click', () => {
+            if (FormBuilder.tabs.length === 1) {
+                Craft.cp.displayNotice(Craft.t('sprout-module-forms', 'Form must contain at least one tab.'));
+
+                return;
+            }
+
+            let tabIndex = self.getTabIndexByTabUid(FormBuilder.selectedTabUid);
+
+            let newSelectedTabUid = (tabIndex - 1) >= 0
+                ? FormBuilder.tabs[tabIndex - 1].uid
+                : FormBuilder.tabs[tabIndex + 1].uid;
+
+            FormBuilder.tabs.splice(tabIndex, 1);
+
+            let newTabIndex = self.getTabIndexByTabUid(newSelectedTabUid);
+            FormBuilder.selectedTabUid = FormBuilder.tabs[newTabIndex].uid;
+            FormBuilder.editTabUid = FormBuilder.selectedTabUid;
+
+            console.log('Remove Tab');
+
+            slideout.close();
+        });
+
+        slideout.on('submit', ev => {
+            this.updateTab(FormBuilder.editTabUid, ev.response.data.tab);
+        });
+
+        slideout.on('close', () => {
+            console.log('Close Tab Slideout');
+            FormBuilder.editTabUid = null;
+        });
+    },
+
+    updateTab(tabUid, data) {
         let FormBuilder = window.FormBuilder;
 
         let tabIndex = this.getTabIndexByTabUid(tabUid);
@@ -112,6 +178,10 @@ const FieldLayout = {
         return window.FormBuilder.sourceFields.filter(item => item.field.type === type)[0] ?? null;
     },
 
+    // -------------------------------------------------------------------------
+    // LAYOUT ELEMENTS
+    // -------------------------------------------------------------------------
+
     addFieldToLayoutTab(type, beforeFieldUid = null) {
         console.log('addFieldToLayoutTab', type, beforeFieldUid);
 
@@ -156,101 +226,24 @@ const FieldLayout = {
             // Update tab
             FormBuilder.tabs[tabIndex] = tab;
 
-            FormBuilder.lastUpdatedFormFieldUid = targetField.uid;
-
-            this.resetLastUpdated();
+            // FormBuilder.lastUpdatedFormFieldUid = targetField.uid;
+            //
+            // this.resetLastUpdated();
         }
     },
 
-    updateFieldPosition(originTabUid, targetTabUid, fieldUid, beforeFieldUid = null) {
-        console.log('updateFieldPosition');
-
-        let FormBuilder = window.FormBuilder;
-
-        let originTabIndex = this.getTabIndexByTabUid(originTabUid);
-        let originTab = FormBuilder.tabs[originTabIndex];
-
-        let targetTabIndex = this.getTabIndexByTabUid(targetTabUid);
-        let targetTab = FormBuilder.tabs[targetTabIndex];
-
-        if (!targetTab) {
-            targetTab = originTab;
-        }
-
-        let originFieldIndex = this.getFieldIndexByFieldUid(originTab, fieldUid);
-        let targetField = originTab.elements[originFieldIndex];
-
-        // Remove the updated field from the layout
-        // this might change the indexes of the elements on the tab
-        originTab.elements.splice(originFieldIndex, 1);
-
-        if (beforeFieldUid) {
-            let beforeFieldIndex = this.getFieldIndexByFieldUid(targetTab, beforeFieldUid);
-
-            // Insert the updated field before the target field
-            targetTab.elements.splice(beforeFieldIndex, 0, targetField);
-        } else {
-            targetTab.elements.push(targetField);
-        }
-
-        // Update tab
-        FormBuilder.tabs[targetTabIndex] = targetTab;
-
-        FormBuilder.lastUpdatedFormFieldUid = targetField.uid;
-
-        this.resetLastUpdated();
-    },
-
-    editFormTab(tab) {
-        let self = this;
-        let FormBuilder = window.FormBuilder;
-
-        FormBuilder.editTabUid = tab.uid;
-
-        let slideout = new Craft.CpScreenSlideout('sprout-module-forms/form-builder/edit-form-tab-slideout-via-cp-screen', {
-            hasTabs: false,
-            params: {
-                formId: FormBuilder.formId,
-                tab: tab,
-            },
-        });
-
-        const $removeBtn = this.getRemoveButtonHtml();
-        slideout.$footer.find('.flex-grow').before($removeBtn);
-        slideout.$footer.find('.submit').addClass('secondary');
-
-        $removeBtn.on('click', () => {
-            if (FormBuilder.tabs.length === 1) {
-                Craft.cp.displayNotice(Craft.t('sprout-module-forms', 'Form must contain at least one tab.'));
-
-                return;
-            }
-
-            let tabIndex = self.getTabIndexByTabUid(FormBuilder.selectedTabUid);
-
-            let newSelectedTabUid = (tabIndex - 1) >= 0
-                ? FormBuilder.tabs[tabIndex - 1].uid
-                : FormBuilder.tabs[tabIndex + 1].uid;
-
-            FormBuilder.tabs.splice(tabIndex, 1);
-
-            let newTabIndex = self.getTabIndexByTabUid(newSelectedTabUid);
-            FormBuilder.selectedTabUid = FormBuilder.tabs[newTabIndex].uid;
-            FormBuilder.editTabUid = FormBuilder.selectedTabUid;
-
-            console.log('Remove Tab');
-
-            slideout.close();
-        });
-
-        slideout.on('submit', ev => {
-            this.updateTabSettings(FormBuilder.editTabUid, ev.response.data.tab);
-        });
-
-        slideout.on('close', () => {
-            console.log('Close Tab Slideout');
-            FormBuilder.editTabUid = null;
-        });
+    getLayoutElement(fieldUid, field, uiSettings) {
+        return {
+            type: 'BarrelStrength\\Sprout\\forms\\submissions\\CustomFormField',
+            required: false,
+            width: 100,
+            uid: Craft.uuid(),
+            userCondition: null,
+            elementCondition: null,
+            fieldUid: fieldUid,
+            field: field,
+            uiSettings: uiSettings,
+        };
     },
 
     editFieldLayoutElement(layoutElement) {
@@ -290,24 +283,6 @@ const FieldLayout = {
         // Craft.initUiElements(slideout);
     },
 
-    // -------------------------------------------------------------------------
-    // LAYOUT ELEMENTS
-    // -------------------------------------------------------------------------
-
-    getLayoutElement(fieldUid, field, uiSettings) {
-        return {
-            type: 'BarrelStrength\\Sprout\\forms\\submissions\\CustomFormField',
-            required: false,
-            width: 100,
-            uid: Craft.uuid(),
-            userCondition: null,
-            elementCondition: null,
-            fieldUid: fieldUid,
-            field: field,
-            uiSettings: uiSettings,
-        };
-    },
-
     updateFieldLayoutElement(fieldUid, fieldLayoutElement) {
         let FormBuilder = window.FormBuilder;
 
@@ -322,6 +297,45 @@ const FieldLayout = {
         targetFieldLayoutElement.field = Object.assign(targetFieldLayoutElement.field, fieldLayoutElement.field);
 
         tab.elements[fieldIndex] = targetFieldLayoutElement;
+    },
+
+    updateFieldLayoutElementPosition(originTabUid, targetTabUid, fieldUid, beforeFieldUid = null) {
+        console.log('updateFieldPosition');
+
+        let FormBuilder = window.FormBuilder;
+
+        let originTabIndex = this.getTabIndexByTabUid(originTabUid);
+        let originTab = FormBuilder.tabs[originTabIndex];
+
+        let targetTabIndex = this.getTabIndexByTabUid(targetTabUid);
+        let targetTab = FormBuilder.tabs[targetTabIndex];
+
+        if (!targetTab) {
+            targetTab = originTab;
+        }
+
+        let originFieldIndex = this.getFieldIndexByFieldUid(originTab, fieldUid);
+        let targetField = originTab.elements[originFieldIndex];
+
+        // Remove the updated field from the layout
+        // this might change the indexes of the elements on the tab
+        originTab.elements.splice(originFieldIndex, 1);
+
+        if (beforeFieldUid) {
+            let beforeFieldIndex = this.getFieldIndexByFieldUid(targetTab, beforeFieldUid);
+
+            // Insert the updated field before the target field
+            targetTab.elements.splice(beforeFieldIndex, 0, targetField);
+        } else {
+            targetTab.elements.push(targetField);
+        }
+
+        // Update tab
+        FormBuilder.tabs[targetTabIndex] = targetTab;
+
+        // FormBuilder.lastUpdatedFormFieldUid = targetField.uid;
+
+        // this.resetLastUpdated();
     },
 
     // -------------------------------------------------------------------------

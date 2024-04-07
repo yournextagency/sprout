@@ -51,6 +51,7 @@ const DragDrop = {
         console.log('dropOnLayoutTabNav');
 
         let FormBuilder = window.FormBuilder;
+        let FieldLayoutHelper = FormBuilder.FieldLayoutHelper;
 
         e.target.classList.remove('no-pointer-events');
 
@@ -58,17 +59,21 @@ const DragDrop = {
         let targetTabUid = e.target.dataset.tabUid;
 
         if (FormBuilder.dragOrigin === FormBuilder.DragOrigins.layoutTabNav) {
-            FormBuilder.updateTabPosition(originTabUid, targetTabUid);
+            FieldLayoutHelper.updateTabPosition(originTabUid, targetTabUid);
             FormBuilder.selectedTabUid = originTabUid;
         }
 
         if (FormBuilder.dragOrigin === FormBuilder.DragOrigins.sourceField) {
             let type = e.dataTransfer.getData('sprout/field-type');
-            FormBuilder.addFieldToLayoutTab(type);
+            FieldLayoutHelper.addFieldToLayoutTab(type);
         }
 
         if (FormBuilder.dragOrigin === FormBuilder.DragOrigins.layoutField) {
-            FormBuilder.updateFieldPosition(originTabUid, targetTabUid, self.isDraggingFormFieldUid);
+            FieldLayoutHelper.updateFieldLayoutElementPosition(
+                originTabUid,
+                targetTabUid,
+                FormBuilder.isDraggingFormFieldUid
+            );
         }
     },
 
@@ -89,7 +94,6 @@ const DragDrop = {
 
     dragLeaveLayoutTabBody: function(e) {
         console.log('dragLeaveLayoutTabBody');
-
         window.FormBuilder.isDragOverTabUid = null;
     },
 
@@ -122,7 +126,7 @@ const DragDrop = {
 
         if (FormBuilder.dragOrigin === FormBuilder.DragOrigins.layoutField) {
             let dropBeforeTargetFieldUid = e.target.dataset.fieldUid;
-            FieldLayoutHelper.updateFieldPosition(
+            FieldLayoutHelper.updateFieldLayoutElementPosition(
                 originTabUid,
                 FormBuilder.selectedTabUid,
                 FormBuilder.isDraggingFormFieldUid,
@@ -216,7 +220,8 @@ const DragDrop = {
         const isDraggingLayoutField = e.dataTransfer.types.includes('sprout/field-type');
 
         if (isDraggingLayoutField) {
-            // console.log('dragOverLayoutField');
+            window.FormBuilder.isDragOverFormFieldUid = e.target.dataset.fieldUid;
+            console.log('dragOverLayoutField', window.FormBuilder.isDragOverFormFieldUid);
             event.preventDefault();
         }
     },
@@ -229,6 +234,7 @@ const DragDrop = {
     dropOnExistingLayoutField: function(e) {
         console.log('dropOnExistingLayoutField');
         let FormBuilder = window.FormBuilder;
+        let FieldLayoutHelper = FormBuilder.FieldLayoutHelper;
 
         e.target.classList.remove('no-pointer-events');
 
@@ -239,11 +245,16 @@ const DragDrop = {
         let beforeFieldUid = e.target.dataset.fieldUid;
 
         if (FormBuilder.dragOrigin === FormBuilder.DragOrigins.sourceField) {
-            FormBuilder.addFieldToLayoutTab(type, beforeFieldUid);
+            FieldLayoutHelper.addFieldToLayoutTab(type, beforeFieldUid);
         }
 
         if (FormBuilder.dragOrigin === FormBuilder.DragOrigins.layoutField) {
-            FormBuilder.updateFieldPosition(originTabUid, targetTabUid, self.isDraggingFormFieldUid, beforeFieldUid);
+            FieldLayoutHelper.updateFieldLayoutElementPosition(
+                originTabUid,
+                targetTabUid,
+                FormBuilder.isDraggingFormFieldUid,
+                beforeFieldUid
+            );
         }
     },
 
@@ -269,7 +280,6 @@ const DragDrop = {
         // this.isDragOverTabUid = this.selectedTabUid;
         // this.isDragOverFormFieldUid = e.target.parentNode.dataset.fieldUid;
 
-
         if (sproutFormField) {
             console.log('isOverFieldLayoutEndZone');
             event.preventDefault();
@@ -294,7 +304,12 @@ const DragDrop = {
         }
 
         if (FormBuilder.dragOrigin === FormBuilder.DragOrigins.layoutField) {
-            FieldLayoutHelper.updateFieldPosition(originTabUid, targetTabUid, self.isDraggingFormFieldUid, beforeFieldUid);
+            FieldLayoutHelper.updateFieldLayoutElementPosition(
+                originTabUid,
+                targetTabUid,
+                FormBuilder.isDraggingFormFieldUid,
+                beforeFieldUid
+            );
         }
     },
 };
