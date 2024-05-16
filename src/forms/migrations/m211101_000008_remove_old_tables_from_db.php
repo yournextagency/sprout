@@ -18,6 +18,27 @@ class m211101_000008_remove_old_tables_from_db extends Migration
 
     public function safeUp(): void
     {
+        $moduleSettingsKey = self::SPROUT_KEY . '.' . self::MODULE_ID;
+
+        if (Craft::$app->getProjectConfig()->get($moduleSettingsKey . '.trackRemoteIp')) {
+            Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.trackRemoteIp');
+        }
+        if (Craft::$app->getProjectConfig()->get($moduleSettingsKey . '.saveDataByDefault')) {
+            Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.saveDataByDefault');
+        }
+        if (Craft::$app->getProjectConfig()->get($moduleSettingsKey . '.enableSaveDataDefaultValue')) {
+            Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.enableSaveDataDefaultValue');
+        }
+        if (Craft::$app->getProjectConfig()->get($moduleSettingsKey . '.enablePayloadForwarding')) {
+            Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.enablePayloadForwarding');
+        }
+        if (Craft::$app->getProjectConfig()->get($moduleSettingsKey . '.pluginNameOverride')) {
+            Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.pluginNameOverride');
+        }
+        if (Craft::$app->getProjectConfig()->get($moduleSettingsKey . '.formTypeUid')) {
+            Craft::$app->getProjectConfig()->remove($moduleSettingsKey . '.formTypeUid');
+        }
+
         Db::dropAllForeignKeysToTable(self::OLD_FORMS_TABLE);
         Db::dropAllForeignKeysToTable(self::OLD_FORM_INTEGRATIONS_TABLE);
         Db::dropAllForeignKeysToTable(self::OLD_FORM_INTEGRATIONS_LOG_TABLE);

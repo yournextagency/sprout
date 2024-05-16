@@ -67,6 +67,8 @@ class m211101_000002_update_field_settings extends Migration
 
         $projectConfig = Craft::$app->getProjectConfig();
 
+        $notesFieldsHaveAlreadyBeenUpdated = false;
+
         // Loop through all the layouts that have Notes fields
         foreach ($layouts as $layout) {
             if (!isset($layout['entryTypeUid'], $layout['fieldLayoutUid'])) {
@@ -98,6 +100,10 @@ class m211101_000002_update_field_settings extends Migration
                         $oldStyle = $field['settings']['style'] ?? null;
                         $notes = $field['settings']['notes'] ?? null;
 
+                        if ($oldStyle === 'warning' || $oldStyle === 'tip') {
+                            $notesFieldsHaveAlreadyBeenUpdated = true;
+                        }
+
                         if ($oldStyle === 'warningDocumentation' || $oldStyle === 'dangerDocumentation') {
                             $newStyle = 'warning';
                             $newType = 'craft\fieldlayoutelements\Warning';
@@ -116,8 +122,10 @@ class m211101_000002_update_field_settings extends Migration
 
                 $newTabs[] = $tab;
 
-                // Then save the project config remove field with the UID in question.
-                $projectConfig->set($tabsPath, $newTabs);
+                if (!$notesFieldsHaveAlreadyBeenUpdated) {
+                    // Then save the project config remove field with the UID in question.
+                    $projectConfig->set($tabsPath, $newTabs);
+                }
             }
         }
 

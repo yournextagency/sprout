@@ -55,31 +55,35 @@ class m211101_000000_run_install_migration extends Migration
             ob_end_clean();
         }
 
-        // @todo - fix default settings to import
-        Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
-            'defaultSidebarTab' => 'submissions',
-            'formTypeUid' => self::FORM_TYPE,
-            'enableSaveData' => true,
-            'saveSpamToDatabase' => false,
-            'enableSaveDataDefaultValue' => true,
+        $keyExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
 
-            // FormsSettings::SPAM_REDIRECT_BEHAVIOR_NORMAL
-            'spamRedirectBehavior' => self::SPAM_REDIRECT_BEHAVIOR_NORMAL,
-            'spamLimit' => 500,
-            'cleanupProbability' => 1000,
-            'trackRemoteIp' => false,
-            'enableEditSubmissionViaFrontEnd' => false,
-            // @todo - provide all settings. overwrites all nested settings.
-            //            'captchaSettings' => [
-            //                'BarrelStrength\Sprout\forms\components\captchas\DuplicateCaptcha' => [
-            //                    'enabled' => false,
-            //                ],
-            //            ],
-        ], "Update Sprout Module Settings for “{$moduleSettingsKey}”");
+        if ($keyExists) {
+            // @todo - fix default settings to import
+            Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
+                'defaultSidebarTab' => 'submissions',
+                'formTypeUid' => self::FORM_TYPE,
+                'enableSaveData' => true,
+                'saveSpamToDatabase' => false,
+                'enableSaveDataDefaultValue' => true,
 
-        Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
-            'enabled' => true,
-        ], "Update Sprout CP Settings for “{$coreModuleSettingsKey}”");
+                // FormsSettings::SPAM_REDIRECT_BEHAVIOR_NORMAL
+                'spamRedirectBehavior' => self::SPAM_REDIRECT_BEHAVIOR_NORMAL,
+                'spamLimit' => 500,
+                'cleanupProbability' => 1000,
+                'trackRemoteIp' => false,
+                'enableEditSubmissionViaFrontEnd' => false,
+                // @todo - provide all settings. overwrites all nested settings.
+                //            'captchaSettings' => [
+                //                'BarrelStrength\Sprout\forms\components\captchas\DuplicateCaptcha' => [
+                //                    'enabled' => false,
+                //                ],
+                //            ],
+            ], "Update Sprout Module Settings for “{$moduleSettingsKey}”");
+
+            Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
+                'enabled' => true,
+            ], "Update Sprout CP Settings for “{$coreModuleSettingsKey}”");
+        }
     }
 
     public function safeDown(): bool
