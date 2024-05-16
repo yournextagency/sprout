@@ -2,11 +2,16 @@
 
 namespace BarrelStrength\Sprout\forms\migrations;
 
+use Craft;
 use craft\db\Migration;
 use craft\helpers\Db;
 
 class m211101_000008_remove_old_tables_from_db extends Migration
 {
+    public const SPROUT_KEY = 'sprout';
+
+    public const MODULE_ID = 'sprout-module-forms';
+
     public const OLD_FORM_GROUPS_TABLE = '{{%sproutforms_formgroups}}';
     public const OLD_FORMS_TABLE = '{{%sproutforms_forms}}';
     public const OLD_FORM_INTEGRATIONS_TABLE = '{{%sproutforms_integrations}}';

@@ -9,14 +9,6 @@ class m211101_000006_update_component_types extends Migration
     public function safeUp(): void
     {
         $components = [
-            //            'sproutforms_rules' => [
-            //                'type' => [
-            //                    [
-            //                        'oldType' => 'barrelstrength\sproutforms\rules\FieldRule',
-            //                        'newType' => 'BarrelStrength\Sprout\forms\components\rules\FieldRule',
-            //                    ],
-            //                ],
-            //            ],
             'sproutforms_integrations' => [
                 'type' => [
                     [
@@ -33,12 +25,18 @@ class m211101_000006_update_component_types extends Migration
             'sproutforms_forms' => [
                 'formTemplateId' => [
                     [
+                        'oldType' => null,
+                        'newType' => 'BarrelStrength\Sprout\forms\components\formtypes\DefaultFormType',
+                    ],
+                    [
                         'oldType' => 'barrelstrength\sproutforms\formtemplates\AccessibleTemplates',
                         'newType' => 'BarrelStrength\Sprout\forms\components\formtypes\DefaultFormType',
                     ],
                     [
+                        // This value will not be found in the database and is handled in
+                        // the next migration m211101_000007_migrate_forms_tables
                         'oldType' => 'barrelstrength\sproutforms\formtemplates\CustomTemplates',
-                        'newType' => 'BarrelStrength\Sprout\forms\components\formtypes\CustomTemplateSet',
+                        'newType' => 'BarrelStrength\Sprout\forms\components\formtypes\CustomTemplatesFormType',
                     ],
                 ],
             ],
