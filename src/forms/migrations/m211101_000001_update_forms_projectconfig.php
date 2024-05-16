@@ -46,6 +46,12 @@ class m211101_000001_update_forms_projectconfig extends Migration
         $oldConfig = Craft::$app->getProjectConfig()->get(self::OLD_CONFIG_KEY) ?? [];
         $oldConfig = ProjectConfig::unpackAssociativeArray($oldConfig);
 
+        $newConfigExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
+
+        if (empty($oldConfig) && $newConfigExists) {
+            return;
+        }
+
         $newConfig = [];
 
         foreach ($defaultSettings as $key => $defaultValue) {
