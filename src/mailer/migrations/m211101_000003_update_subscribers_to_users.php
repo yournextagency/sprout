@@ -104,8 +104,13 @@ class m211101_000003_update_subscribers_to_users extends Migration
             ->from([self::AUDIENCES_TABLE])
             ->exists();
 
-        Craft::$app->getProjectConfig()->set($enableAudiencesKey, $audiencesExist);
-        Craft::$app->getProjectConfig()->set($enableSubscriberListsKey, $audiencesExist);
+        if (Craft::$app->getProjectConfig()->get($enableAudiencesKey) === null) {
+            Craft::$app->getProjectConfig()->set($enableAudiencesKey, $audiencesExist);
+        }
+
+        if (Craft::$app->getProjectConfig()->get($enableSubscriberListsKey) === null) {
+            Craft::$app->getProjectConfig()->set($enableSubscriberListsKey, $audiencesExist);
+        }
     }
 
     public function migrateSubscribersToUsers(): void

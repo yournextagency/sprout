@@ -225,6 +225,12 @@ class m211101_000001_migrate_settings_table_to_projectconfig extends Migration
             ])
             ->one();
 
+        $newConfigExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
+
+        if (empty($oldSettings) && $newConfigExists) {
+            return;
+        }
+
         // Prepare old settings for new settings format
         $newSettings = Json::decode($oldSettings['settings']);
 

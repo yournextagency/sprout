@@ -21,9 +21,13 @@ class m211101_000000_run_install_migration extends Migration
 
         $this->createTables();
 
-        Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
-            'enabled' => true,
-        ]);
+        $isEnabled = Craft::$app->getProjectConfig()->get($coreModuleSettingsKey. '.enabled');
+
+        if (!$isEnabled) {
+            Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
+                'enabled' => true,
+            ]);
+        }
     }
 
     public function createTables(): void

@@ -15,9 +15,12 @@ use craft\helpers\DateTimeHelper;
 use craft\helpers\Db;
 use craft\helpers\Json;
 use craft\helpers\ProjectConfig;
+<<<<<<< HEAD
 use craft\helpers\StringHelper;
 use craft\models\FieldLayout;
 use craft\models\FieldLayoutTab;
+=======
+>>>>>>> v4.2.4
 
 /**
  * This migration must come after the Reports migration as

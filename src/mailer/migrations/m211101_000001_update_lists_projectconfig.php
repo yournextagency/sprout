@@ -21,8 +21,15 @@ class m211101_000001_update_lists_projectconfig extends Migration
         ];
 
         $oldConfig = Craft::$app->getProjectConfig()->get(self::OLD_CONFIG_KEY) ?? [];
-        $newConfig = [];
 
+        $newConfigExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
+
+        if (empty($oldConfig) && $newConfigExists) {
+            return;
+        }
+
+        $newConfig = [];
+        
         foreach ($defaultSettings as $key => $defaultValue) {
             $oldValue = isset($oldConfig[$key]) && !empty($oldConfig[$key]) ? $oldConfig[$key] : null;
             $newConfig[$key] = $oldValue ?? $defaultValue;
@@ -38,6 +45,7 @@ class m211101_000001_update_lists_projectconfig extends Migration
         );
 
         Craft::$app->getProjectConfig()->remove(self::OLD_CONFIG_KEY);
+
     }
 
     public function safeDown(): bool

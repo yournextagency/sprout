@@ -43,9 +43,13 @@ class m211101_000000_run_install_migration extends Migration
             ]);
         }
 
-        Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
-            'enabled' => true,
-        ]);
+        $keyExists = Craft::$app->getProjectConfig()->get($coreModuleSettingsKey);
+
+        if ($keyExists) {
+            Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
+                'enabled' => true,
+            ]);
+        }
     }
 
     public function safeDown(): bool

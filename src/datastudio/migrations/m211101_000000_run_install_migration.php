@@ -2,6 +2,7 @@
 
 namespace BarrelStrength\Sprout\datastudio\migrations;
 
+use BarrelStrength\Sprout\core\db\MigrationHelper;
 use Craft;
 use craft\db\Migration;
 use craft\db\Table;
@@ -22,14 +23,18 @@ class m211101_000000_run_install_migration extends Migration
 
         $this->createTables();
 
-        Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
-            'defaultPageLength' => 10,
-            'defaultExportDelimiter' => ',',
-        ], "Update Sprout CP Settings for “{$moduleSettingsKey}”");
+        $keyExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
 
-        Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
-            'enabled' => true,
-        ]);
+        if (!$keyExists) {
+            Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
+                'defaultPageLength' => 10,
+                'defaultExportDelimiter' => ',',
+            ], "Update Sprout CP Settings for “{$moduleSettingsKey}”");
+
+            Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
+                'enabled' => true,
+            ]);
+        }
     }
 
     public function safeDown(): bool
