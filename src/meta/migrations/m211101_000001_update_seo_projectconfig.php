@@ -21,6 +21,13 @@ class m211101_000001_update_seo_projectconfig extends Migration
         ];
 
         $oldConfig = Craft::$app->getProjectConfig()->get(self::OLD_CONFIG_KEY) ?? [];
+
+        $newConfigExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
+
+        if (empty($oldConfig) && $newConfigExists) {
+            return;
+        }
+
         $newConfig = [];
 
         foreach ($defaultSettings as $key => $defaultValue) {

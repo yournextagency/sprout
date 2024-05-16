@@ -33,20 +33,24 @@ class m211101_000000_run_install_migration extends Migration
         // Create a Structure for new installs, we'll delete it later if upgrading
         $structureUid = $this->createStructureAndGetUid();
 
-        Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
-            'matchDefinition' => self::URL_WITHOUT_QUERY_STRINGS,
-            'queryStringStrategy' => self::REMOVE_QUERY_STRINGS,
-            'enable404RedirectLog' => false,
-            'trackRemoteIp' => false,
-            'total404Redirects' => 250,
-            'cleanupProbability' => 1000,
-            'structureUid' => $structureUid,
-            'globallyExcludedUrlPatterns' => null,
-        ], 'Update Sprout CP Settings for: ' . $moduleSettingsKey);
+        $keyExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
 
-        Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
-            'enabled' => true,
-        ]);
+        if ($keyExists) {
+            Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
+                'matchDefinition' => self::URL_WITHOUT_QUERY_STRINGS,
+                'queryStringStrategy' => self::REMOVE_QUERY_STRINGS,
+                'enable404RedirectLog' => false,
+                'trackRemoteIp' => false,
+                'total404Redirects' => 250,
+                'cleanupProbability' => 1000,
+                'structureUid' => $structureUid,
+                'globallyExcludedUrlPatterns' => null,
+            ], 'Update Sprout CP Settings for: ' . $moduleSettingsKey);
+
+            Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
+                'enabled' => true,
+            ]);
+        }
     }
 
     public function safeDown(): bool

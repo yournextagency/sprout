@@ -13,10 +13,13 @@ class m211101_000003_add_reports_editions extends Migration
         // Don't make the same config changes twice
         $projectConfig = Craft::$app->getProjectConfig();
         $schemaVersion = $projectConfig->get('plugins.sprout-reports.schemaVersion', true);
+        $edition = $projectConfig->get('plugins.sprout-reports.edition', true);
 
+        $proEditionHandle = App::editionHandle(Craft::Pro);
+
+        // Reports only had one, commercial edition on c3 so if it's installed we upgrade it to the 'pro' edition
         if ($schemaVersion) {
-            $edition = App::editionHandle(Craft::Pro);
-            Craft::$app->getPlugins()->switchEdition('sprout-data-studio', $edition);
+            Craft::$app->getPlugins()->switchEdition('sprout-data-studio', $proEditionHandle);
         }
     }
 

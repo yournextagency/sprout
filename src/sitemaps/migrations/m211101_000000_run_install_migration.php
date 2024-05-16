@@ -24,22 +24,26 @@ class m211101_000000_run_install_migration extends Migration
 
         $primarySite = Craft::$app->getSites()->getPrimarySite();
 
-        Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
-            'enableContentQuerySitemaps' => false,
-            'enableCustomPagesSitemap' => false,
-            'totalElementsPerSitemap' => 50,
-            'sitemapAggregationMethod' => self::SITEMAP_AGGREGATION_METHOD_SETTING,
-            'siteSettings' => [
-                $primarySite->uid => '1',
-            ],
-            'groupSettings' => [
-                $primarySite->getGroup()->uid => '1',
-            ],
-        ], "Update Sprout CP Settings for “{$moduleSettingsKey}”");
+        $keyExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
 
-        Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
-            'enabled' => true,
-        ]);
+        if ($keyExists) {
+            Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
+                'enableContentQuerySitemaps' => false,
+                'enableCustomPagesSitemap' => false,
+                'totalElementsPerSitemap' => 50,
+                'sitemapAggregationMethod' => self::SITEMAP_AGGREGATION_METHOD_SETTING,
+                'siteSettings' => [
+                    $primarySite->uid => '1',
+                ],
+                'groupSettings' => [
+                    $primarySite->getGroup()->uid => '1',
+                ],
+            ], "Update Sprout CP Settings for “{$moduleSettingsKey}”");
+
+            Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
+                'enabled' => true,
+            ]);
+        }
     }
 
     public function safeDown(): bool

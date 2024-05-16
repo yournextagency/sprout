@@ -19,13 +19,21 @@ class m230910_000000_remove_mailer_field_layout_settings extends Migration
             return;
         }
 
+        $mailersInProjectConfigHaveFieldLayouts = false;
+
         $mailerConfigs = ProjectConfig::unpackAssociativeArray($mailers);
         foreach ($mailerConfigs as $key => $mailerConfig) {
+            if (isset($mailerConfigs[$key]['fieldLayouts'])) {
+                $mailersInProjectConfigHaveFieldLayouts = true;
+            }
             unset($mailerConfigs[$key]['fieldLayouts']);
         }
 
-        $mailers = ProjectConfig::packAssociativeArray($mailerConfigs);
-        $projectConfig->set(self::MAILERS_SETTINGS_KEY, $mailers);
+        // If mailers still have field layouts, remove them
+        if ($mailersInProjectConfigHaveFieldLayouts) {
+            $mailers = ProjectConfig::packAssociativeArray($mailerConfigs);
+            $projectConfig->set(self::MAILERS_SETTINGS_KEY, $mailers);
+        }
     }
 
     public function safeDown(): bool

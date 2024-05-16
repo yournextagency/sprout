@@ -21,14 +21,18 @@ class m211101_000000_run_install_migration extends Migration
 
         $this->createTables();
 
-        Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
-            'sentEmailsLimit' => 2500,
-            'cleanupProbability' => 1000,
-        ], "Update Sprout CP Settings for “{$moduleSettingsKey}”");
+        $keyExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
 
-        Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
-            'enabled' => true,
-        ]);
+        if ($keyExists) {
+            Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
+                'sentEmailsLimit' => 2500,
+                'cleanupProbability' => 1000,
+            ], "Update Sprout CP Settings for “{$moduleSettingsKey}”");
+
+            Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
+                'enabled' => true,
+            ]);
+        }
     }
 
     public function safeDown(): bool
