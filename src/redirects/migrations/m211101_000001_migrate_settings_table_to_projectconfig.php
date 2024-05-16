@@ -132,8 +132,8 @@ class m211101_000001_migrate_settings_table_to_projectconfig extends Migration
             // If the current project config UID does not match the existing UID
             // the current UID was created in the install migration before the
             // upgrade migrations found the existing ID and we can remove the
-            // structure the database
-            if ($currentProjectConfig['structureUid'] !== $uid) {
+            // structure from the database
+            if (isset($currentProjectConfig['structureUid']) && $currentProjectConfig['structureUid'] !== $uid) {
                 $this->delete(Table::STRUCTURES, [
                     'uid' => $currentProjectConfig['structureUid'],
                 ]);
