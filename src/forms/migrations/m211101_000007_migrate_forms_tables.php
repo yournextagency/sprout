@@ -8,6 +8,7 @@ use craft\db\Query;
 use craft\db\Table;
 use craft\helpers\Db;
 use craft\helpers\Json;
+use craft\helpers\ProjectConfig;
 
 /**
  * This migration must come after the Reports migration as
