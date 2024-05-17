@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.2.4 - UNRELEASED
+
+### Fixed
+
+- Fixed migration logic for project config workflow
+- Ensures new structureUid exists before cleaning up old values
+
 ## 4.1.7 - 2024-02-23
 
 - Adds Support console utility
