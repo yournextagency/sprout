@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.4 - UNRELEASED
+
+### Fixed
+
+- Fixed migration logic for project config workflow
+
 ## 4.1.7 - 2024-02-23
 
 - Fixed return type of `DataSetElement::___toString()` method when name is null ([#308])

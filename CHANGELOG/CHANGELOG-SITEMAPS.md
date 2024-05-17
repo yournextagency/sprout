@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.4 - UNRELEASED
+
+### Fixed
+
+- Fixed migration logic for project config workflow
+
 ## 4.1.4 - 2023-09-27
 
 ### Fixed
