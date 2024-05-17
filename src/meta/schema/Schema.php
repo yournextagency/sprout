@@ -249,7 +249,7 @@ abstract class Schema
      * Add a URL to our Structured Data array.
      * If the property is not a valid URL, don't add it.
      */
-    public function addUrl(string $propertyName, string $url): void
+    public function addUrl(string $propertyName, string $url = null): void
     {
         if (filter_var($url, FILTER_VALIDATE_URL)) {
             // Valid URL

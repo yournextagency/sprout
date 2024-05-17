@@ -2,6 +2,10 @@
 
 ## 4.2.4 - UNRELEASED
 
+### Changed
+
+- Improved logic when processing images for Schema
+
 ### Fixed
 
 - Fixed migration logic for project config workflow
