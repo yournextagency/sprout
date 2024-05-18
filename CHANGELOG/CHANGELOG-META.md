@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fixed metadata field template paths for case sensitive systems ([#323])
+- Fixed optimized title and description fallback logic when template is null
 
 [#323]: https://github.com/barrelstrength/sprout/issues/323
 
