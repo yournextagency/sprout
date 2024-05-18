@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.4 - UNRELEASED
+
+### Fixed
+
+- Fixed metadata field template paths for case sensitive systems ([#323])
+
+[#323]: https://github.com/barrelstrength/sprout/issues/323
+
 ## 4.2.4 - 2024-05-18
 
 ### Added
