@@ -91,6 +91,8 @@ class MailerModule extends Module implements SproutModuleInterface, MigrationInt
 
         $this->registerTranslations();
 
+        Craft::setAlias('@BarrelStrength/Sprout/mailer', __DIR__);
+
         $this->setComponents([
             'audiences' => Audiences::class,
             'mailers' => Mailers::class,

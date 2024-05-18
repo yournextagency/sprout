@@ -1,6 +1,10 @@
 # Changelog
 
-## 4.2.4 - UNRELEASED
+## 4.2.4 - 2024-05-18
+
+### Added
+
+- Added module path alias
 
 ### Fixed
 

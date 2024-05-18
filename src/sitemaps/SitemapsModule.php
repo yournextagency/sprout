@@ -77,6 +77,8 @@ class SitemapsModule extends Module implements SproutModuleInterface, MigrationI
 
         $this->registerTranslations();
 
+        Craft::setAlias('@BarrelStrength/Sprout/sitemaps', __DIR__);
+
         $this->setComponents([
             'sitemaps' => SitemapMetadata::class,
             'xmlSitemap' => XmlSitemap::class,
