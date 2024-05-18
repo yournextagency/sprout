@@ -36,8 +36,8 @@ class XmlSitemapController extends Controller
         $elements = [];
         $sitemapIndexUrls = [];
         $sitemapKey = $this->getSitemapKey($sitemapMetadataUid, $site);
-        $sites = SitemapsMetadataHelper::getSitemapSites($site);
-        $siteIds = array_keys($sites);
+        $sitemapSites = SitemapsMetadataHelper::getSitemapSites($site);
+        $siteIds = array_keys($sitemapSites);
 
         if ($sitemapKey === null && $sitemapMetadataUid !== null) {
             throw new NotFoundHttpException('XML Sitemap not found.');
@@ -52,12 +52,12 @@ class XmlSitemapController extends Controller
         switch ($sitemapKey) {
             // Generate Sitemap Index
             case SitemapKey::INDEX:
-                $sitemapIndexUrls = $xmlSitemapService->getSitemapIndex($sites);
+                $sitemapIndexUrls = $xmlSitemapService->getSitemapIndex($sitemapSites);
                 break;
 
             // Prepare Custom Pages Sitemap
             case SitemapKey::CUSTOM_PAGES:
-                $elements = CustomPagesSitemapMetadataHelper::getCustomPagesUrls($sites);
+                $elements = CustomPagesSitemapMetadataHelper::getCustomPagesUrls($sitemapSites);
                 break;
 
             case SitemapKey::SINGLES:
@@ -65,7 +65,7 @@ class XmlSitemapController extends Controller
             default:
                 // Single Site - uses the current site, which is the only site in $sites array
                 // Multi-Site - uses the Primary Site in the group, which is the first site in $sites array
-                $sitemapSite = reset($sites);
+                $sitemapSite = reset($sitemapSites);
 
                 $elements = $xmlSitemapService->getDynamicSitemapElements(
                     $sitemapMetadataUid,

@@ -52,8 +52,6 @@ class XmlSitemap extends Component
         $sitemapsService = SitemapsModule::getInstance()->sitemaps;
 
         $totalElementsPerSitemap = SitemapsMetadataHelper::getTotalElementsPerSitemap();
-        // Our offset should be zero for the first page
-        $offset = ($totalElementsPerSitemap * $pageNumber) - $totalElementsPerSitemap;
 
         if ($sitemapKey === SitemapKey::SINGLES) {
             $sitemapMetadataRecords = ContentSitemapMetadataHelper::getSinglesSitemapMetadata($site);
@@ -86,6 +84,9 @@ class XmlSitemap extends Component
                     // Content Sitemaps
                     $elementQuery = $sitemapMetadata->getElementQuery();
                 }
+
+                // Our offset should be zero for the first page
+                $offset = ($totalElementsPerSitemap * $pageNumber) - $totalElementsPerSitemap;
 
                 $elements = $elementQuery
                     ->siteId($sitemapSite->id)
