@@ -80,6 +80,8 @@ class RedirectsModule extends Module implements SproutModuleInterface, Migration
 
         $this->registerTranslations();
 
+        Craft::setAlias('@BarrelStrength/Sprout/redirects', __DIR__);
+
         $this->setComponents([
             'redirects' => Redirects::class,
         ]);

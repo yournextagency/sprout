@@ -91,6 +91,8 @@ class MetaModule extends Module implements SproutModuleInterface, MigrationInter
 
         $this->registerTranslations();
 
+        Craft::setAlias('@BarrelStrength/Sprout/meta', __DIR__);
+
         $this->setComponents([
             'optimizeMetadata' => OptimizeMetadata::class,
             'globalMetadata' => GlobalMetadata::class,

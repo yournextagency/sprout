@@ -2,6 +2,10 @@
 
 ## 4.2.4 - UNRELEASED
 
+### Added 
+
+- Added module path alias
+
 ### Fixed
 
 - Fixed migration logic for project config workflow

@@ -2,6 +2,10 @@
 
 ## 4.2.4 - UNRELEASED
 
+### Added
+
+- Added module path alias
+
 ### Changed
 
 - Improved logic when processing images for Schema
