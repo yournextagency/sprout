@@ -8,6 +8,7 @@ use BarrelStrength\Sprout\datastudio\components\elements\fieldlayoutelements\Des
 use BarrelStrength\Sprout\datastudio\components\elements\fieldlayoutelements\NameField;
 use BarrelStrength\Sprout\datastudio\datasets\DataSetRecord;
 use BarrelStrength\Sprout\datastudio\datasources\DataSource;
+use BarrelStrength\Sprout\datastudio\datasources\DateRangeHelper;
 use BarrelStrength\Sprout\datastudio\DataStudioModule;
 use BarrelStrength\Sprout\datastudio\visualizations\Visualization;
 use Craft;
@@ -297,6 +298,8 @@ class DataSetElement extends Element
         if ($this->duplicateOf instanceof self) {
             $this->name .= ' 1';
         }
+
+        DateRangeHelper::handleBeforeSaveElement($this);
 
         return parent::beforeSave($isNew);
     }
