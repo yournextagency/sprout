@@ -70,9 +70,9 @@ class XmlSitemapController extends Controller
                 $elements = $xmlSitemapService->getDynamicSitemapElements(
                     $sitemapMetadataUid,
                     $sitemapKey,
-                    $pageNumber,
-                    $sites,
+                    $sitemapSites,
                     $sitemapSite,
+                    $pageNumber,
                 );
         }
 

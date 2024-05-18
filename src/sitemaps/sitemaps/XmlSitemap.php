@@ -43,9 +43,9 @@ class XmlSitemap extends Component
     public function getDynamicSitemapElements(
         string $sitemapMetadataUid,
         string $sitemapKey,
-        int $pageNumber,
         array $sitemapSites,
-        Site $site
+        Site $site,
+        int $pageNumber = null
     ): array
     {
         $urls = [];

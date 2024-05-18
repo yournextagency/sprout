@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.5 - UNRELEASED
+
+### Fixed
+
+- Fixed bug where Singles sitemap was not loading correctly ([#321])
+  
+[#321]:  https://github.com/barrelstrength/sprout/issues/321
+
 ## 4.2.4 - 2024-05-18
 
 ### Added 
