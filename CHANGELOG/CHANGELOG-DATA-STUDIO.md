@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.5 - 2024-05-18
+
+### Fixed
+
+- Fixed assignment of preset Date Range values in Date Source settings ([#320])
+
+[#320]: https://github.com/barrelstrength/sprout/issues/320
+
 ## 4.2.4 - 2024-05-18
 
 ### Fixed

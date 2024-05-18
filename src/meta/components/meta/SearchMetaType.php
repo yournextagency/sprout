@@ -161,7 +161,7 @@ class SearchMetaType extends MetaType
 
     public function getSettingsHtml(Field $field): string
     {
-        return Craft::$app->getView()->renderTemplate('sprout-module-meta/_components/fields/elementmetadata/blocks/search.twig', [
+        return Craft::$app->getView()->renderTemplate('sprout-module-meta/_components/fields/ElementMetadata/blocks/search.twig', [
             'meta' => $this,
             'field' => $field,
         ]);

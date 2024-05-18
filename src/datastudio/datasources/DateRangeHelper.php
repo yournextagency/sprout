@@ -2,6 +2,7 @@
 
 namespace BarrelStrength\Sprout\datastudio\datasources;
 
+use BarrelStrength\Sprout\datastudio\components\elements\DataSetElement;
 use Craft;
 use craft\helpers\DateTimeHelper;
 use DateTimeInterface;
@@ -32,6 +33,30 @@ class DateRangeHelper
         $timeZone = new DateTimeZone('UTC');
 
         return $dateTime->setTimezone($timeZone);
+    }
+
+    /**
+     * We need to null out these date values when not in use or the date returns as a boolean
+     * and throws an error when assigned to the startDate and endDate properties
+     */
+    public static function handleBeforeSaveElement(DataSetElement $element): void
+    {
+        // If the Data Source uses the DateRangeTrait, set the start and end date to null
+        if (!in_array(DateRangeTrait::class, class_uses($element->type), true)) {
+            return;
+        }
+
+        if (!isset($element->settings['dateRange'])) {
+            return;
+        }
+
+        if ($element->settings['dateRange'] === self::RANGE_CUSTOM) {
+            return;
+        }
+
+        // If we're not using a custom date range, set the start and end date to null
+        $element->settings['startDate'] = null;
+        $element->settings['endDate'] = null;
     }
 
     public static function getStartEndDateRange($value): array

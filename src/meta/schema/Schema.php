@@ -3,6 +3,7 @@
 namespace BarrelStrength\Sprout\meta\schema;
 
 use BarrelStrength\Sprout\forms\components\formfields\PhoneFormFieldData;
+use BarrelStrength\Sprout\meta\components\meta\CanonicalUrlMetaType;
 use BarrelStrength\Sprout\meta\components\meta\OpenGraphMetaType;
 use BarrelStrength\Sprout\meta\components\meta\RobotsMetaType;
 use BarrelStrength\Sprout\meta\components\schema\ContactPointSchema;
@@ -478,15 +479,15 @@ abstract class Schema
         $meta = $this->prioritizedMetadataModel;
 
         /** the prioritizedMetadataModel only has raw data, so we want the specific MetaType before we get our data */
-        $robots = $meta->getMetaType('robots');
+        $metaType = $meta->getMetaType('canonical');
 
-        if (!$robots instanceof RobotsMetaType) {
+        if (!$metaType instanceof CanonicalUrlMetaType) {
             return;
         }
 
         $mainEntity = new MainEntityOfPageSchema();
         $mainEntity->type = 'WebPage';
-        $mainEntity->id = $robots->getCanonical();
+        $mainEntity->id = $metaType->getCanonical();
 
         $mainEntity->prioritizedMetadataModel = $this->prioritizedMetadataModel;
 
