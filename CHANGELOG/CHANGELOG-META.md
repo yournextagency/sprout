@@ -2,10 +2,15 @@
 
 ## 4.2.4 - UNRELEASED
 
+### Added
+
+- Added Canonical URL Meta Type
+
 ### Fixed
 
 - Fixed metadata field template paths for case sensitive systems ([#323])
 - Fixed optimized title and description fallback logic when template is null
+- Fixed bug where canonical URL was not respected as an override
 
 [#323]: https://github.com/barrelstrength/sprout/issues/323
 

@@ -2,6 +2,7 @@
 
 namespace BarrelStrength\Sprout\meta\metadata;
 
+use BarrelStrength\Sprout\meta\components\meta\CanonicalUrlMetaType;
 use BarrelStrength\Sprout\meta\components\meta\GeoMetaType;
 use BarrelStrength\Sprout\meta\components\meta\OpenGraphMetaType;
 use BarrelStrength\Sprout\meta\components\meta\RobotsMetaType;
@@ -132,6 +133,7 @@ class Metadata extends Model
             new TwitterMetaType([], $this),
             new GeoMetaType([], $this),
             new RobotsMetaType([], $this),
+            new CanonicalUrlMetaType([], $this),
         ];
 
         foreach ($metaTypes as $metaType) {

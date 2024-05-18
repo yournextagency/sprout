@@ -9,8 +9,6 @@ use craft\base\Field;
 
 class RobotsMetaType extends MetaType
 {
-    protected ?string $canonical = null;
-
     protected string|array|null $robots = null;
 
     public static function displayName(): string
@@ -21,25 +19,9 @@ class RobotsMetaType extends MetaType
     public function attributes(): array
     {
         $attributes = parent::attributes();
-        $attributes[] = 'canonical';
         $attributes[] = 'robots';
 
         return $attributes;
-    }
-
-    public function getCanonical(): ?string
-    {
-        if ($this->canonical || $this->metadata->getRawDataOnly()) {
-
-            return $this->canonical;
-        }
-
-        return $this->metadata->getCanonical();
-    }
-
-    public function setCanonical(?string $value): void
-    {
-        $this->canonical = $value;
     }
 
     public function getRobots()
