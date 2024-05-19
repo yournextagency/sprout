@@ -538,7 +538,6 @@ class FormElement extends Element
         $record->titleFormat = $this->titleFormat;
         $record->displaySectionTitles = $this->displaySectionTitles;
         $record->redirectUri = Db::prepareValueForDb($this->redirectUri);
-        $record->saveData = $this->saveData;
         $record->submissionMethod = $this->submissionMethod;
         $record->errorDisplayMethod = $this->errorDisplayMethod;
         $record->messageOnSuccess = $this->messageOnSuccess;

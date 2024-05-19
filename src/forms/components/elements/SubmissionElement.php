@@ -289,9 +289,9 @@ class SubmissionElement extends Element
 
     public function canView(User $user): bool
     {
-        $settings = FormsModule::getInstance()->getSettings();
+        $formType = $this->getForm()->getFormType();
 
-        if (!$settings->enableSaveData) {
+        if (!$formType->enableSaveData) {
             return false;
         }
 
