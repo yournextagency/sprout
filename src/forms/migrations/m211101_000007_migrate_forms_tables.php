@@ -390,7 +390,6 @@ class m211101_000007_migrate_forms_tables extends Migration
         // plugin settings
         //      formTemplateId: barrelstrength\sproutforms\formtemplates\BasicTemplates
 
-        $saveDataGlobal = $projectConfigSettings['saveDataByDefault'] ?? $projectConfigSettings['enableSaveDataDefaultValue'] ?? false;
         $isNotificationsTabEnabled = isset($projectConfigSettings['showNotificationsTab']) && !empty($projectConfigSettings['showNotificationsTab']) ? '1' : '';
         $isReportsTabEnabled = isset($projectConfigSettings['showReportsTab']) && !empty($projectConfigSettings['showReportsTab']) ? '1' : '';
 
@@ -438,7 +437,6 @@ class m211101_000007_migrate_forms_tables extends Migration
             ],
             'submissionMethod' => $formSettings['submissionMethod'] ?? null,
             'errorDisplayMethod' => $formSettings['errorDisplayMethod'] ?? null,
-            'saveData' => $formSettings['saveData'] ?? $saveDataGlobal ?? null,
             'trackRemoteIp' => $projectConfigSettings['trackRemoteIp'] ?? null,
             'allowedAssetVolumes' => $projectConfigSettings['allowedAssetVolumes'] ?? [],
             'defaultUploadLocationSubpath' => $projectConfigSettings['defaultUploadLocationSubpath'] ?? null,
