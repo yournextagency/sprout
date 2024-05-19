@@ -2,13 +2,11 @@
 
 namespace BarrelStrength\Sprout\forms\components\formfields;
 
-use BarrelStrength\Sprout\fields\FieldsModule;
 use BarrelStrength\Sprout\forms\components\elements\SubmissionElement;
 use BarrelStrength\Sprout\forms\formfields\FormFieldHelper;
 use BarrelStrength\Sprout\forms\formfields\FormFieldInterface;
 use BarrelStrength\Sprout\forms\formfields\FormFieldTrait;
 use BarrelStrength\Sprout\forms\formfields\GroupLabel;
-use BarrelStrength\Sprout\forms\FormsModule;
 use Craft;
 use craft\base\ElementInterface;
 use craft\fields\PlainText as CraftPlainText;

@@ -897,7 +897,7 @@ class FormElement extends Element
     public function getIncludeTemplate($name): array
     {
         /** @var FormType $formType */
-        $formType =$this->getFormType();
+        $formType = $this->getFormType();
 
         // TODO: Just make this a static class
         $defaultTemplates = new DefaultFormType();

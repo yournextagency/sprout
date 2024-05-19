@@ -6,23 +6,14 @@ use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\formfields\CustomFormField;
 use BarrelStrength\Sprout\forms\formfields\FormFieldLayoutTab;
 use BarrelStrength\Sprout\forms\FormsModule;
-use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
-use BarrelStrength\Sprout\forms\migrations\helpers\FormContentTableHelper;
 use Craft;
-use craft\base\Element;
 use craft\elements\conditions\users\UserCondition;
-use craft\errors\WrongEditionException;
-use craft\helpers\Cp;
 use craft\helpers\Html;
-use craft\helpers\StringHelper;
 use craft\helpers\Template;
-use craft\models\FieldLayoutTab;
-use craft\models\Site;
 use craft\web\Controller as BaseController;
 use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 use yii\web\Response;
-use yii\web\ServerErrorHttpException;
 
 class FormBuilderController extends BaseController
 {
@@ -194,12 +185,12 @@ class FormBuilderController extends BaseController
                 //'class' => $tab->hasErrors ? 'error' : null,
             ],
             //'form-field-rules' => [
-                 //FieldLayoutForm
-                //'tabId' => 'form-field-conditions',
-                //'label' => Craft::t('sprout-module-forms', 'Field Rules'),
-                //'url' => '#form-field-rules',
-                //'visible' => false,
-                //'class' => $tab->hasErrors ? 'error' : null,
+            //FieldLayoutForm
+            //'tabId' => 'form-field-conditions',
+            //'label' => Craft::t('sprout-module-forms', 'Field Rules'),
+            //'url' => '#form-field-rules',
+            //'visible' => false,
+            //'class' => $tab->hasErrors ? 'error' : null,
             //],
         ];
 
