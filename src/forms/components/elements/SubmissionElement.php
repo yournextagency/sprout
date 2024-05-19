@@ -351,9 +351,9 @@ class SubmissionElement extends Element
     {
         $html = parent::getSidebarHtml($static);
 
-        $html .= Craft::$app->getView()->renderTemplate('sprout-module-forms/submissions/_sidebarIntegrations', [
-            'submission' => $this,
-        ]);
+        //$html .= Craft::$app->getView()->renderTemplate('sprout-module-forms/submissions/_sidebarIntegrations', [
+        //    'submission' => $this,
+        //]);
 
         $html .= Craft::$app->getView()->renderTemplate('sprout-module-forms/submissions/_sidebarSpam', [
             'submission' => $this,

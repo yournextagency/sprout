@@ -509,7 +509,7 @@ class FormElement extends Element
         $crumbs = [
             [
                 'label' => Craft::t('sprout-module-forms', 'Forms'),
-                'url' => UrlHelper::url('sprout/forms'),
+                'url' => UrlHelper::url('sprout/forms/forms'),
             ],
         ];
 
