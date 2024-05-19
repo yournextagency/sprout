@@ -146,6 +146,16 @@ class FormTypesController extends Controller
         $formType->featureSettings = Craft::$app->request->getBodyParam('featureSettings');
         $formType->enabledFormFieldTypes = Craft::$app->request->getBodyParam('enabledFormFieldTypes');
 
+        $formType->submissionMethod = Craft::$app->request->getBodyParam('submissionMethod');
+        $formType->errorDisplayMethod = Craft::$app->request->getBodyParam('errorDisplayMethod');
+        $formType->enableSaveData = Craft::$app->request->getBodyParam('enableSaveData');
+        $formType->trackRemoteIp = $formType->enableSaveData
+            ? Craft::$app->request->getBodyParam('trackRemoteIp')
+            : false;
+        $formType->allowedAssetVolumes = Craft::$app->request->getBodyParam('allowedAssetVolumes');
+        $formType->defaultUploadLocationSubpath = Craft::$app->request->getBodyParam('defaultUploadLocationSubpath');
+        $formType->enableEditSubmissionViaFrontEnd = Craft::$app->request->getBodyParam('enableEditSubmissionViaFrontEnd');
+
         if (!$formType::isEditable()) {
             return $formType;
         }
