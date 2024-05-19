@@ -208,13 +208,13 @@ class SubmissionsController extends BaseController
      */
     private function populateSubmissionModel(SubmissionElement $submission): void
     {
-        $settings = FormsModule::getInstance()->getSettings();
+        $formType = $submission->getForm()->getFormType();
 
         $request = Craft::$app->getRequest();
 
         // Our SubmissionElement requires that we assign it a FormElement id
         $submission->formId = $this->form->getId();
-        $submission->ipAddress = $settings->trackRemoteIp ? $request->getRemoteIP() : null;
+        $submission->ipAddress = $formType->trackRemoteIp ? $request->getRemoteIP() : null;
         $submission->referrer = $request->getReferrer();
         $submission->userAgent = $request->getUserAgent();
 
