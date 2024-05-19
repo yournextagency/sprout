@@ -898,10 +898,13 @@ class FormElement extends Element
         /** @var FormType $formType */
         $formType = $this->getFormType();
 
-        // TODO: Just make this a static class
         $defaultTemplates = new DefaultFormType();
 
+        // Additional Template overrides can be added in templates:
+        // {% do form.addTemplateOverridePaths('_overrides/forms-default') %}
+        //  {% do form.addTemplateOverridePaths(['_overrides/forms-special', '_overrides/forms-default']) %}
         $includePaths = array_merge($this->additionalTemplates, [
+            Craft::getAlias($formType->formTemplateOverrideFolder ?? null),
             Craft::getAlias($formType->formTemplate ?? null),
             Craft::getAlias($defaultTemplates->formTemplate),
         ]);
