@@ -45,7 +45,7 @@ class m211101_000000_run_install_migration extends Migration
 
         $keyExists = Craft::$app->getProjectConfig()->get($coreModuleSettingsKey);
 
-        if ($keyExists) {
+        if (!$keyExists) {
             Craft::$app->getProjectConfig()->set($coreModuleSettingsKey, [
                 'enabled' => true,
             ]);

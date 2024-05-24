@@ -35,7 +35,7 @@ class m211101_000000_run_install_migration extends Migration
 
         $keyExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
 
-        if ($keyExists) {
+        if (!$keyExists) {
             Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
                 'matchDefinition' => self::URL_WITHOUT_QUERY_STRINGS,
                 'queryStringStrategy' => self::REMOVE_QUERY_STRINGS,
