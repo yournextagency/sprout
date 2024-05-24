@@ -33,7 +33,7 @@ class m211101_000000_run_install_migration extends Migration
 
         $keyExists = Craft::$app->getProjectConfig()->get($moduleSettingsKey);
 
-        if ($keyExists) {
+        if (!$keyExists) {
             Craft::$app->getProjectConfig()->set($moduleSettingsKey, [
                 'renderMetadata' => true,
                 'maxMetaDescriptionLength' => 160,

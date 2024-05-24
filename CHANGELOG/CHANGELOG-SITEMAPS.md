@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.5 - 2024-05-24
+
+### Fixed
+
+- Fixed migration issue when read-only mode enabled
+
 ## 4.2.5 - 2024-05-18
 
 ### Fixed
