@@ -127,9 +127,11 @@ abstract class SystemMailer extends Mailer implements MailerSendTestInterface
     {
         $testToEmailAddress = Craft::$app->getConfig()->getGeneral()->testToEmailAddress;
 
-        if ($testToEmailAddress) {
+        if (!empty($testToEmailAddress)) {
             $warningMessage = Craft::t('sprout-module-mailer', 'Test email found in general config. All messages will be sent to the testToEmailAddress: {email}', [
-                'email' => $testToEmailAddress,
+                'email' => is_array($testToEmailAddress)
+                    ? implode(', ', $testToEmailAddress)
+                    : $testToEmailAddress,
             ]);
         }
 

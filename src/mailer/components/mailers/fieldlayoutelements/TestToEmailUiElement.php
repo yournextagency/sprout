@@ -27,7 +27,9 @@ class TestToEmailUiElement extends BaseUiElement
         $id = sprintf('warning%s', mt_rand());
 
         $message = Markdown::process(Html::encode(Craft::t('sprout-module-mailer', 'Test email found in general config. All messages will be sent to the testToEmailAddress: {email}', [
-            'email' => $testToEmailAddress,
+            'email' => is_array($testToEmailAddress)
+                ? implode(', ', $testToEmailAddress)
+                : $testToEmailAddress,
         ])));
 
         $blockquote = Html::tag('blockquote', $message, [
@@ -39,6 +41,6 @@ class TestToEmailUiElement extends BaseUiElement
             'class' => 'readable',
         ]);
 
-        return $testToEmailAddress ? $html : null;
+        return !empty($testToEmailAddress) ? $html : null;
     }
 }
