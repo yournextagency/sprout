@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.7 - 2024-05-26
+
+### Fixed
+
+- Fixed bug when `testToEmailAddress` was configured as an array ([#324])
+
+[#324]: https://github.com/barrelstrength/sprout/issues/324
+
 ## 4.2.4 - 2024-05-18
 
 ### Added
