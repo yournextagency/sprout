@@ -10,9 +10,9 @@ class DataSetCondition extends ElementCondition
     // This is necessary for DataSetElement::defineFieldLayouts() to display custom fields when using custom sources
     public ?string $sourceKey = '*';
 
-    protected function conditionRuleTypes(): array
+    protected function selectableConditionRules(): array
     {
-        return array_merge(parent::conditionRuleTypes(), [
+        return array_merge(parent::selectableConditionRules(), [
             DataSourcesConditionRule::class,
         ]);
     }

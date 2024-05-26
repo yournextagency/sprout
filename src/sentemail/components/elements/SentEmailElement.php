@@ -109,10 +109,11 @@ class SentEmailElement extends Element implements EmailPreviewInterface
         return new SentEmailElementQuery(static::class);
     }
 
-    public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool $showCheckboxes): string
+    public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool
+    $showCheckboxes, bool $sortable): string
     {
         $html = parent::indexHtml($elementQuery, $disabledElementIds, $viewState, $sourceKey, $context, $includeContainer,
-            $showCheckboxes);
+            $showCheckboxes, $sortable);
 
         Sprout::getInstance()->vite->register('mailer/SendEmailModal.js', false);
         Sprout::getInstance()->vite->register('sent-email/SentEmailDetailsModal.js', false);
@@ -198,7 +199,7 @@ class SentEmailElement extends Element implements EmailPreviewInterface
         return $this->toEmail;
     }
 
-    public function getTableAttributeHtml(string $attribute): string
+    public function getAttributeHtml(string $attribute): string
     {
         switch ($attribute) {
 
@@ -236,7 +237,7 @@ class SentEmailElement extends Element implements EmailPreviewInterface
                 ]);
         }
 
-        return parent::getTableAttributeHtml($attribute);
+        return parent::getAttributeHtml($attribute);
     }
 
     public function getLocaleNiceDateTime(): string

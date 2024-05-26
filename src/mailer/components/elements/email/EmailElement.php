@@ -222,11 +222,12 @@ class EmailElement extends Element implements EmailPreviewInterface
         ];
     }
 
-    public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool $showCheckboxes): string
+    public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool
+    $showCheckboxes, bool $sortable): string
     {
         Sprout::getInstance()->vite->register('mailer/SendEmailModal.js', false);
 
-        return parent::indexHtml($elementQuery, $disabledElementIds, $viewState, $sourceKey, $context, $includeContainer, $showCheckboxes);
+        return parent::indexHtml($elementQuery, $disabledElementIds, $viewState, $sourceKey, $context, $includeContainer, $showCheckboxes, $sortable);
     }
 
     public function prepareEditScreen(Response $response, string $containerId): void
@@ -374,7 +375,7 @@ class EmailElement extends Element implements EmailPreviewInterface
         return $emailVariant::getAdditionalButtonsHtml($this) . parent::getAdditionalButtons();
     }
 
-    public function getTableAttributeHtml(string $attribute): string
+    public function getAttributeHtml(string $attribute): string
     {
         switch ($attribute) {
 
@@ -411,7 +412,7 @@ class EmailElement extends Element implements EmailPreviewInterface
                 return $this->getEmailType()->name;
         }
 
-        return parent::getTableAttributeHtml($attribute);
+        return parent::getAttributeHtml($attribute);
     }
 
     public function getPreviewType(): string

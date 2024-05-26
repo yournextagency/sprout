@@ -6,9 +6,9 @@ use craft\elements\conditions\ElementCondition;
 
 class FormCondition extends ElementCondition
 {
-    protected function conditionRuleTypes(): array
+    protected function selectableConditionRules(): array
     {
-        return array_merge(parent::conditionRuleTypes(), [
+        return array_merge(parent::selectableConditionRules(), [
             FormTypeConditionRule::class,
         ]);
     }

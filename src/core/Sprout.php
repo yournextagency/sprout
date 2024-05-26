@@ -185,7 +185,7 @@ class Sprout extends Module implements SproutModuleInterface, MigrationInterface
 
         Event::on(
             BaseCondition::class,
-            BaseCondition::EVENT_REGISTER_CONDITION_RULE_TYPES,
+            BaseCondition::EVENT_REGISTER_CONDITION_RULES,
             [ConditionHelper::class, 'registerConditionRuleTypes']
         );
     }

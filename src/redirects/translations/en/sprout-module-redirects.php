@@ -86,11 +86,5 @@ wp-admin(.*)$',
     'Get Started' => 'Get Started',
     'Sprout Redirects [pro] enables content managers to manage redirects and short URLs, monitor 404s, configure advanced redirect rules, and ensure all your content is findable.' => 'Sprout Redirects [pro] enables content managers to manage redirects and short URLs, monitor 404s, configure advanced redirect rules, and ensure all your content is findable.',
     'UID' => 'UID',
-    'Sprout Sitemaps [pro] unlocks unlimited support for Content Sitemaps and Custom Query Sitemaps.' => 'Sprout Sitemaps [pro] unlocks unlimited support for Content Sitemaps and Custom Query Sitemaps.',
-    'Sprout Sitemaps [pro] adds unlimited support for Content Sitemaps and Custom Query Sitemaps.' => 'Sprout Sitemaps [pro] adds unlimited support for Content Sitemaps and Custom Query Sitemaps.',
-    'Manage unlimited Content Sitemaps and Content Query Sitemaps with Sprout Sitemaps [pro]' => 'Manage unlimited Content Sitemaps and Content Query Sitemaps with Sprout Sitemaps [pro]',
-    'Sprout Sitemaps [pro] enables content managers to manage redirects and short URLs, monitor 404s, configure advanced redirect rules, and ensure all your content is findable.' => 'Sprout Sitemaps [pro] enables content managers to manage redirects and short URLs, monitor 404s, configure advanced redirect rules, and ensure all your content is findable.',
-    'ID' => 'ID',
-    'Manage unlimited Content Sitemaps and Custom Query Sitemaps with Sprout Sitemaps [pro].' => 'Manage unlimited Content Sitemaps and Custom Query Sitemaps with Sprout Sitemaps [pro].',
     'ID' => 'ID'
 ];

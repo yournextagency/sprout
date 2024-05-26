@@ -264,7 +264,7 @@ class AudienceElement extends Element
         ', [], 'context-btn-no-drafts-hack');
     }
 
-    public function getTableAttributeHtml(string $attribute): string
+    public function getAttributeHtml(string $attribute): string
     {
         $audienceType = $this->getAudienceType();
 
@@ -277,7 +277,7 @@ class AudienceElement extends Element
                 return $audienceType->getColumnAttributeHtml();
         }
 
-        return parent::getTableAttributeHtml($attribute);
+        return parent::getAttributeHtml($attribute);
     }
 
     public function getFieldLayout(): ?FieldLayout

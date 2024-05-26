@@ -108,11 +108,12 @@ class RedirectElement extends Element
         return Craft::createObject(RedirectCondition::class, [static::class]);
     }
 
-    public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool $showCheckboxes): string
+    public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool
+    $showCheckboxes, bool $sortable): string
     {
         Craft::$app->getSession()->set('sprout-redirect-element-index-display-name', 'Old URL');
 
-        return parent::indexHtml($elementQuery, $disabledElementIds, $viewState, $sourceKey, $context, $includeContainer, $showCheckboxes);
+        return parent::indexHtml($elementQuery, $disabledElementIds, $viewState, $sourceKey, $context, $includeContainer, $showCheckboxes, $sortable);
     }
 
     public static function defineNativeFields(DefineFieldLayoutFieldsEvent $event): void
@@ -317,7 +318,7 @@ class RedirectElement extends Element
         return parent::__toString();
     }
 
-    protected static function defineFieldLayouts(string $source): array
+    protected static function defineFieldLayouts(?string $source): array
     {
         $settings = RedirectsModule::getInstance()->getSettings();
 
@@ -542,7 +543,7 @@ class RedirectElement extends Element
         return UrlHelper::cpUrl($path, $params);
     }
 
-    protected function tableAttributeHtml(string $attribute): string
+    public function getAttributeHtml(string $attribute): string
     {
         if ($attribute == 'dateLastUsed') {
             if ($this->dateLastUsed) {
@@ -574,7 +575,7 @@ class RedirectElement extends Element
             ]);
         }
 
-        return parent::tableAttributeHtml($attribute);
+        return parent::getAttributeHtml($attribute);
     }
 
     protected function metadata(): array

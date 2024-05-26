@@ -10,9 +10,9 @@ class RedirectCondition extends ElementCondition
     // This is necessary for RedirectElement::defineFieldLayouts() to display custom fields when using custom sources
     public ?string $sourceKey = '*';
 
-    protected function conditionRuleTypes(): array
+    protected function selectableConditionRules(): array
     {
-        return array_merge(parent::conditionRuleTypes(), [
+        return array_merge(parent::selectableConditionRules(), [
             MatchStrategyConditionRule::class,
             StatusCodeConditionRule::class,
         ]);

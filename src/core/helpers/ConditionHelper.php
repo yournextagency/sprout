@@ -4,11 +4,12 @@ namespace BarrelStrength\Sprout\core\helpers;
 
 use BarrelStrength\Sprout\core\components\elements\conditions\TwigExpressionConditionRule;
 use craft\base\Element;
+use craft\events\RegisterConditionRulesEvent;
 use craft\events\RegisterConditionRuleTypesEvent;
 
 class ConditionHelper
 {
-    public static function registerConditionRuleTypes(RegisterConditionRuleTypesEvent $event): void
+    public static function registerConditionRuleTypes(RegisterConditionRulesEvent $event): void
     {
         $elementType = $event->sender?->elementType;
 
@@ -21,6 +22,6 @@ class ConditionHelper
         }
 
         // Feature Request: Is there a way to indicate a condition does not modify Element queries
-        $event->conditionRuleTypes[] = TwigExpressionConditionRule::class;
+        $event->conditionRules[] = TwigExpressionConditionRule::class;
     }
 }

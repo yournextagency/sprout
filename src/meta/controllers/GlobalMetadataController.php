@@ -49,13 +49,16 @@ class GlobalMetadataController extends Controller
             $globals->siteId = $site->id;
         }
 
-        $locationField = Cp::addressCardsHtml(
-            addresses: [$globals->addressModel],
-            config: [
-                'name' => 'locationAddressId',
-                'maxAddresses' => 1,
-            ]
-        );
+        //$locationField = Cp::addressCardsHtml(
+        //    addresses: [$globals->addressModel],
+        //    config: [
+        //        'name' => 'locationAddressId',
+        //        'maxAddresses' => 1,
+        //    ]
+        //);
+
+        // @todo - Cp::addressCardsHtml no longer exists. Explore options. None provided in C5 upgrade notes.
+        $locationField = '';
 
         return $this->renderTemplate('sprout-module-meta/globals/' . $selectedTabHandle, [
             'globals' => $globals,

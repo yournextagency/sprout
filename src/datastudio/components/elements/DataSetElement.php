@@ -245,7 +245,7 @@ class DataSetElement extends Element
         return parent::__toString();
     }
 
-    protected static function defineFieldLayouts(string $source): array
+    protected static function defineFieldLayouts(?string $source): array
     {
         $settings = DataStudioModule::getInstance()->getSettings();
 
@@ -366,7 +366,7 @@ class DataSetElement extends Element
         $response->crumbs($crumbs);
     }
 
-    public function tableAttributeHtml(string $attribute): string
+    public function getAttributeHtml(string $attribute): string
     {
         if ($attribute === 'results') {
             $urlName = Craft::t('sprout-module-data-studio', 'View Report');
@@ -419,7 +419,7 @@ class DataSetElement extends Element
             return $dataSource::displayName();
         }
 
-        return parent::tableAttributeHtml($attribute);
+        return parent::getAttributeHtml($attribute);
     }
 
     public function afterSave(bool $isNew): void
