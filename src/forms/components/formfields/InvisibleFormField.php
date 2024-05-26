@@ -114,7 +114,7 @@ class InvisibleFormField extends Field implements FormFieldInterface, Previewabl
         return parent::normalizeValue($value, $element);
     }
 
-    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
+    public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
         $hiddenValue = '';
 

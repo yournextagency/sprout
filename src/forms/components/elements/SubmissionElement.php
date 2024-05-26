@@ -233,7 +233,7 @@ class SubmissionElement extends Element
         return ['title', 'formName', 'dateCreated', 'dateUpdated'];
     }
 
-    protected static function defineFieldLayouts(string $source): array
+    protected static function defineFieldLayouts(?string $source): array
     {
         $fieldLayouts = [];
 

@@ -10,6 +10,7 @@ use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
 use craft\helpers\Db;
+use craft\elements\db\ElementQueryInterface;
 use yii\db\QueryInterface;
 
 class FormTypeConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
@@ -36,7 +37,7 @@ class FormTypeConditionRule extends BaseMultiSelectConditionRule implements Elem
         }, $formTypes);
     }
 
-    public function modifyQuery(QueryInterface $query): void
+    public function modifyQuery(ElementQueryInterface $query): void
     {
         /** @var FormElementQuery $query */
         $query->andWhere(Db::parseParam('[[sprout_forms.formTypeUid]]', $this->paramValue()));

@@ -9,6 +9,7 @@ use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\elements\db\ElementQueryInterface;
 use yii\db\QueryInterface;
 
 class SubmissionFormConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
@@ -35,7 +36,7 @@ class SubmissionFormConditionRule extends BaseMultiSelectConditionRule implement
         }, $forms);
     }
 
-    public function modifyQuery(QueryInterface $query): void
+    public function modifyQuery(ElementQueryInterface $query): void
     {
         /** @var SubmissionElementQuery $query */
         $query->formId($this->paramValue());

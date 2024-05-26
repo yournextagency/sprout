@@ -7,6 +7,7 @@ use Craft;
 use craft\base\conditions\BaseLightswitchConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\elements\db\ElementQueryInterface;
 use yii\db\QueryInterface;
 
 class PreheaderTextConditionRule extends BaseLightswitchConditionRule implements ElementConditionRuleInterface
@@ -21,7 +22,7 @@ class PreheaderTextConditionRule extends BaseLightswitchConditionRule implements
         return ['preheaderText'];
     }
 
-    public function modifyQuery(QueryInterface $query): void
+    public function modifyQuery(ElementQueryInterface $query): void
     {
         // No query changes. For Email Element Editor UI condition only.
     }

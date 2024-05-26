@@ -19,7 +19,7 @@ class FormsRelationField extends BaseRelationField
         return Craft::t('sprout-module-forms', 'Add a form');
     }
 
-    public static function valueType(): string
+    public static function phpType(): string
     {
         return FormElementQuery::class;
     }

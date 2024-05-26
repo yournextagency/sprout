@@ -9,6 +9,7 @@ use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\elements\db\ElementQueryInterface;
 use yii\db\QueryInterface;
 
 class StatusCodeConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
@@ -32,7 +33,7 @@ class StatusCodeConditionRule extends BaseMultiSelectConditionRule implements El
         ];
     }
 
-    public function modifyQuery(QueryInterface $query): void
+    public function modifyQuery(ElementQueryInterface $query): void
     {
         /** @var RedirectElementQuery $query */
         $query->statusCode($this->paramValue());

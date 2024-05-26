@@ -11,6 +11,7 @@ use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\elements\db\ElementQueryInterface;
 use yii\db\QueryInterface;
 
 class NotificationEventConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
@@ -32,7 +33,7 @@ class NotificationEventConditionRule extends BaseMultiSelectConditionRule implem
         return TemplateHelper::optionsFromComponentTypes($events);
     }
 
-    public function modifyQuery(QueryInterface $query): void
+    public function modifyQuery(ElementQueryInterface $query): void
     {
         $operator = $this->operator === 'in' ? 'in' : 'not in';
 

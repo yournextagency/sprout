@@ -223,7 +223,7 @@ class EmailElement extends Element implements EmailPreviewInterface
     }
 
     public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool
-    $showCheckboxes, bool $sortable): string
+    $showCheckboxes, bool $sortable = false): string
     {
         Sprout::getInstance()->vite->register('mailer/SendEmailModal.js', false);
 

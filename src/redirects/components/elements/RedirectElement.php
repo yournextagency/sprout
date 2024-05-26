@@ -109,7 +109,7 @@ class RedirectElement extends Element
     }
 
     public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool
-    $showCheckboxes, bool $sortable): string
+    $showCheckboxes, bool $sortable = false): string
     {
         Craft::$app->getSession()->set('sprout-redirect-element-index-display-name', 'Old URL');
 

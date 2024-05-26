@@ -54,7 +54,7 @@ class UrlFormField extends CraftUrl implements FormFieldInterface
         ]);
     }
 
-    public function getInputHtml($value, ElementInterface $element = null): string
+    public function getInputHtml(mixed $value, ?\craft\base\ElementInterface $element = null): string
     {
         $name = $this->handle;
         $inputId = Html::id($name);
@@ -121,7 +121,7 @@ class UrlFormField extends CraftUrl implements FormFieldInterface
     //    return TemplateHelper::raw($rendered);
     //}
 
-    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
+    public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
         if ($value) {
             return '<a href="' . $value . '" target="_blank">' . $value . '</a>';

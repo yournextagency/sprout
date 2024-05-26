@@ -354,7 +354,7 @@ class AddressFormField extends Field implements FormFieldInterface, PreviewableF
     //    return TemplateHelper::raw($rendered);
     //}
 
-    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
+    public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
         if (!$value) {
             return '';

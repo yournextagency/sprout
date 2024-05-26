@@ -9,6 +9,7 @@ use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\elements\db\ElementQueryInterface;
 use craft\helpers\Db;
 use yii\db\QueryInterface;
 
@@ -29,7 +30,7 @@ class EmailTypeConditionRule extends BaseMultiSelectConditionRule implements Ele
         return EmailTypeHelper::getEmailTypesOptions();
     }
 
-    public function modifyQuery(QueryInterface $query): void
+    public function modifyQuery(ElementQueryInterface $query): void
     {
         /** @var EmailElementQuery $query */
         $query->andWhere(Db::parseParam('[[sprout_emails.emailTypeUid]]', $this->paramValue()));

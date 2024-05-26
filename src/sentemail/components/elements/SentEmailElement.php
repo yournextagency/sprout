@@ -110,7 +110,7 @@ class SentEmailElement extends Element implements EmailPreviewInterface
     }
 
     public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool
-    $showCheckboxes, bool $sortable): string
+    $showCheckboxes, bool $sortable = false): string
     {
         $html = parent::indexHtml($elementQuery, $disabledElementIds, $viewState, $sourceKey, $context, $includeContainer,
             $showCheckboxes, $sortable);

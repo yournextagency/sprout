@@ -1010,7 +1010,7 @@ class FormElement extends Element
         return "\n";
     }
 
-    protected function tableAttributeHtml(string $attribute): string
+    protected function attributeHtml(string $attribute): string
     {
         return match ($attribute) {
             'handle' => '<code>' . $this->handle . '</code>',

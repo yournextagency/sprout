@@ -10,6 +10,7 @@ use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\elements\db\ElementQueryInterface;
 use yii\db\QueryInterface;
 
 class DataSourcesConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
@@ -31,7 +32,7 @@ class DataSourcesConditionRule extends BaseMultiSelectConditionRule implements E
         return TemplateHelper::optionsFromComponentTypes($types);
     }
 
-    public function modifyQuery(QueryInterface $query): void
+    public function modifyQuery(ElementQueryInterface $query): void
     {
         /** @var DataSetElementQuery $query */
         $query->type($this->paramValue());

@@ -9,6 +9,7 @@ use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\elements\db\ElementQueryInterface;
 use yii\db\QueryInterface;
 
 class MatchStrategyConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
@@ -28,7 +29,7 @@ class MatchStrategyConditionRule extends BaseMultiSelectConditionRule implements
         return MatchStrategy::options();
     }
 
-    public function modifyQuery(QueryInterface $query): void
+    public function modifyQuery(ElementQueryInterface $query): void
     {
         /** @var RedirectElementQuery $query */
         $query->matchStrategy($this->paramValue());

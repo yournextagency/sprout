@@ -69,7 +69,7 @@ class EmailFormField extends CraftEmail implements FormFieldInterface
             ]);
     }
 
-    public function getInputHtml($value, ElementInterface $element = null): string
+    public function getInputHtml(mixed $value, ?\craft\base\ElementInterface $element = null): string
     {
         $name = $this->handle;
         $inputId = Html::id($name);

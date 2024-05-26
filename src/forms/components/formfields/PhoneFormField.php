@@ -193,7 +193,7 @@ class PhoneFormField extends Field implements FormFieldInterface, PreviewableFie
     //    return TemplateHelper::raw($rendered);
     //}
 
-    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
+    public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
         $html = '';
 

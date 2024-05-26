@@ -185,7 +185,7 @@ class NameFormField extends Field implements FormFieldInterface, PreviewableFiel
         return $value;
     }
 
-    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
+    public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
         if ($value) {
             /** @var NameFormFieldData $value */

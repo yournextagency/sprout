@@ -6,6 +6,7 @@ use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
+use craft\elements\db\ElementQueryInterface;
 use yii\db\QueryInterface;
 
 class FieldChangedConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
@@ -32,7 +33,7 @@ class FieldChangedConditionRule extends BaseMultiSelectConditionRule implements 
         }, $fields);
     }
 
-    public function modifyQuery(QueryInterface $query): void
+    public function modifyQuery(ElementQueryInterface $query): void
     {
         // No changes
     }
