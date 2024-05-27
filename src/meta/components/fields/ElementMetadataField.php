@@ -51,11 +51,6 @@ class ElementMetadataField extends Field
         return Craft::t('sprout-module-meta', 'Metadata (Sprout)');
     }
 
-    public function getContentColumnType(): array|string
-    {
-        return Schema::TYPE_TEXT;
-    }
-
     public function isValueEmpty(mixed $value, ElementInterface $element): bool
     {
         if (!$value instanceof Metadata) {

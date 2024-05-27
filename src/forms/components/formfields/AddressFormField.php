@@ -41,11 +41,6 @@ class AddressFormField extends Field implements FormFieldInterface, PreviewableF
         return Craft::t('sprout-module-forms', 'Address');
     }
 
-    public static function hasContentColumn(): bool
-    {
-        return false;
-    }
-
     public function hasMultipleLabels(): bool
     {
         return true;

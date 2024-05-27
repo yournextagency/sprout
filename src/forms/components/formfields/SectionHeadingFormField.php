@@ -41,11 +41,6 @@ class SectionHeadingFormField extends Field implements FormFieldInterface
         return Craft::t('sprout-module-forms', 'Section Heading');
     }
 
-    public static function hasContentColumn(): bool
-    {
-        return false;
-    }
-
     public function isPlainInput(): bool
     {
         return true;
