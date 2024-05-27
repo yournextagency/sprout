@@ -45,8 +45,44 @@ class SitemapMetadataController extends Controller
         $allowedElementTypes = array_unique(array_column($contentSitemapMetadata, 'type'));
         $elementsWithUris = ElementUriHelper::getElementsWithUrisForSitemaps($allowedElementTypes);
 
+        $settings = SitemapsModule::getInstance()->getSettings();
+
+        if ($settings->sitemapAggregationMethod === SitemapsSettings::AGGREGATION_METHOD_MULTI_LINGUAL) {
+            [$showNav, $navItems] = SitemapsMetadataHelper::getAggregateBySiteGroupNavigation($site);
+        } else {
+            [$showNav, $navItems] = SitemapsMetadataHelper::getAggregateBySiteNavigation($site);
+        }
+
+        if ($showNav) {
+            $crumbs[] = [
+                'label' => $site->name,
+                'menu' => [
+                    'label' => Craft::t('sprout-module-sitemaps', 'Select site'),
+                    'items' => $navItems,
+                ],
+                'icon' => Cp::earthIcon(),
+            ];
+        }
+
+        $displayViewSitemapXmlButton = $site->id === $firstSiteInGroup->id;
+
+        if ($displayViewSitemapXmlButton) {
+            $crumbs[] = [
+                'html' =>
+                    Html::tag('span', Cp::iconSvg('share'), [
+                        'class' => 'cp-icon puny',
+                    ]) .
+                    Html::a(Craft::t('sprout-module-sitemaps', 'View sitemap.xml'), UrlHelper::siteUrl('sitemap.xml', null, null, $site->id), [
+                        'class' => 'crumb-link',
+                        'target' => '_blank',
+                        'icon' => 'share',
+                    ]),
+            ];
+        }
+
         return $this->renderTemplate('sprout-module-sitemaps/_sitemapmetadata/index.twig', [
             'title' => Craft::t('sprout-module-sitemaps', 'Sitemaps'),
+            'crumbs' => $crumbs ?? [],
             'site' => $site,
             'firstSiteInGroup' => $firstSiteInGroup,
             'editableSiteIds' => $editableSiteIds,
@@ -55,7 +91,6 @@ class SitemapMetadataController extends Controller
             'contentQueries' => $contentQueries,
             'customPages' => $customPages,
             'settings' => SitemapsModule::getInstance()->getSettings(),
-            'displayViewSitemapXmlButton' => $site->id === $firstSiteInGroup->id,
             'DEFAULT_PRIORITY' => SitemapsSettings::DEFAULT_PRIORITY,
             'DEFAULT_CHANGE_FREQUENCY' => SitemapsSettings::DEFAULT_CHANGE_FREQUENCY,
         ]);

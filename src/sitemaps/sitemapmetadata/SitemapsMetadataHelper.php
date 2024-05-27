@@ -5,6 +5,7 @@ namespace BarrelStrength\Sprout\sitemaps\sitemapmetadata;
 use BarrelStrength\Sprout\sitemaps\SitemapsModule;
 use BarrelStrength\Sprout\sitemaps\SitemapsSettings;
 use Craft;
+use craft\helpers\Cp;
 use craft\helpers\UrlHelper;
 use craft\models\Site;
 use yii\web\ForbiddenHttpException;
@@ -207,5 +208,114 @@ class SitemapsMetadataHelper
         }
 
         return $debugString ?? '';
+    }
+
+    public static function getAggregateBySiteNavigation(Site $site): array
+    {
+        $settings = SitemapsModule::getInstance()->getSettings();
+
+        $sitemapSites = null;
+        $editableSitemapCount = 0;
+
+        if (Craft::$app->getIsMultiSite()) {
+
+            $editableSites = Craft::$app->getSites()->getEditableSites();
+            $enabledSiteUids = array_keys(array_filter($settings->siteSettings));
+
+            // update editable sites to only include enabled sites
+            foreach ($editableSites as $key => $editableSite) {
+                if (!in_array($editableSite->uid, $enabledSiteUids, true)) {
+                    unset($editableSites[$key]);
+                }
+            }
+
+            foreach ($editableSites as $editableSite) {
+
+                $locale = Craft::$app->getI18n()->getLocaleById($editableSite->language);
+
+                if (!isset($sitemapSites[$editableSite->language])) {
+                    $sitemapSites[] = ['heading' => $locale->getDisplayName()];
+                    $editableSitemapCount++;
+                }
+
+                $sitemapSites[] = [
+                    'label' => $editableSite->name . ' (' . $locale->getDisplayName() . ')',
+                    'url' => UrlHelper::cpUrl('sprout/sitemaps', [
+                        'site' => $editableSite->handle,
+                    ]),
+                    'selected' => $editableSite->id === $site->id,
+                ];
+            }
+        }
+
+        return [
+            $editableSitemapCount > 1,
+            $sitemapSites ?? [],
+        ];
+    }
+
+    public static function getAggregateBySiteGroupNavigation(Site $site): array
+    {
+        $settings = SitemapsModule::getInstance()->getSettings();
+
+        $sitemapGroupSites = [];
+        $editableSitemapCount = 0;
+
+        if (Craft::$app->getIsMultiSite()) {
+
+            $siteGroups = Craft::$app->getSites()->getAllGroups();
+            $enabledSiteGroupUids = array_keys(array_filter($settings->groupSettings));
+
+            foreach ($siteGroups as $key => $siteGroup) {
+                if (!in_array($siteGroup->uid, $enabledSiteGroupUids, true)) {
+                    unset($siteGroups[$key]);
+                }
+            }
+
+            $editableSiteIds = Craft::$app->getSites()->getEditableSiteIds();
+
+            foreach ($siteGroups as $siteGroup) {
+
+                $siteIdsInGroup = $siteGroup->getSiteIds();
+                $editableSiteIdsInGroup = array_intersect($editableSiteIds, $siteIdsInGroup);
+
+                if (!$editableSiteIdsInGroup) {
+                    continue;
+                }
+
+                if (!isset($sitemapGroupSites[$siteGroup->name])) {
+                    $sitemapGroupSites[] = ['heading' => $siteGroup->name];
+                    $editableSitemapCount++;
+                }
+
+                foreach ($editableSiteIdsInGroup as $editableSiteIdInGroup) {
+                    $siteInGroup = Craft::$app->getSites()->getSiteById($editableSiteIdInGroup);
+
+                    if (!$siteInGroup) {
+                        continue;
+                    }
+
+                    $sitemapGroupSites[] = [
+                        'label' => $siteInGroup->name,
+                        'url' => UrlHelper::cpUrl('sprout/sitemaps', [
+                            'site' => $siteInGroup->handle,
+                        ]),
+                        'selected' => $siteInGroup->id === $site->id,
+                    ];
+                }
+            }
+        }
+
+        $showNav = $editableSitemapCount > 1;
+
+        // If we only have 1 group but that group has multiple sites, show the nav so the user can edit content query and custom pages for all sites in the group
+        if ($editableSitemapCount === 1 && count($sitemapGroupSites) > 2) {
+            $showNav = true;
+        }
+
+        return [
+            $showNav,
+            $sitemapGroupSites ?? [],
+        ];
     }
 }

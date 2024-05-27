@@ -6,43 +6,7 @@
 {% set settings = module.getSettings() %}
 {% set siteGroup = craft.app.sites.getGroupById(firstSiteInGroup.groupId) %}
 
-{% block contextMenu %}
-    {% if settings.aggregateBySiteGroup() %}
-        {% include "sprout-module-sitemaps/_sitemapmetadata/sitegroupmenu" with {
-            selectedSiteId: site.id,
-            siteIds: editableSiteIds,
-            urlFormat: "sprout/sitemaps?site={handle}"
-        } %}
-    {% else %}
-        {% include "_elements/sitemenu" with {
-            selectedSiteId: site.id,
-            siteIds: editableSiteIds,
-            urlFormat: "sprout/sitemaps?site={handle}"
-        } %}
-    {% endif %}
-
-{% endblock %}
-
-{% block actionButton %}
-    {% if not module.isEnabled() %}
-        <div>
-            <strong>{{ "Sitemap Disabled."|t('sprout-module-sitemaps') }}</strong>
-            <a href="{{ cpUrl('sprout/settings/sitemaps') }}">
-                {{ "Enable in Settings"|t('sprout-module-sitemaps') }}
-            </a>
-        </div>
-    {% else %}
-        {% if displayViewSitemapXmlButton %}
-            <a
-                href="{{ siteUrl('sitemap.xml', null, null, site.id) }}"
-                target="_blank"
-                class="view-btn btn"
-                aria-label="View">
-                {{ "View sitemap.xml"|t('sprout-module-sitemaps') }}
-            </a>
-        {% endif %}
-    {% endif %}
-{% endblock %}
+{% set showHeader = false %}
 
 {% set priorityList = {
     '1.0': '1.0 ↑ Highest'|t,

@@ -16,7 +16,7 @@ class EntrySitemapMetadata implements ElementSitemapMetadataInterface
 {
     public static function getSourceDetails(Site $site): array
     {
-        $sections = Craft::$app->sections->getAllSections();
+        $sections = Craft::$app->getEntries()->getAllSections();
 
         foreach ($sections as $section) {
             $siteSettings = $section->getSiteSettings();
