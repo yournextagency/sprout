@@ -53,8 +53,8 @@ class SentEmails extends Component
         $sentEmail->title = $subject;
         $sentEmail->subjectLine = $subject;
 
-        $sentEmail->htmlBody = $message->getHtmlBody();
-        $sentEmail->textBody = $message->getTextBody();
+        $sentEmail->htmlBody = $message->getSymfonyEmail()->getHtmlBody();
+        $sentEmail->textBody = $message->getSymfonyEmail()->getTextBody();
 
         $sentEmailDetails = $this->_prepareDetails($sentEmail, $message, $status);
         $sentEmail->info = $sentEmailDetails->getAttributes();
