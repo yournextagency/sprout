@@ -44,7 +44,7 @@ class EntryElementIntegrationType extends ElementIntegration
         $targetIntegrationFieldValues = $this->getTargetIntegrationFieldValues();
 
         /** @var EntryType $entryType */
-        $entryType = Craft::$app->getSections()->getEntryTypeById($this->entryTypeId);
+        $entryType = Craft::$app->getEntries()->getEntryTypeById($this->entryTypeId);
 
         $entryElement = new Entry();
         $entryElement->setTypeId($entryType->id);
@@ -216,7 +216,7 @@ class EntryElementIntegrationType extends ElementIntegration
     public function getElementCustomFieldsAsOptions($elementGroupId): array
     {
         $defaultEntryFields = $this->getDefaultElementFieldsAsOptions();
-        $entryType = Craft::$app->getSections()->getEntryTypeById($elementGroupId);
+        $entryType = Craft::$app->getEntries()->getEntryTypeById($elementGroupId);
         $entryFields = $entryType ? $entryType->getFields() : [];
         $options = $defaultEntryFields;
 
@@ -257,7 +257,7 @@ class EntryElementIntegrationType extends ElementIntegration
 
     private function getSectionsAsOptions(): array
     {
-        $sections = Craft::$app->getSections()->getAllSections();
+        $sections = Craft::$app->getEntries()->getAllSections();
         $options = [];
 
         foreach ($sections as $section) {

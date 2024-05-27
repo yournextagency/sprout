@@ -15,7 +15,7 @@ class FrontEndFields extends Component
     public function getFrontEndEntries(array $settings): array
     {
         $entries = [];
-        $sectionsService = Craft::$app->getSections();
+        $sectionsService = Craft::$app->getEntries();
 
         if (is_array($settings['sources'])) {
             foreach ($settings['sources'] as $source) {
@@ -174,7 +174,7 @@ class FrontEndFields extends Component
 
     private function getSinglesEntries(): array
     {
-        $sections = Craft::$app->getSections()->getSectionsByType(Section::TYPE_SINGLE);
+        $sections = Craft::$app->getEntries()->getSectionsByType(Section::TYPE_SINGLE);
         $singles = [];
 
         foreach ($sections as $section) {
