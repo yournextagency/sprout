@@ -9,7 +9,7 @@
     elementType: dataSetElementType,
     selectionLabel: "Choose"|t('sprout-module-data-studio'),
     limit: 1,
-    elements: [dataSet]
+    elements: dataSet ? [dataSet] : [],
 }) }}
 
 {{ forms.autosuggestField({

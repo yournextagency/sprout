@@ -194,7 +194,7 @@ class AudienceElement extends Element
     public function __toString(): string
     {
         try {
-            return $this->name;
+            return $this->name ?? '';
         } catch (Throwable $throwable) {
             ErrorHandler::convertExceptionToError($throwable);
         }
