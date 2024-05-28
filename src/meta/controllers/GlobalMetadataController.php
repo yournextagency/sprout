@@ -60,6 +60,17 @@ class GlobalMetadataController extends Controller
         // @todo - Cp::addressCardsHtml no longer exists. Explore options. None provided in C5 upgrade notes.
         $locationField = '';
 
+        $sites = Craft::$app->getSites()->getEditableSites();
+
+        $crumbs[] = [
+            'icon' => Cp::earthIcon(),
+            'label' => $site->name,
+            'menu' => [
+                'label' => Craft::t('sprout-module-sitemaps', 'Select site'),
+                'items' => Cp::siteMenuItems($sites, $site),
+            ],
+        ];
+
         return $this->renderTemplate('sprout-module-meta/globals/' . $selectedTabHandle, [
             'globals' => $globals,
             'settings' => MetaModule::getInstance()->getSettings(),
@@ -67,6 +78,7 @@ class GlobalMetadataController extends Controller
             'selectedTabHandle' => $selectedTabHandle,
             'locationField' => $locationField,
             'countryOptions' => FieldsModule::getInstance()->phoneHelper::getCountries(),
+            'crumbs' => $crumbs,
         ]);
     }
 

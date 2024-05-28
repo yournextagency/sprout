@@ -23,15 +23,6 @@
 
 {% set fullPageForm = true %}
 
-{% block contextMenu %}
-    {% if craft.app.getIsMultiSite() %}
-        {% include "_elements/sitemenu" with {
-            selectedSiteId: globals.siteId,
-            urlFormat: "sprout/meta/globals/"~selectedTabHandle~"?site={handle}"
-        } %}
-    {% endif %}
-{% endblock %}
-
 {% set navItems = {
     'identity-heading': { heading: "Knowledge Graph"|t('sprout-module-meta') },
     'website-identity': { title: "Website Identity"|t('sprout-module-meta') },
