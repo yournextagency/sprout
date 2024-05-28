@@ -51,6 +51,11 @@ class ElementMetadataField extends Field
         return Craft::t('sprout-module-meta', 'Metadata (Sprout)');
     }
 
+    public static function icon(): string
+    {
+        return 'seedling';
+    }
+
     public function isValueEmpty(mixed $value, ElementInterface $element): bool
     {
         if (!$value instanceof Metadata) {
