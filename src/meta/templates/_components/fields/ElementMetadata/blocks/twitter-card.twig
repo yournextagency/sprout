@@ -42,7 +42,7 @@
         {% set hasVolumes = craft.app.getVolumes().getAllVolumes() %}
 
         {% set imageElementSelect = forms.elementSelect({
-            elements: [twitterImageElement],
+            elements: twitterImageElement ? [twitterImageElement] : [],
             sourceElementId: [twitterImageId],
             elementType: 'craft\\elements\\Asset',
             sources: '*',

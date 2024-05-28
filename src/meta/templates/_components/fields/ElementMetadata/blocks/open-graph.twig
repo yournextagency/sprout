@@ -47,7 +47,7 @@
         {% set hasVolumes = craft.app.getVolumes().getAllVolumes() %}
 
         {% set imageElementSelect = forms.elementSelect({
-            elements: ogImageElement,
+            elements: ogImageElement ? [ogImageElement] : [],
             sourceElementId: [meta.ogImage],
             elementType: 'craft\\elements\\Asset',
             sources: '*',
