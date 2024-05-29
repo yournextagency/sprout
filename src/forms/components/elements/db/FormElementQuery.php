@@ -130,6 +130,10 @@ class FormElementQuery extends ElementQuery
 
     protected function fieldLayouts(): array
     {
+        if (!$this->formTypeUid) {
+            return parent::fieldLayouts();
+        }
+        
         $layout = FormTypeHelper::getFormTypeByUid($this->formTypeUid);
 
         if ($layout) {

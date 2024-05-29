@@ -85,6 +85,10 @@ class EmailElementQuery extends ElementQuery
 
     protected function fieldLayouts(): array
     {
+        if (!$this->emailTypeUid) {
+            return parent::fieldLayouts();
+        }
+
         $layout = EmailTypeHelper::getEmailTypeByUid($this->emailTypeUid);
 
         if ($layout) {
