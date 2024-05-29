@@ -84,11 +84,6 @@ class DataSetElement extends Element
         return true;
     }
 
-    public static function hasContent(): bool
-    {
-        return true;
-    }
-
     public static function find(): DataSetElementQuery
     {
         return new DataSetElementQuery(static::class);

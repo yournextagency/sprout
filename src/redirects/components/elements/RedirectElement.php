@@ -82,12 +82,7 @@ class RedirectElement extends Element
     {
         return Craft::t('sprout-module-redirects', 'redirects');
     }
-
-    public static function hasContent(): bool
-    {
-        return true;
-    }
-
+    
     public static function hasStatuses(): bool
     {
         return true;

@@ -122,11 +122,6 @@ class EmailElement extends Element implements EmailPreviewInterface
         return 'email';
     }
 
-    public static function hasContent(): bool
-    {
-        return true;
-    }
-
     public static function hasTitles(): bool
     {
         return true;
