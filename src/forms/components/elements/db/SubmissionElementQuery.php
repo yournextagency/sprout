@@ -208,4 +208,15 @@ class SubmissionElementQuery extends ElementQuery
 
         return $fields;
     }
+
+    protected function fieldLayouts(): array
+    {
+        $form = FormsModule::getInstance()->forms->getFormById($this->formId);
+
+        if ($form) {
+            return [$form->getSubmissionFieldLayout()];
+        }
+
+        return parent::fieldLayouts();
+    }
 }

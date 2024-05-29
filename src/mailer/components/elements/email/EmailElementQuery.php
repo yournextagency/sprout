@@ -2,6 +2,7 @@
 
 namespace BarrelStrength\Sprout\mailer\components\elements\email;
 
+use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
 use BarrelStrength\Sprout\mailer\emailvariants\EmailVariant;
 use craft\elements\db\ElementQuery;
 use craft\helpers\Db;
@@ -80,5 +81,16 @@ class EmailElementQuery extends ElementQuery
         }
 
         return $emailVariant->getStatusCondition($status);
+    }
+
+    protected function fieldLayouts(): array
+    {
+        $layout = EmailTypeHelper::getEmailTypeByUid($this->emailTypeUid);
+
+        if ($layout) {
+            return [$layout->getFieldLayout()];
+        }
+
+        return parent::fieldLayouts();
     }
 }

@@ -4,6 +4,7 @@ namespace BarrelStrength\Sprout\forms\components\elements\db;
 
 use BarrelStrength\Sprout\forms\db\SproutTable;
 use BarrelStrength\Sprout\forms\FormsModule;
+use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
 use craft\elements\db\ElementQuery;
 use craft\helpers\Db;
 
@@ -125,5 +126,16 @@ class FormElementQuery extends ElementQuery
         }
 
         return parent::beforePrepare();
+    }
+
+    protected function fieldLayouts(): array
+    {
+        $layout = FormTypeHelper::getFormTypeByUid($this->formTypeUid);
+
+        if ($layout) {
+            return [$layout->getFieldLayout()];
+        }
+
+        return parent::fieldLayouts();
     }
 }

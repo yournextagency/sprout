@@ -85,4 +85,11 @@ class DataSetElementQuery extends ElementQuery
             'in', '[[sprout_datasets.type]]', $authorizedDataSourceTypes,
         ]);
     }
+
+    protected function fieldLayouts(): array
+    {
+        $settings = DataStudioModule::getInstance()->getSettings();
+
+        return [$settings->getFieldLayout()];
+    }
 }

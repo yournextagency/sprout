@@ -2,6 +2,7 @@
 
 namespace BarrelStrength\Sprout\redirects\components\elements\db;
 
+use BarrelStrength\Sprout\redirects\RedirectsModule;
 use craft\elements\db\ElementQuery;
 use craft\helpers\Db;
 
@@ -93,5 +94,12 @@ class RedirectElementQuery extends ElementQuery
         }
 
         return parent::beforePrepare();
+    }
+
+    protected function fieldLayouts(): array
+    {
+        $settings = RedirectsModule::getInstance()->getSettings();
+
+        return [$settings->getFieldLayout()];
     }
 }
