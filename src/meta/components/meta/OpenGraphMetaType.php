@@ -327,7 +327,7 @@ class OpenGraphMetaType extends MetaType
             return $this->ogLocale;
         }
 
-        $site = Craft::$app->sites->getCurrentSite();
+        $site = Craft::$app->getSites()->getCurrentSite();
 
         return $site->language ?? null;
     }

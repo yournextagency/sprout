@@ -46,13 +46,13 @@ class SubmissionStatusesController extends BaseController
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $id = Craft::$app->request->getBodyParam('submissionStatusId');
+        $id = Craft::$app->getRequest()->getBodyParam('submissionStatusId');
         $submissionStatus = FormsModule::getInstance()->submissionStatuses->getSubmissionStatusById($id);
 
-        $submissionStatus->name = Craft::$app->request->getBodyParam('name');
-        $submissionStatus->handle = Craft::$app->request->getBodyParam('handle');
-        $submissionStatus->color = Craft::$app->request->getBodyParam('color');
-        $submissionStatus->isDefault = (bool)Craft::$app->request->getBodyParam('isDefault');
+        $submissionStatus->name = Craft::$app->getRequest()->getBodyParam('name');
+        $submissionStatus->handle = Craft::$app->getRequest()->getBodyParam('handle');
+        $submissionStatus->color = Craft::$app->getRequest()->getBodyParam('color');
+        $submissionStatus->isDefault = (bool)Craft::$app->getRequest()->getBodyParam('isDefault');
 
         if (empty($submissionStatus->isDefault)) {
             $submissionStatus->isDefault = 0;
@@ -78,7 +78,7 @@ class SubmissionStatusesController extends BaseController
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $ids = Json::decode(Craft::$app->request->getRequiredBodyParam('ids'));
+        $ids = Json::decode(Craft::$app->getRequest()->getRequiredBodyParam('ids'));
 
         if (FormsModule::getInstance()->submissionStatuses->reorderSubmissionStatuses($ids)) {
             return $this->asJson([
@@ -94,7 +94,7 @@ class SubmissionStatusesController extends BaseController
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $submissionStatusId = Craft::$app->request->getRequiredBodyParam('id');
+        $submissionStatusId = Craft::$app->getRequest()->getRequiredBodyParam('id');
 
         if (!FormsModule::getInstance()->submissionStatuses->deleteSubmissionStatusById($submissionStatusId)) {
             return $this->asJson(['success' => false]);

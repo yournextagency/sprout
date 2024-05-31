@@ -137,10 +137,7 @@ class RedirectsSettings extends BaseConfig
     {
         $siteExcludedUrlPatterns = $this->getSiteExcludedUrlPatterns($siteId);
         $excludedUrlPatterns = $this->globallyExcludedUrlPatterns . "\n" . $siteExcludedUrlPatterns;
-
-        $excludedUrlPatterns = $excludedUrlPatterns
-            ? array_filter(array_map('trim', explode("\n", $excludedUrlPatterns)))
-            : [];
+        $excludedUrlPatterns = array_filter(array_map('trim', explode("\n", $excludedUrlPatterns)));
 
         // Remove empty lines and comments
         $excludedUrlPatterns = array_filter($excludedUrlPatterns, static fn($excludedUrlPattern): bool => $excludedUrlPattern !== '' && !str_starts_with($excludedUrlPattern, '#'));

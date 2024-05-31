@@ -52,7 +52,7 @@ class Modules extends Component
      */
     public function getEnabledModules(): array
     {
-        $allModules = Craft::$app->projectConfig->get(Sprout::projectConfigPath('modules')) ?? [];
+        $allModules = Craft::$app->getProjectConfig()->get(Sprout::projectConfigPath('modules')) ?? [];
 
         $enabledModules = array_keys(array_filter($allModules, static fn($settings) => $settings['enabled'] == true));
 

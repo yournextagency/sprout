@@ -156,7 +156,7 @@ class DateRangeHelper
         $endDate = '';
         $current_month = date('m');
         $current_year = date('Y');
-        if ($current_month >= 1 && $current_month <= 3) {
+        if ($current_month <= 3) {
             // timestamp or 1-January 12:00:00 AM
             $startDate = strtotime('1-January-' . $current_year);
             // timestamp or 1-April 12:00:00 AM means end of 31 March
@@ -171,7 +171,7 @@ class DateRangeHelper
             $startDate = strtotime('1-July-' . $current_year);
             // timestamp or 1-October 12:00:00 AM means end of 30 September
             $endDate = strtotime('30-September-' . $current_year);
-        } elseif ($current_month >= 10 && $current_month <= 12) {
+        } elseif ($current_month >= 10) {
             // timestamp or 1-October 12:00:00 AM
             $startDate = strtotime('1-October-' . $current_year);
             // timestamp or 1-January Next year 12:00:00 AM means end of 31 December this year
@@ -191,7 +191,7 @@ class DateRangeHelper
         $current_month = date('m');
         $current_year = date('Y');
 
-        if ($current_month >= 1 && $current_month <= 3) {
+        if ($current_month <= 3) {
             // timestamp or 1-October Last Year 12:00:00 AM
             $startDate = strtotime('1-October-' . ($current_year - 1));
             // timestamp or 1-January  12:00:00 AM means end of 31 December Last year
@@ -206,7 +206,7 @@ class DateRangeHelper
             $startDate = strtotime('1-April-' . $current_year);
             // timestamp or 1-July 12:00:00 AM means end of 30 June
             $endDate = strtotime('30-June-' . $current_year);
-        } elseif ($current_month >= 10 && $current_month <= 12) {
+        } elseif ($current_month >= 10) {
             // timestamp or 1-July 12:00:00 AM
             $startDate = strtotime('1-July-' . $current_year);
             // timestamp or 1-October 12:00:00 AM means end of 30 September

@@ -15,7 +15,7 @@ trait TranslatableTrait
      */
     public function registerTranslations(): void
     {
-        Craft::$app->i18n->translations[$this->id] = [
+        Craft::$app->getI18n()->translations[$this->id] = [
             'class' => PhpMessageSource::class,
             'sourceLanguage' => 'en',
             'basePath' => $this->getBasePath() . DIRECTORY_SEPARATOR . 'translations',

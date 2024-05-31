@@ -75,7 +75,7 @@ class MailerController extends Controller
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $ids = Json::decode(Craft::$app->request->getRequiredBodyParam('ids'));
+        $ids = Json::decode(Craft::$app->getRequest()->getRequiredBodyParam('ids'));
 
         if (!MailerHelper::reorderMailers($ids)) {
             return $this->asJson([
@@ -94,7 +94,7 @@ class MailerController extends Controller
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $mailerUid = Craft::$app->request->getRequiredBodyParam('id');
+        $mailerUid = Craft::$app->getRequest()->getRequiredBodyParam('id');
 
         $mailers = MailerHelper::getMailers();
 
@@ -215,15 +215,15 @@ class MailerController extends Controller
 
     private function populateMailerModel(): Mailer
     {
-        $type = Craft::$app->request->getRequiredBodyParam('type');
-        $uid = Craft::$app->request->getRequiredBodyParam('uid');
+        $type = Craft::$app->getRequest()->getRequiredBodyParam('type');
+        $uid = Craft::$app->getRequest()->getRequiredBodyParam('uid');
 
         /** @var Mailer $mailer */
         $mailer = new $type();
-        $mailer->name = Craft::$app->request->getRequiredBodyParam('name');
+        $mailer->name = Craft::$app->getRequest()->getRequiredBodyParam('name');
         $mailer->uid = !empty($uid) ? $uid : StringHelper::UUID();
 
-        $settings = Craft::$app->request->getBodyParam('settings');
+        $settings = Craft::$app->getRequest()->getBodyParam('settings');
         $mailer->setAttributes($settings, false);
 
         return $mailer;

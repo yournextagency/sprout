@@ -23,10 +23,9 @@ class PreviewController extends Controller
             throw new HttpException(404);
         }
 
-        /** @var ElementInterface|EmailPreviewInterface $email */
         $email = Craft::$app->getElements()->getElementById($emailId);
 
-        if (!$email) {
+        if (!$email instanceof ElementInterface || !$email instanceof EmailPreviewInterface) {
             throw new HttpException(404);
         }
 
@@ -53,10 +52,9 @@ class PreviewController extends Controller
      */
     public function actionShareEmail(int $emailId): Response
     {
-        /** @var EmailPreviewInterface $email */
         $email = Craft::$app->getElements()->getElementById($emailId);
 
-        if (!$email) {
+        if (!$email instanceof EmailPreviewInterface) {
             throw new HttpException(404);
         }
 

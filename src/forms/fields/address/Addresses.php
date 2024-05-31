@@ -121,7 +121,7 @@ class Addresses extends Component
             ->where(['[[elements.id]]' => null])
             ->column();
 
-        Craft::$app->db->createCommand()
+        Craft::$app->getDb()->createCommand()
             ->delete(SproutTable::ADDRESSES, [
                 'id' => $addressIdsWithDeletedElementIds,
             ])

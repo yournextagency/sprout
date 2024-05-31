@@ -63,7 +63,7 @@ class Forms extends Component
     //    }
     //
     //    /** @var Transaction $transaction */
-    //    $transaction = Craft::$app->db->beginTransaction();
+    //    $transaction = Craft::$app->getDb()->beginTransaction();
     //
     //    try {
     //        // Save the field layout
@@ -82,8 +82,8 @@ class Forms extends Component
     //        $newContentTable = $this->getContentTableName($form);
     //
     //        // Do we need to create/rename the content table?
-    //        if (!Craft::$app->db->tableExists($newContentTable) && !$duplicate) {
-    //            if ($oldContentTable && Craft::$app->db->tableExists($oldContentTable)) {
+    //        if (!Craft::$app->getDb()->tableExists($newContentTable) && !$duplicate) {
+    //            if ($oldContentTable && Craft::$app->getDb()->tableExists($oldContentTable)) {
     //                Db::renameTable($oldContentTable, $newContentTable);
     //            } else {
     //                $this->_createContentTable($newContentTable);
@@ -91,7 +91,7 @@ class Forms extends Component
     //        }
     //
     //        // Save the Form
-    //        if (!Craft::$app->elements->saveElement($form)) {
+    //        if (!Craft::$app->getElements()->saveElement($form)) {
     //            Craft::error('Couldn’t save Element.', __METHOD__);
     //
     //            return false;

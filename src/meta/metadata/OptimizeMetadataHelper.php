@@ -38,7 +38,7 @@ class OptimizeMetadataHelper
             return $value;
         }
 
-        return UrlHelper::siteUrl(Craft::$app->request->getPathInfo());
+        return UrlHelper::siteUrl(Craft::$app->getRequest()->getPathInfo());
     }
 
     public static function getAssetUrl($id, $transform = null): ?string
@@ -52,7 +52,7 @@ class OptimizeMetadataHelper
             throw new Exception('Meta Image override value "' . $id . '" must be an absolute url.');
         }
 
-        $asset = Craft::$app->elements->getElementById($id);
+        $asset = Craft::$app->getElements()->getElementById($id);
 
         if (!$asset instanceof Asset) {
             return null;
@@ -69,14 +69,14 @@ class OptimizeMetadataHelper
             return $asset->getUrl();
         }
 
-        $protocol = Craft::$app->request->getIsSecureConnection() ? 'https' : 'http';
+        $protocol = Craft::$app->getRequest()->getIsSecureConnection() ? 'https' : 'http';
 
         return UrlHelper::urlWithScheme($imageUrl, $protocol);
     }
 
     public static function getSelectedFieldForOptimizedMetadata(int $fieldId)
     {
-        $field = Craft::$app->fields->getFieldById($fieldId);
+        $field = Craft::$app->getFields()->getFieldById($fieldId);
 
         if (!$field) {
             return null;

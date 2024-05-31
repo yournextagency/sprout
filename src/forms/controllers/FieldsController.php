@@ -64,7 +64,7 @@ class FieldsController extends BaseController
         Craft::$app->content->fieldContext = $fieldContext;
 
         /** @var Field $field */
-        $field = Craft::$app->fields->getFieldByHandle($fieldHandle);
+        $field = Craft::$app->getFields()->getFieldByHandle($fieldHandle);
         Craft::$app->content->fieldContext = $oldFieldContext;
 
         return $field;

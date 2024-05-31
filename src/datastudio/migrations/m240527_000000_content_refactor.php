@@ -14,7 +14,7 @@ class m240527_000000_content_refactor extends BaseContentRefactorMigration
 
     public function safeUp(): void
     {
-        $fieldLayouts = Craft::$app->projectConfig->get('sprout.sprout-module-data-studio.fieldLayouts');
+        $fieldLayouts = Craft::$app->getProjectConfig()->get('sprout.sprout-module-data-studio.fieldLayouts');
 
         if ($fieldLayout = reset($fieldLayouts)) {
             $layout = FieldLayout::createFromConfig($fieldLayout);

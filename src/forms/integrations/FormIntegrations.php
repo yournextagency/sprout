@@ -402,7 +402,7 @@ class FormIntegrations extends Component
 
         // Custom Send Rule
         try {
-            $resultTemplate = Craft::$app->view->renderObjectTemplate($integration->sendRule, $submission);
+            $resultTemplate = Craft::$app->getView()->renderObjectTemplate($integration->sendRule, $submission);
             $value = trim($resultTemplate);
             if (filter_var($value, FILTER_VALIDATE_BOOLEAN)) {
                 return true;

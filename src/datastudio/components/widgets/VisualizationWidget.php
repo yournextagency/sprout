@@ -4,6 +4,7 @@ namespace BarrelStrength\Sprout\datastudio\components\widgets;
 
 use BarrelStrength\Sprout\datastudio\components\elements\DataSetElement;
 use BarrelStrength\Sprout\datastudio\datasets\DataSetHelper;
+use BarrelStrength\Sprout\datastudio\datasources\DataSourceInterface;
 use Craft;
 use craft\base\Widget;
 
@@ -33,16 +34,24 @@ class VisualizationWidget extends Widget
 
     public function getTitle(): ?string
     {
-        $dataSet = Craft::$app->elements->getElementById($this->dataSetId, DataSetElement::class);
+        $dataSet = Craft::$app->getElements()->getElementById($this->dataSetId, DataSetElement::class);
 
         return $dataSet->name ?? Craft::t('sprout-module-data-studio', 'Sprout Data Sets Chart');
     }
 
     public function getBodyHtml(): null|string
     {
-        /** @var DataSetElement $dataSet */
-        $dataSet = Craft::$app->elements?->getElementById($this->dataSetId, DataSetElement::class);
-        $dataSource = $dataSet?->getDataSource();
+        $dataSet = Craft::$app->getElements()->getElementById($this->dataSetId, DataSetElement::class);
+
+        if (!$dataSet instanceof DataSetElement) {
+            return Craft::t('sprout-module-data-studio', 'Data Set not found.');
+        }
+
+        $dataSource = $dataSet->getDataSource();
+
+        if (!$dataSource instanceof DataSourceInterface) {
+            return Craft::t('sprout-module-data-studio', 'Data Source not found.');
+        }
 
         $labels = $dataSource->getDefaultLabels($dataSet);
         $values = $dataSource->getResults($dataSet);

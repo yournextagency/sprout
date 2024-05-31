@@ -119,7 +119,7 @@ class ElementMetadataField extends Field
 
         Sprout::getInstance()->vite->register('core/SproutCp.js');
 
-        return Craft::$app->view->renderTemplate('sprout-module-meta/_components/fields/ElementMetadata/settings.twig', [
+        return Craft::$app->getView()->renderTemplate('sprout-module-meta/_components/fields/ElementMetadata/settings.twig', [
             'fieldId' => $this->id,
             'settings' => $this->getAttributes(),
             'field' => $this,
@@ -132,8 +132,8 @@ class ElementMetadataField extends Field
     {
         $name = $this->handle;
         $inputId = Html::id($name);
-        $namespaceInputName = Craft::$app->view->namespaceInputName($inputId);
-        $namespaceInputId = Craft::$app->view->namespaceInputId($inputId);
+        $namespaceInputName = Craft::$app->getView()->namespaceInputName($inputId);
+        $namespaceInputId = Craft::$app->getView()->namespaceInputId($inputId);
 
         // Cleanup the namespace around the $name handle
         $name = str_replace('fields[', '', $name);
@@ -145,7 +145,7 @@ class ElementMetadataField extends Field
 
         $settings = $this->getAttributes();
 
-        return Craft::$app->view->renderTemplate('sprout-module-meta/_components/fields/ElementMetadata/input.twig', [
+        return Craft::$app->getView()->renderTemplate('sprout-module-meta/_components/fields/ElementMetadata/input.twig', [
             'field' => $this,
             'name' => $name,
             'namespaceInputName' => $namespaceInputName,
@@ -175,8 +175,8 @@ class ElementMetadataField extends Field
     protected function populateOptimizeServiceValues(ElementInterface $element = null): void
     {
         $site = isset($element)
-            ? Craft::$app->sites->getSiteById($element->siteId)
-            : Craft::$app->sites->getPrimarySite();
+            ? Craft::$app->getSites()->getSiteById($element->siteId)
+            : Craft::$app->getSites()->getPrimarySite();
 
         $globals = MetaModule::getInstance()->globalMetadata->getGlobalMetadata($site);
 

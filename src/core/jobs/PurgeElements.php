@@ -26,9 +26,9 @@ class PurgeElements extends BaseJob
             $step = $key + 1;
             $this->setProgress($queue, $step / $totalSteps);
 
-            $element = Craft::$app->elements->getElementById($id, $this->elementType, $this->siteId);
+            $element = Craft::$app->getElements()->getElementById($id, $this->elementType, $this->siteId);
 
-            if ($element && !Craft::$app->elements->deleteElement($element, true)) {
+            if ($element && !Craft::$app->getElements()->deleteElement($element, true)) {
                 Craft::error('Unable to delete the ' . $this->elementType . ' element type using ID:' . $id, __METHOD__);
             }
         }

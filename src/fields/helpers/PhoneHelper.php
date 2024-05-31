@@ -5,6 +5,7 @@ namespace BarrelStrength\Sprout\fields\helpers;
 use BarrelStrength\Sprout\forms\fields\address\Addresses;
 use CommerceGuys\Addressing\Country\CountryRepository;
 use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberUtil;
 use Craft;
 
@@ -33,11 +34,8 @@ class PhoneHelper
         $phoneUtil = PhoneNumberUtil::getInstance();
 
         try {
+            /** @var PhoneNumber $phoneNumber */
             $phoneNumber = $phoneUtil->parse($phone, $country);
-
-            if (!$phoneNumber) {
-                throw new NumberParseException(400, 'Unable to parse phone number.');
-            }
 
             $isValid = $phoneUtil->isValidNumber($phoneNumber);
         } catch (NumberParseException $numberParseException) {

@@ -47,7 +47,7 @@ class ExcludeUrl extends ElementAction
         $redirects = $query->all();
 
         /** @var Transaction $transaction */
-        $transaction = Craft::$app->db->beginTransaction();
+        $transaction = Craft::$app->getDb()->beginTransaction();
 
         try {
             foreach ($redirects as $redirect) {
@@ -59,7 +59,7 @@ class ExcludeUrl extends ElementAction
                 $redirectSettings->setExcludedUrlPatterns($excludedUrlPatterns);
 
                 // Delete the old Redirect Element
-                Craft::$app->elements->deleteElement($redirect, true);
+                Craft::$app->getElements()->deleteElement($redirect, true);
             }
 
             $moduleId = RedirectsModule::getModuleId();

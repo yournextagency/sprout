@@ -127,7 +127,7 @@ class ElementMetadata extends Component
         }
 
         /** @var Field $optimizedImageFieldModel */
-        $optimizedImageFieldModel = Craft::$app->fields->getFieldById($fieldId);
+        $optimizedImageFieldModel = Craft::$app->getFields()->getFieldById($fieldId);
 
         return $optimizedImageFieldModel->handle ?? '';
     }
@@ -152,7 +152,11 @@ class ElementMetadata extends Component
          */
         preg_match_all('#{ ?(object\.)?(?<handles>[a-zA-Z_]*)#', $value, $matches);
 
-        if (is_countable($matches['handles']) ? count($matches['handles']) : 0) {
+        $matchedHandlesCount = isset($matches['handles'])
+            ? count($matches['handles'])
+            : 0;
+
+        if ($matchedHandlesCount > 0) {
             // Remove empty array items and make sure we only return each value once
             return array_filter(array_unique($matches['handles']));
         }

@@ -25,7 +25,7 @@ class XmlSitemapController extends Controller
      */
     public function actionRenderXmlSitemap(string $sitemapMetadataUid = null, int $pageNumber = null): Response
     {
-        $site = Craft::$app->sites->getCurrentSite();
+        $site = Craft::$app->getSites()->getCurrentSite();
 
         $xmlSitemapService = SitemapsModule::getInstance()->xmlSitemap;
 

@@ -61,7 +61,7 @@ class FormIntegrationsController extends BaseController
         $this->requireAcceptsJson();
         $response = false;
 
-        $integrationId = Craft::$app->request->getRequiredBodyParam('integrationId');
+        $integrationId = Craft::$app->getRequest()->getRequiredBodyParam('integrationId');
         $integration = IntegrationRecord::findOne($integrationId);
 
         if ($integration !== null) {

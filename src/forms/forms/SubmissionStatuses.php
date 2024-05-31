@@ -94,7 +94,7 @@ class SubmissionStatuses extends Component
         if (!$submissionStatus->hasErrors()) {
 
             /** @var Transaction $transaction */
-            $transaction = Craft::$app->db->beginTransaction();
+            $transaction = Craft::$app->getDb()->beginTransaction();
 
             try {
                 if ($record->isDefault) {
@@ -144,7 +144,7 @@ class SubmissionStatuses extends Component
     public function reorderSubmissionStatuses($submissionStatusIds): bool
     {
         /** @var Transaction $transaction */
-        $transaction = Craft::$app->db->beginTransaction();
+        $transaction = Craft::$app->getDb()->beginTransaction();
 
         try {
             foreach ($submissionStatusIds as $submissionStatus => $submissionStatusId) {
@@ -210,7 +210,7 @@ class SubmissionStatuses extends Component
         }
 
         foreach ($submissionElements as $submissionElement) {
-            $success = Craft::$app->db->createCommand()->update(
+            $success = Craft::$app->getDb()->createCommand()->update(
                 SproutTable::FORM_SUBMISSIONS,
                 ['statusId' => $spam->id],
                 ['id' => $submissionElement->id]
@@ -233,7 +233,7 @@ class SubmissionStatuses extends Component
         $defaultStatus = $this->getDefaultSubmissionStatus();
 
         foreach ($submissionElements as $submissionElement) {
-            $success = Craft::$app->db->createCommand()->update(
+            $success = Craft::$app->getDb()->createCommand()->update(
                 SproutTable::FORM_SUBMISSIONS,
                 ['statusId' => $defaultStatus->id],
                 ['id' => $submissionElement->id]

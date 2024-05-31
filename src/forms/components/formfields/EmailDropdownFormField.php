@@ -49,7 +49,7 @@ class EmailDropdownFormField extends CraftDropdownField implements FormFieldInte
     public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         // Make the unobfuscated values available to email notifications
-        if ($value && Craft::$app->request->getIsSiteRequest() && Craft::$app->getRequest()->getIsPost()) {
+        if ($value && Craft::$app->getRequest()->getIsSiteRequest() && Craft::$app->getRequest()->getIsPost()) {
             // Swap our obfuscated number value (e.g. 1) with the email value
             $selectedOption = $this->options[$value];
             $value = $selectedOption['value'];

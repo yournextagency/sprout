@@ -137,7 +137,7 @@ class SitemapsMetadataHelper
             $siteIdsFromEditableGroups = [];
 
             foreach ($enabledSiteGroupIds as $enabledSiteGroupId) {
-                $enabledSitesInGroup = Craft::$app->sites->getSitesByGroupId($enabledSiteGroupId);
+                $enabledSitesInGroup = Craft::$app->getSites()->getSitesByGroupId($enabledSiteGroupId);
 
                 foreach ($enabledSitesInGroup as $enabledSite) {
                     $siteIdsFromEditableGroups[$enabledSite->uid] = $enabledSite->id;
@@ -171,13 +171,13 @@ class SitemapsMetadataHelper
 
         if ($isMultiSite) {
             // For Multi-Site we have to figure out which Site and Site Group matter
-            $currentSiteGroup = Craft::$app->sites->getGroupById($site->groupId);
+            $currentSiteGroup = Craft::$app->getSites()->getGroupById($site->groupId);
 
             if (!$currentSiteGroup) {
                 throw new NotFoundHttpException('Site group not found.');
             }
 
-            $sitesInCurrentSiteGroup = Craft::$app->sites->getSitesByGroupId($currentSiteGroup->id);
+            $sitesInCurrentSiteGroup = Craft::$app->getSites()->getSitesByGroupId($currentSiteGroup->id);
 
             if (empty($sitesInCurrentSiteGroup)) {
                 throw new NotFoundHttpException('No Sites found in group.');

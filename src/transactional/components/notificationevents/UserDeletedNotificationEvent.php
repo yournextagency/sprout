@@ -47,7 +47,7 @@ class UserDeletedNotificationEvent extends BaseElementNotificationEvent
     public function getEventVariables(): array
     {
         return [
-            'user' => $this?->event?->sender,
+            'user' => $this->event?->sender,
         ];
     }
 

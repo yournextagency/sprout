@@ -193,11 +193,7 @@ class AudienceElement extends Element
      */
     public function __toString(): string
     {
-        try {
-            return $this->name ?? '';
-        } catch (Throwable $throwable) {
-            ErrorHandler::convertExceptionToError($throwable);
-        }
+        return $this->name ?? Craft::t('sprout-module-mailer', 'Audience with no name');
     }
 
     protected function statusFieldHtml(): string

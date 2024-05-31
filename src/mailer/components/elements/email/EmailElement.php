@@ -463,7 +463,13 @@ class EmailElement extends Element implements EmailPreviewInterface
             return $tab;
         }, $emailTypeTabs);
 
-        $mailerTab = $this->getMailer()->getFieldLayout()?->getTabs()[0] ?? [];
+        $mailerTabs = $this->getMailer()->getFieldLayout()->getTabs();
+
+        if (!empty($mailerTabs)) {
+            $mailerTab = [$mailerTabs[0]];
+        } else {
+            $mailerTab = [];
+        }
 
         $elementCondition = $emailElementType::createCondition();
         $rule = new PreheaderTextConditionRule();
@@ -513,7 +519,7 @@ class EmailElement extends Element implements EmailPreviewInterface
 
         $newTabs = array_merge(
             [$subjectTab],
-            [$mailerTab],
+            $mailerTab,
             [$emailVariant::getFieldLayoutTab($fieldLayout)],
             $emailTypeTabsWithMessages,
         );

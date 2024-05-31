@@ -17,11 +17,14 @@ class EmailTypeHelper
         /** @var FieldLayout $fieldLayout */
         $fieldLayout = $event->sender;
 
+        /** @var  EmailType $layoutType */
+        $layoutType = $fieldLayout->type;
+
         /** @var EmailTypeInterface[] $emailTypeTypes */
         $emailTypeTypes = MailerModule::getInstance()->emailTypes->getEmailTypeTypes();
 
         foreach ($emailTypeTypes as $emailTypeType) {
-            if ($fieldLayout->type === $emailTypeType) {
+            if ($layoutType === $emailTypeType) {
                 $emailTypeType::defineNativeFields($event);
             }
         }

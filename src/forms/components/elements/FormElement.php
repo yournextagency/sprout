@@ -577,8 +577,8 @@ class FormElement extends Element
         //Craft::$app->content->contentTable = $this->getSubmissionContentTable();
 
         // Do we need to create/rename the content table?
-        //if (!Craft::$app->db->tableExists($newContentDbTable) && !$this->duplicateOf) {
-        //    if ($oldContentDbTable && Craft::$app->db->tableExists($oldContentDbTable)) {
+        //if (!Craft::$app->getDb()->tableExists($newContentDbTable) && !$this->duplicateOf) {
+        //    if ($oldContentDbTable && Craft::$app->getDb()->tableExists($oldContentDbTable)) {
         //        Db::renameTable($oldContentDbTable, $newContentDbTable);
         //    } else {
         //        FormContentTableHelper::createContentTable($newContentDbTable);

@@ -111,7 +111,7 @@ class DataSetElement extends Element
     {
         $tableAttributes = [];
         // index or modal
-        $context = Craft::$app->request->getParam('context');
+        $context = Craft::$app->getRequest()->getParam('context');
 
         $tableAttributes['name'] = ['label' => Craft::t('sprout-module-data-studio', 'Name')];
 
@@ -140,7 +140,7 @@ class DataSetElement extends Element
     {
         $tableAttributes = [];
         // index or modal
-        $context = Craft::$app->request->getParam('context');
+        $context = Craft::$app->getRequest()->getParam('context');
 
         $tableAttributes[] = 'name';
 
@@ -254,10 +254,14 @@ class DataSetElement extends Element
         return $settings->getFieldLayout();
     }
 
-    public function getDataSource(): DataSource
+    public function getDataSource(): ?DataSource
     {
-        /** @var DataSource $dataSource */
         $dataSource = new $this->type($this->settings);
+
+        if (!$dataSource instanceof DataSource) {
+            return null;
+        }
+
         $dataSource->setDataSet($this);
 
         return $dataSource;

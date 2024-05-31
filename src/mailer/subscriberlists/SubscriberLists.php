@@ -30,9 +30,8 @@ class SubscriberLists extends Component
                     ]);
                 }
             } elseif (filter_var($subscription->email, FILTER_VALIDATE_EMAIL)) {
-                if ($user = Craft::$app->getUsers()->ensureUserByEmail($subscription->email)) {
-                    $subscription->userId = $user->id;
-                }
+                $user = Craft::$app->getUsers()->ensureUserByEmail($subscription->email);
+                $subscription->userId = $user->id;
             }
 
             if (!$user || !$subscription->validate()) {
@@ -48,7 +47,7 @@ class SubscriberLists extends Component
                 $subscription->save();
 
                 // Resave user to ensure Element Indexes are updated when refreshed
-                Craft::$app->elements->saveElement($user, false);
+                Craft::$app->getElements()->saveElement($user, false);
             }
 
             $transaction->commit();
@@ -93,7 +92,7 @@ class SubscriberLists extends Component
 
         if ($user) {
             // Resave user to ensure Element Indexes are updated when refreshed
-            Craft::$app->elements->saveElement($user, false);
+            Craft::$app->getElements()->saveElement($user, false);
         }
 
         return true;

@@ -96,10 +96,10 @@ class SentEmailController extends Controller
             throw new ForbiddenHttpException('User not authorized to edit content in any sites.');
         }
 
-        $emailId = Craft::$app->request->getBodyParam('emailId');
+        $emailId = Craft::$app->getRequest()->getBodyParam('emailId');
 
         /** @var SentEmailElement $sentEmail */
-        $sentEmail = Craft::$app->elements->getElementById($emailId, SentEmailElement::class, $site->id);
+        $sentEmail = Craft::$app->getElements()->getElementById($emailId, SentEmailElement::class, $site->id);
 
         $currentUser = Craft::$app->getUser()->getIdentity();
 

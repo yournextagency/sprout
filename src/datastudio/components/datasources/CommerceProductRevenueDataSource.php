@@ -104,13 +104,12 @@ class CommerceProductRevenueDataSource extends DataSource implements DateRangeIn
                 $rows[$key]['SKU'] = $result['SKU'] ?? '–';
 
                 /**@var $productElement Product */
-                $productElement = $productId ? Craft::$app->elements->getElementById($productId) : null;
+                $productElement = $productId ? Craft::$app->getElements()->getElementById($productId) : null;
 
                 if (!$this->variants) {
-                    /** @var Variant $variantElement */
-                    $variantElement = $variantId ? Craft::$app->elements->getElementById($variantId) : null;
+                    $variantElement = $variantId ? Craft::$app->getElements()->getElementById($variantId) : null;
 
-                    if ($variantElement) {
+                    if ($variantElement instanceof Variant) {
                         $rows[$key]['Variant Title'] = $variantElement->title;
                     } else {
                         $rows[$key]['Variant Title'] = Craft::t('sprout-module-data-studio', 'Variant has been deleted');

@@ -50,7 +50,7 @@ class PageNotFoundHelper
         $redirect->lastUserAgent = $request->getUserAgent();
         $redirect->dateLastUsed = DateTimeHelper::now();
 
-        if (!Craft::$app->elements->saveElement($redirect)) {
+        if (!Craft::$app->getElements()->saveElement($redirect)) {
             Craft::warning($redirect->getErrors(), __METHOD__);
 
             return null;

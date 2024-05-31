@@ -127,7 +127,7 @@ class Sprout extends Module implements SproutModuleInterface, MigrationInterface
             $this->controllerNamespace = 'BarrelStrength\\Sprout\\core\\controllers\\web';
         }
 
-        Craft::$app->view->registerTwigExtension(new SproutExtension());
+        Craft::$app->getView()->registerTwigExtension(new SproutExtension());
 
         Event::on(
             SproutVariable::class,

@@ -74,7 +74,7 @@ class FormIntegrationSettingsController extends BaseController
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $ids = Json::decode(Craft::$app->request->getRequiredBodyParam('ids'));
+        $ids = Json::decode(Craft::$app->getRequest()->getRequiredBodyParam('ids'));
 
         if (!IntegrationTypeHelper::reorderIntegrationTypes($ids)) {
             return $this->asJson([
@@ -93,7 +93,7 @@ class FormIntegrationSettingsController extends BaseController
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $integrationTypeUid = Craft::$app->request->getRequiredBodyParam('id');
+        $integrationTypeUid = Craft::$app->getRequest()->getRequiredBodyParam('id');
 
         /** @todo determine if any integrations are in use. */
         return $this->asJson([
@@ -120,7 +120,7 @@ class FormIntegrationSettingsController extends BaseController
         $request = Craft::$app->getRequest();
 
         $type = $request->getRequiredBodyParam('type');
-        $uid = Craft::$app->request->getBodyParam('uid');
+        $uid = Craft::$app->getRequest()->getBodyParam('uid');
         $uid = empty($uid) ? StringHelper::UUID() : $uid;
 
         /** @var Integration $integrationType */
@@ -143,7 +143,7 @@ class FormIntegrationSettingsController extends BaseController
         $this->requireAcceptsJson();
 
         // @todo - rewrite to use UID in Formbuilder JS
-        $integrationId = Craft::$app->request->getRequiredBodyParam('integrationId');
+        $integrationId = Craft::$app->getRequest()->getRequiredBodyParam('integrationId');
         $integration = FormsModule::getInstance()->formIntegrations->getIntegrationById($integrationId);
 
         if (!$integration instanceof Integration) {
@@ -170,7 +170,7 @@ class FormIntegrationSettingsController extends BaseController
         $this->requirePostRequest();
         $this->requireAcceptsJson();
 
-        $integrationId = Craft::$app->request->getRequiredBodyParam('integrationId');
+        $integrationId = Craft::$app->getRequest()->getRequiredBodyParam('integrationId');
 
         /** @var ElementIntegration $integration */
         $integration = FormsModule::getInstance()->formIntegrations->getIntegrationById($integrationId);

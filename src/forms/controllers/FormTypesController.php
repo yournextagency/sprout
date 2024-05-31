@@ -89,7 +89,7 @@ class FormTypesController extends Controller
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $ids = Json::decode(Craft::$app->request->getRequiredBodyParam('ids'));
+        $ids = Json::decode(Craft::$app->getRequest()->getRequiredBodyParam('ids'));
 
         if (!FormTypeHelper::reorderFormTypes($ids)) {
             return $this->asJson([
@@ -108,7 +108,7 @@ class FormTypesController extends Controller
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $formTypeUid = Craft::$app->request->getRequiredBodyParam('id');
+        $formTypeUid = Craft::$app->getRequest()->getRequiredBodyParam('id');
 
         $inUse = FormElement::find()
             ->formTypeUid($formTypeUid)
@@ -127,24 +127,24 @@ class FormTypesController extends Controller
 
     private function populateFormTypeModel(): FormType
     {
-        $type = Craft::$app->request->getRequiredBodyParam('type');
-        $uid = Craft::$app->request->getRequiredBodyParam('uid');
+        $type = Craft::$app->getRequest()->getRequiredBodyParam('type');
+        $uid = Craft::$app->getRequest()->getRequiredBodyParam('uid');
 
         /** @var FormType $formType */
         $formType = new $type();
-        $formType->name = Craft::$app->request->getBodyParam('name');
+        $formType->name = Craft::$app->getRequest()->getBodyParam('name');
         $formType->uid = !empty($uid) ? $uid : StringHelper::UUID();
 
-        $integrationTypes = Craft::$app->request->getBodyParam('enabledIntegrationTypes');
+        $integrationTypes = Craft::$app->getRequest()->getBodyParam('enabledIntegrationTypes');
 
         $fieldLayout = Craft::$app->getFields()->assembleLayoutFromPost();
 
         $fieldLayout->type = $type;
         $formType->setFieldLayout($fieldLayout);
 
-        $formType->formTemplateOverrideFolder = Craft::$app->request->getBodyParam('formTemplateOverrideFolder');
-        $formType->featureSettings = Craft::$app->request->getBodyParam('featureSettings');
-        $formType->enabledFormFieldTypes = Craft::$app->request->getBodyParam('enabledFormFieldTypes');
+        $formType->formTemplateOverrideFolder = Craft::$app->getRequest()->getBodyParam('formTemplateOverrideFolder');
+        $formType->featureSettings = Craft::$app->getRequest()->getBodyParam('featureSettings');
+        $formType->enabledFormFieldTypes = Craft::$app->getRequest()->getBodyParam('enabledFormFieldTypes');
 
         $formType->submissionMethod = Craft::$app->request->getBodyParam('submissionMethod');
         $formType->errorDisplayMethod = Craft::$app->request->getBodyParam('errorDisplayMethod');
@@ -160,7 +160,7 @@ class FormTypesController extends Controller
             return $formType;
         }
 
-        $formType->formTemplate = Craft::$app->request->getBodyParam('formTemplate');
+        $formType->formTemplate = Craft::$app->getRequest()->getBodyParam('formTemplate');
 
         return $formType;
     }

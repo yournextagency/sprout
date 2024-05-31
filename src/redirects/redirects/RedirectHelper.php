@@ -43,7 +43,7 @@ class RedirectHelper
      */
     public static function updateStatusCode($ids, $statusCode): int
     {
-        return Craft::$app->db->createCommand()->update(
+        return Craft::$app->getDb()->createCommand()->update(
             SproutTable::REDIRECTS,
             ['statusCode' => $statusCode],
             ['in', 'id', $ids]
@@ -163,7 +163,7 @@ class RedirectHelper
         try {
             $count = ++$redirect->count;
 
-            Craft::$app->db->createCommand()->update(SproutTable::REDIRECTS,
+            Craft::$app->getDb()->createCommand()->update(SproutTable::REDIRECTS,
                 ['count' => $count],
                 ['id' => $redirect->getId()]
             )->execute();

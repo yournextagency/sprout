@@ -70,7 +70,7 @@ trait OptimizedTrait
             $optimizedDescriptionFieldSetting === '' => $this->optimizedDescription ?? null,
             is_numeric($optimizedDescriptionFieldSetting) => OptimizeMetadataHelper::getSelectedFieldForOptimizedMetadata($optimizedDescriptionFieldSetting),
             default => $elementMetadataField->optimizedDescriptionFieldFormat
-                ? Craft::$app->view->renderObjectTemplate($elementMetadataField->optimizedDescriptionFieldFormat, $element)
+                ? Craft::$app->getView()->renderObjectTemplate($elementMetadataField->optimizedDescriptionFieldFormat, $element)
                 : null,
         };
 

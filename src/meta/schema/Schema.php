@@ -320,7 +320,7 @@ abstract class Schema
                 $image['height'] = $openGraphMeta->getOgImageHeight();
             }
         } elseif (is_numeric($imageId)) {
-            $imageAsset = Craft::$app->assets->getAssetById($imageId);
+            $imageAsset = Craft::$app->getAssets()->getAssetById($imageId);
             if ($imageAsset === null || !$imageAsset->getUrl()) {
                 return;
             }
@@ -397,7 +397,7 @@ abstract class Schema
             return;
         }
 
-        $addressModel = Craft::$app->elements->getElementById($locationAddressId);
+        $addressModel = Craft::$app->getElements()->getElementById($locationAddressId);
 
         if (!$addressModel instanceof Address) {
             return;

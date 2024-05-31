@@ -76,13 +76,13 @@ class SearchMetaType extends MetaType
         $appendTitleValueOnHomepage = $settings['appendTitleValueOnHomepage'];
         $metaDivider = $settings['metaDivider'];
 
-        if ($appendTitleValueOnHomepage || Craft::$app->request->getPathInfo()) {
+        if ($appendTitleValueOnHomepage || Craft::$app->getRequest()->getPathInfo()) {
             $globalAppendTitleValue = $settings['appendTitleValue'];
 
             $currentSite = Craft::$app->getSites()->getCurrentSite();
 
             // Add support for using {divider} and {siteName} in the Sitemap 'Append Meta Title' setting
-            $appendTitleValue = Craft::$app->view->renderObjectTemplate($globalAppendTitleValue, [
+            $appendTitleValue = Craft::$app->getView()->renderObjectTemplate($globalAppendTitleValue, [
                 'siteName' => $currentSite->name,
                 'divider' => $metaDivider,
             ]);

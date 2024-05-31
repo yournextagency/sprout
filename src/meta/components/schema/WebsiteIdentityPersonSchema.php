@@ -30,7 +30,7 @@ class WebsiteIdentityPersonSchema extends Schema
         $this->addText('name', $schema['name']);
         $this->addText('alternateName', $schema['alternateName']);
         $this->addText('description', $schema['description']);
-        $this->addUrl('url', Craft::$app->sites->getCurrentSite()->getBaseUrl());
+        $this->addUrl('url', Craft::$app->getSites()->getCurrentSite()->getBaseUrl());
         $this->addTelephone('telephone', $schema['telephone']);
         $this->addEmail('email', $schema['email']);
 

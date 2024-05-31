@@ -73,7 +73,7 @@ class GlobalMetadata extends Component
             $this->insertDefaultGlobalMetadata($globals->siteId);
         }
 
-        Craft::$app->db->createCommand()->update(SproutTable::GLOBAL_METADATA,
+        Craft::$app->getDb()->createCommand()->update(SproutTable::GLOBAL_METADATA,
             $values,
             ['siteId' => $globals->siteId]
         )->execute();
@@ -155,7 +155,7 @@ class GlobalMetadata extends Component
     public function getOptimizedOptions(string $type = PlainText::class, $handle = null, $settings = null): array
     {
         $options = [];
-        $fields = Craft::$app->fields->getAllFields();
+        $fields = Craft::$app->getFields()->getAllFields();
 
         $options[''] = Craft::t('sprout-module-meta', 'None');
 
@@ -199,7 +199,7 @@ class GlobalMetadata extends Component
     public function getKeywordsOptions(string $type = PlainText::class): array
     {
         $options = [];
-        $fields = Craft::$app->fields->getAllFields();
+        $fields = Craft::$app->getFields()->getAllFields();
 
         $options[''] = Craft::t('sprout-module-meta', 'None');
         $options[] = ['optgroup' => Craft::t('sprout-module-meta', 'Use Existing Field (Recommended)')];

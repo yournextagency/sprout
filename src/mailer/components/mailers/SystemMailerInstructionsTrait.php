@@ -239,10 +239,9 @@ trait SystemMailerInstructionsTrait
 
     public function validateApprovedSender(): void
     {
-        /** @var SystemMailer $mailer */
         $mailer = $this->getMailer();
 
-        if (!$mailer) {
+        if (!$mailer instanceof SystemMailer) {
             return;
         }
 
@@ -256,10 +255,9 @@ trait SystemMailerInstructionsTrait
 
     public function validateApprovedReplyTo(): void
     {
-        /** @var SystemMailer $mailer */
         $mailer = $this->getMailer();
 
-        if (!$mailer) {
+        if (!$mailer instanceof SystemMailer) {
             return;
         }
 

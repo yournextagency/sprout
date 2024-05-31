@@ -91,7 +91,7 @@ class EmailTypesController extends Controller
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $ids = Json::decode(Craft::$app->request->getRequiredBodyParam('ids'));
+        $ids = Json::decode(Craft::$app->getRequest()->getRequiredBodyParam('ids'));
 
         if (!EmailTypeHelper::reorderEmailTypes($ids)) {
             return $this->asJson([
@@ -110,7 +110,7 @@ class EmailTypesController extends Controller
         $this->requirePostRequest();
         $this->requireAdmin(false);
 
-        $emailTypeUid = Craft::$app->request->getRequiredBodyParam('id');
+        $emailTypeUid = Craft::$app->getRequest()->getRequiredBodyParam('id');
 
         $inUse = EmailElement::find()
             ->emailTypeUid($emailTypeUid)
@@ -125,13 +125,13 @@ class EmailTypesController extends Controller
 
     private function populateEmailTypeModel(): EmailType
     {
-        $type = Craft::$app->request->getRequiredBodyParam('type');
-        $uid = Craft::$app->request->getRequiredBodyParam('uid');
+        $type = Craft::$app->getRequest()->getRequiredBodyParam('type');
+        $uid = Craft::$app->getRequest()->getRequiredBodyParam('uid');
 
         /** @var EmailType $emailType */
         $emailType = new $type();
-        $emailType->name = Craft::$app->request->getRequiredBodyParam('name');
-        $emailType->mailerUid = Craft::$app->request->getRequiredBodyParam('mailerUid');
+        $emailType->name = Craft::$app->getRequest()->getRequiredBodyParam('name');
+        $emailType->mailerUid = Craft::$app->getRequest()->getRequiredBodyParam('mailerUid');
         $emailType->uid = !empty($uid) ? $uid : StringHelper::UUID();
 
         // Allow UI Elements to be added to the Field Layout
@@ -143,10 +143,10 @@ class EmailTypesController extends Controller
             return $emailType;
         }
 
-        $emailType->displayPreheaderText = Craft::$app->request->getBodyParam('displayPreheaderText');
-        $emailType->htmlEmailTemplate = Craft::$app->request->getBodyParam('htmlEmailTemplate');
-        $emailType->textEmailTemplate = Craft::$app->request->getBodyParam('textEmailTemplate');
-        $emailType->copyPasteEmailTemplate = Craft::$app->request->getBodyParam('copyPasteEmailTemplate');
+        $emailType->displayPreheaderText = Craft::$app->getRequest()->getBodyParam('displayPreheaderText');
+        $emailType->htmlEmailTemplate = Craft::$app->getRequest()->getBodyParam('htmlEmailTemplate');
+        $emailType->textEmailTemplate = Craft::$app->getRequest()->getBodyParam('textEmailTemplate');
+        $emailType->copyPasteEmailTemplate = Craft::$app->getRequest()->getBodyParam('copyPasteEmailTemplate');
 
         return $emailType;
     }
@@ -155,7 +155,7 @@ class EmailTypesController extends Controller
     {
         $this->requireAdmin();
 
-        $elementIds = Craft::$app->request->getQueryParam('elementIds');
+        $elementIds = Craft::$app->getRequest()->getQueryParam('elementIds');
 
         $emailTypes = EmailTypeHelper::getEmailTypes();
         $emailTypeOptions = ArrayHelper::map($emailTypes, 'uid', 'name');
@@ -174,8 +174,8 @@ class EmailTypesController extends Controller
         $this->requireAdmin();
         $this->requirePostRequest();
 
-        $emailTypeUid = Craft::$app->request->getRequiredBodyParam('emailTypeUid');
-        $elementIds = Craft::$app->request->getRequiredBodyParam('elementIds');
+        $emailTypeUid = Craft::$app->getRequest()->getRequiredBodyParam('emailTypeUid');
+        $elementIds = Craft::$app->getRequest()->getRequiredBodyParam('elementIds');
         $selectedElementIds = explode(',', $elementIds);
 
         $emailType = EmailTypeHelper::getEmailTypeByUid($emailTypeUid);

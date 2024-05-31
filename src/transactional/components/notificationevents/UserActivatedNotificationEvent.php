@@ -53,7 +53,7 @@ class UserActivatedNotificationEvent extends BaseElementNotificationEvent
     public function getEventVariables(): array
     {
         return [
-            'user' => $this?->event?->user,
+            'user' => $this->event->user,
         ];
     }
 

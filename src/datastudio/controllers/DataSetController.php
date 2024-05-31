@@ -50,7 +50,7 @@ class DataSetController extends Controller
         }
 
         if ($dataSet === null && $dataSetId) {
-            $dataSet = Craft::$app->elements->getElementById($dataSetId, DataSetElement::class, $site->id);
+            $dataSet = Craft::$app->getElements()->getElementById($dataSetId, DataSetElement::class, $site->id);
         }
 
         if (!$dataSet) {
@@ -175,10 +175,9 @@ class DataSetController extends Controller
         $currentUser = Craft::$app->getUser()->getIdentity();
         $dataSetId = Craft::$app->getRequest()->getParam('dataSetId');
 
-        /** @var DataSetElement $dataSet */
-        $dataSet = Craft::$app->elements->getElementById($dataSetId, DataSetElement::class, $site->id);
+        $dataSet = Craft::$app->getElements()->getElementById($dataSetId, DataSetElement::class, $site->id);
 
-        if (!$dataSet) {
+        if (!$dataSet instanceof DataSetElement) {
             throw new ElementNotFoundException('Data set not found');
         }
 
@@ -209,10 +208,9 @@ class DataSetController extends Controller
         $dataSet = new DataSetElement();
 
         if ($dataSetId && $settings) {
-            /** @var DataSetElement $dataSet */
             $dataSet = Craft::$app->getElements()->getElementById($dataSetId, DataSetElement::class);
 
-            if (!$dataSet) {
+            if (!$dataSet instanceof DataSetElement) {
                 throw new NotFoundHttpException('No data set exists with the ID: ' . $dataSetId);
             }
 

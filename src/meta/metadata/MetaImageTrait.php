@@ -28,7 +28,7 @@ trait MetaImageTrait
 
             // Custom Value
             default:
-                $imageId = Craft::$app->view->renderObjectTemplate($optimizedImageFieldSetting, $element);
+                $imageId = Craft::$app->getView()->renderObjectTemplate($optimizedImageFieldSetting, $element);
                 break;
         }
 
@@ -58,7 +58,7 @@ trait MetaImageTrait
         $scheme = parse_url(UrlHelper::baseSiteUrl(), PHP_URL_SCHEME);
         $transformSettings = $transform ? MetaModule::getInstance()->optimizeMetadata->getSelectedTransform($transform) : null;
 
-        $asset = Craft::$app->assets->getAssetById($image);
+        $asset = Craft::$app->getAssets()->getAssetById($image);
 
         // If our selected asset was deleted, make sure it is null
         if (!$asset || !$asset->getUrl()) {
@@ -95,7 +95,7 @@ trait MetaImageTrait
             }
         }
 
-        if (Craft::$app->request->getIsSecureConnection()) {
+        if (Craft::$app->getRequest()->getIsSecureConnection()) {
             $secureUrl = preg_replace('#^http:#i', 'https:', $absoluteUrl);
             $absoluteUrl = $secureUrl;
         }

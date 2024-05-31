@@ -203,7 +203,7 @@ class SitemapMetadataController extends Controller
             $sourceKey !== SitemapKey::CUSTOM_PAGES && // Custom Pages Sitemap is not limited
             ContentSitemapMetadataHelper::hasReachedSitemapLimit($siteId) // Enforce limit of 5 Content or Content Query Sitemaps
         ) {
-            if (Craft::$app->request->getAcceptsJson()) {
+            if (Craft::$app->getRequest()->getAcceptsJson()) {
                 return $this->asJson([
                     'success' => false,
                     'errorMessage' => Craft::t('sprout-module-sitemaps', SitemapsModule::getUpgradeMessage()),
@@ -245,7 +245,7 @@ class SitemapMetadataController extends Controller
         }
 
         if (!SitemapsModule::getInstance()->sitemaps->saveSitemapMetadata($sitemapMetadataRecord)) {
-            if (Craft::$app->request->getAcceptsJson()) {
+            if (Craft::$app->getRequest()->getAcceptsJson()) {
                 return $this->asJson([
                     'success' => false,
                     'errors' => $sitemapMetadataRecord->getErrors(),
@@ -263,7 +263,7 @@ class SitemapMetadataController extends Controller
             return null;
         }
 
-        if (Craft::$app->request->getAcceptsJson()) {
+        if (Craft::$app->getRequest()->getAcceptsJson()) {
             return $this->asJson([
                 'success' => true,
                 'sitemapMetadata' => $sitemapMetadataRecord,
@@ -284,7 +284,7 @@ class SitemapMetadataController extends Controller
 
         $result = SitemapsModule::getInstance()->sitemaps->deleteSitemapMetadataById($sitemapMetadataId);
 
-        if (Craft::$app->request->getAcceptsJson()) {
+        if (Craft::$app->getRequest()->getAcceptsJson()) {
             return $this->asJson([
                 'success' => $result,
             ]);

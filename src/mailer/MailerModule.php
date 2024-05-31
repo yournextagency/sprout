@@ -100,7 +100,7 @@ class MailerModule extends Module implements SproutModuleInterface, MigrationInt
             'subscriberLists' => SubscriberLists::class,
         ]);
 
-        Craft::$app->view->registerTwigExtension(new CssInlinerExtension());
+        Craft::$app->getView()->registerTwigExtension(new CssInlinerExtension());
 
         Event::on(
             SproutVariable::class,

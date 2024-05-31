@@ -20,10 +20,11 @@ use yii\web\ServerErrorHttpException;
 
 class EmailController extends Controller
 {
-    public function actionEmailIndexTemplate(string $emailVariant = null): Response
+    public function actionEmailIndexTemplate(string $emailVariant): Response
     {
-        /** @var string|EmailVariant $emailVariant */
-        if (!$emailVariant = new $emailVariant()) {
+        $emailVariant = new $emailVariant();
+
+        if (!$emailVariant instanceof EmailVariant) {
             throw new InvalidArgumentException('Unable to find email variant: ' . $emailVariant);
         }
 
@@ -71,7 +72,7 @@ class EmailController extends Controller
 
         $email->emailVariantType = $emailVariant::class;
 
-        if ($emailVariantSettings = Craft::$app->request->getParam('emailVariantSettings')) {
+        if ($emailVariantSettings = Craft::$app->getRequest()->getParam('emailVariantSettings')) {
             $email->emailVariantSettings = $emailVariantSettings;
         }
 

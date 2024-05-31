@@ -49,7 +49,7 @@ class EntryDeletedNotificationEvent extends BaseElementNotificationEvent
     public function getEventVariables(): array
     {
         return [
-            'entry' => $this?->event?->sender,
+            'entry' => $this->event?->sender,
         ];
     }
 

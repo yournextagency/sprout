@@ -65,7 +65,7 @@ class OptimizeMetadata extends Component
     {
         $path = Craft::$app->getRequest()->getPathInfo();
 
-        $element = Craft::$app->elements->getElementByUri($path, $siteId, true);
+        $element = Craft::$app->getElements()->getElementByUri($path, $siteId, true);
 
         if ($element && $element->uri !== null) {
             $this->element = $element;
@@ -176,7 +176,7 @@ class OptimizeMetadata extends Component
              * Non URL-Enabled Elements don't resave metadata on their own. That will need to be done manually.
              */
             if ($elementId = $this->templateMetadata['elementId'] ?? null) {
-                $element = Craft::$app->elements->getElementById($elementId);
+                $element = Craft::$app->getElements()->getElementById($elementId);
 
                 // Overwrite the Element Attributes if the template override Element ID returns an element
                 if ($element) {

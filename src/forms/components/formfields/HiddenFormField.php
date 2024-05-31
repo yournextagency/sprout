@@ -81,7 +81,7 @@ class HiddenFormField extends Field implements FormFieldInterface, PreviewableFi
     {
         if ($this->value) {
             try {
-                $value = Craft::$app->view->renderObjectTemplate($this->value, Forms::getFieldVariables());
+                $value = Craft::$app->getView()->renderObjectTemplate($this->value, Forms::getFieldVariables());
             } catch (Exception $exception) {
                 Craft::error($exception->getMessage(), __METHOD__);
             }
@@ -100,7 +100,7 @@ class HiddenFormField extends Field implements FormFieldInterface, PreviewableFi
     //{
     //    if ($this->value) {
     //        try {
-    //            $value = Craft::$app->view->renderObjectTemplate($this->value, Forms::getFieldVariables());
+    //            $value = Craft::$app->getView()->renderObjectTemplate($this->value, Forms::getFieldVariables());
     //        } catch (Exception $exception) {
     //            Craft::error($exception->getMessage(), __METHOD__);
     //        }
