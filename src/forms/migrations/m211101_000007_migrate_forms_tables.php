@@ -196,16 +196,12 @@ class m211101_000007_migrate_forms_tables extends Migration
                 );
             }
 
-            if (!Craft::$app->getProjectConfig()->get('sprout.sprout-module-forms.formTypes')) {
-                $formTypesConfig = ProjectConfig::packAssociativeArray($formTypes);
-                Craft::$app->getProjectConfig()->set('sprout.sprout-module-forms.formTypes', $formTypesConfig);
-            }
+            $formTypesConfig = ProjectConfig::packAssociativeArray($formTypes);
+            Craft::$app->getProjectConfig()->set('sprout.sprout-module-forms.formTypes', $formTypesConfig);
 
             Craft::$app->getDb()->createCommand()
                 ->batchInsert(self::FORMS_TABLE, $colsNew, $rows)
                 ->execute();
-
-            $this->createFormContentTables($rowsForContentMigration);
         }
 
         $cols = [
