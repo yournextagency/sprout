@@ -20,6 +20,7 @@ abstract class m000000_000000_sprout_plugin_migration extends Migration
     {
         $plugin = $this->getPluginInstance();
 
+        /** @var SproutPluginMigrator $migrator */
         $migrator = $plugin->getMigrator();
         $migrator->runParentMigrations = false;
 

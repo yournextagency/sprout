@@ -14,6 +14,7 @@ use BarrelStrength\Sprout\mailer\components\elements\email\EmailElement;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
 use BarrelStrength\Sprout\transactional\components\elements\TransactionalEmailElement;
 use BarrelStrength\Sprout\transactional\components\emailvariants\TransactionalEmailVariant;
+use BarrelStrength\Sprout\transactional\notificationevents\BaseElementNotificationEvent;
 use BarrelStrength\Sprout\transactional\notificationevents\ElementEventInterface;
 use BarrelStrength\Sprout\transactional\TransactionalModule;
 use Craft;
@@ -136,7 +137,7 @@ class TransactionalFormFeature implements RelationsTableInterface
             /** @var TransactionalEmailVariant $emailVariantSettings */
             $emailVariantSettings = $email->getEmailVariant();
 
-            /** @var ElementEventInterface $notificationEvent */
+            /** @var BaseElementNotificationEvent $notificationEvent */
             $notificationEvent = $emailVariantSettings->getNotificationEvent($email, $submissionEvent);
 
             $condition = $notificationEvent->condition;

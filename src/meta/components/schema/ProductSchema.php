@@ -3,6 +3,7 @@
 namespace BarrelStrength\Sprout\meta\components\schema;
 
 use craft\commerce\elements\Product;
+use craft\commerce\elements\Variant;
 use craft\commerce\Plugin as Commerce;
 
 class ProductSchema extends ThingSchema
@@ -67,13 +68,14 @@ class ProductSchema extends ThingSchema
             $seller = $identitySchema->getSchema();
         }
 
+        /** @var Variant $variant */
         foreach ($element->getVariants() as $variant) {
             $offers[$variant->id]['@type'] = 'Offer';
             $offers[$variant->id]['sku'] = $variant->sku;
             $offers[$variant->id]['price'] = $variant->price;
             $offers[$variant->id]['priceCurrency'] = $primaryCurrencyIso;
 
-            if ($variant->hasUnlimitedStock == 1 || $variant->stock > 0) {
+            if ($variant->inventoryTracked === true || $variant->getStock() > 0) {
                 $availability = 'https://schema.org/InStock';
             } else {
                 $availability = 'https://schema.org/OutOfStock';

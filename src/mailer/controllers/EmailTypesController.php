@@ -180,6 +180,7 @@ class EmailTypesController extends Controller
 
         $emailType = EmailTypeHelper::getEmailTypeByUid($emailTypeUid);
 
+        /** @var EmailElement[] $emailElements */
         $emailElements = EmailElement::find()
             ->id($selectedElementIds)
             ->where(['not', ['emailTypeUid' => $emailTypeUid]])

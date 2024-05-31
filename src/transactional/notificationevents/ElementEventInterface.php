@@ -2,12 +2,8 @@
 
 namespace BarrelStrength\Sprout\transactional\notificationevents;
 
-use craft\elements\conditions\ElementCondition;
 use yii\base\Event;
 
-/**
- * @property ElementCondition|null $condition
- */
 interface ElementEventInterface
 {
     public static function conditionType(): string;

@@ -181,22 +181,27 @@ trait SystemMailerInstructionsTrait
         // We only attach files that are identified in the event object
         $object = $templateVariables['object'] ?? null;
 
-        if (!$object instanceof Element || !$object::hasContent()) {
+        if (!$object instanceof Element) {
             return [];
         }
 
         $assets = [];
 
         foreach ($object->getFieldLayout()->getCustomFields() as $field) {
-            if ($field instanceof Assets) {
-                $query = $object->{$field->handle};
 
-                if ($query instanceof AssetQuery) {
-                    $results = $query->all();
-
-                    $assets = [...$assets, ...$results];
-                }
+            if (!$field instanceof Assets) {
+                continue;
             }
+
+            $query = $object->{$field->handle};
+
+            if (!$query instanceof AssetQuery) {
+                continue;
+            }
+
+            $results = $query->all();
+
+            $assets = [...$assets, ...$results];
         }
 
         return $assets;
