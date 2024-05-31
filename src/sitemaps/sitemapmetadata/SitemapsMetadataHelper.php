@@ -315,7 +315,7 @@ class SitemapsMetadataHelper
 
         return [
             $showNav,
-            $sitemapGroupSites ?? [],
+            $sitemapGroupSites,
         ];
     }
 }

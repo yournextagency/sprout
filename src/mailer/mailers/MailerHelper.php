@@ -93,7 +93,7 @@ class MailerHelper
         $mailer = new $type(array_merge([
             'name' => $config['name'],
             'uid' => $uid ?? StringHelper::UUID(),
-        ], $config ?? []));
+        ], $config));
 
         return $mailer;
     }
