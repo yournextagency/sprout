@@ -149,7 +149,7 @@ trait FormFieldTrait
         return [];
     }
 
-    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
+    public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
         $value = (string)$value;
 

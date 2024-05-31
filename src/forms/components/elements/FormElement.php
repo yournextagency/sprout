@@ -1010,7 +1010,7 @@ class FormElement extends Element
         return "\n";
     }
 
-    protected function attributeHtml(string $attribute): string
+    public function getAttributeHtml(string $attribute): string
     {
         return match ($attribute) {
             'handle' => '<code>' . $this->handle . '</code>',
@@ -1029,7 +1029,7 @@ class FormElement extends Element
                 'data-icon' => 'settings',
                 'title' => Craft::t('sprout-module-forms', 'Visit form settings'),
             ]),
-            default => parent::tableAttributeHtml($attribute),
+            default => parent::getAttributeHtml($attribute),
         };
     }
 

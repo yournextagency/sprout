@@ -197,6 +197,10 @@ class SubmissionElementQuery extends ElementQuery
 
     protected function customFields(): array
     {
+        if (!$this->formId) {
+            return [];
+        }
+
         // This method won't get called if $this->formId isn't set to a single int
         $form = FormsModule::getInstance()->forms->getFormById($this->formId);
 
