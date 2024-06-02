@@ -265,7 +265,7 @@ const FieldLayout = {
         slideout.$footer.find('.submit').addClass('secondary');
 
         $removeBtn.on('click', () => {
-            console.log('waa');
+            this.deleteFieldLayoutElement(layoutElement.fieldUid);
             slideout.close();
         });
 
@@ -292,9 +292,14 @@ const FieldLayout = {
         let targetFieldLayoutElement = tab.elements[fieldIndex];
 
         targetFieldLayoutElement.required = fieldLayoutElement.required;
+        targetFieldLayoutElement.field.name = fieldLayoutElement.field.name;
+        targetFieldLayoutElement.field.handle = fieldLayoutElement.field.handle;
+        targetFieldLayoutElement.field.instructions = fieldLayoutElement.field.instructions;
 
-        // Merge updated values into existing field
-        targetFieldLayoutElement.field = Object.assign(targetFieldLayoutElement.field, fieldLayoutElement.field);
+        // Merge updated values into existing field settings
+        Object.entries(fieldLayoutElement.field.settings).forEach(([index, value]) => {
+            targetFieldLayoutElement.field.settings[index] = value;
+        });
 
         tab.elements[fieldIndex] = targetFieldLayoutElement;
     },
@@ -336,6 +341,16 @@ const FieldLayout = {
         // FormBuilder.lastUpdatedFormFieldUid = targetField.uid;
 
         // this.resetLastUpdated();
+    },
+
+    deleteFieldLayoutElement(targetFieldUid) {
+        let tabIndex = this.getTabIndexByTabUid(FormBuilder.selectedTabUid);
+        let tab = FormBuilder.tabs[tabIndex];
+
+        let fieldIndex = this.getFieldIndexByFieldUid(tab, targetFieldUid);
+
+        // remove field from tab
+        FormBuilder.tabs[tabIndex].elements.splice(fieldIndex, 1);
     },
 
     // -------------------------------------------------------------------------

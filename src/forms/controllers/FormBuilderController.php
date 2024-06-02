@@ -11,7 +11,7 @@ use craft\elements\conditions\users\UserCondition;
 use craft\helpers\Html;
 use craft\helpers\Template;
 use craft\web\Controller as BaseController;
-use yii\helpers\Json;
+use craft\helpers\Json;
 use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
@@ -74,7 +74,7 @@ class FormBuilderController extends BaseController
         return $this->asCpScreen()
             ->submitButtonLabel('Apply')
             ->action('sprout-module-forms/form-builder/edit-form-tab-slideout-response')
-            ->content($html);
+            ->contentHtml($html);
     }
 
     public function actionEditFormFieldSlideoutViaCpScreen(): Response
@@ -98,7 +98,7 @@ class FormBuilderController extends BaseController
         }
 
         $layoutElementConfig = Craft::$app->getRequest()->getRequiredParam('layoutElement');
-        $layoutElementConfig = Json::decode($layoutElementConfig);
+        $layoutElementConfig = Json::decodeIfJson($layoutElementConfig);
         $fieldConfig = $layoutElementConfig['field'];
 
         $class = $fieldConfig['type'] ?? null;
@@ -116,7 +116,7 @@ class FormBuilderController extends BaseController
         $fieldLayoutElement = new CustomFormField($field);
         $fieldLayoutElement->layout = $form->getSubmissionFieldLayout();
 
-        $fieldLayoutElement->required = $layoutElementConfig['required'] ?? false;
+        $fieldLayoutElement->required = $layoutElementConfig['required'] === true;
         $fieldLayoutElement->width = $layoutElementConfig['width'];
         $fieldLayoutElement->uid = $layoutElementConfig['uid'];
 
@@ -154,6 +154,11 @@ class FormBuilderController extends BaseController
         //$conditionHtml = self::swapPlaceholders($userCondition->getBuilderHtml(), $layoutElementConfig['fieldUid']);
         //let settingsHtml = self.swapPlaceholders(response.data.settingsHtml, response.data.fieldUid);
 
+        //$conditionHtml = Cp::fieldHtml($userCondition->getBuilderHtml(), [
+        //    'label' => Craft::t('app', 'Current User Condition'),
+        //    'instructions' => Craft::t('app', 'Only show for users who match the following rules:'),
+        //]);
+
         // @featureRequest
         // Setting fieldUid throws an error if the field is just created in the layout
         // and isn't yet created in the DB, so we work around that by not setting it here
@@ -171,6 +176,7 @@ class FormBuilderController extends BaseController
             'fieldUid' => $layoutElementConfig['fieldUid'],
             'settingsHtml' => $settingsHtml,
             //'conditionHtml' => $conditionHtml,
+            'conditionHtml' => '',
         ]);
 
         $fieldSettingsJs = $view->clearJsBuffer();
@@ -202,7 +208,7 @@ class FormBuilderController extends BaseController
             ->tabs($tabs)
             ->submitButtonLabel('Apply')
             ->action('sprout-module-forms/form-builder/edit-form-field-slideout-response')
-            ->content($html);
+            ->contentHtml($html);
     }
 
     public function actionEditFormTabSlideoutResponse(): Response
@@ -227,27 +233,14 @@ class FormBuilderController extends BaseController
 
     public function actionEditFormFieldSlideoutResponse(): Response
     {
-        // get field from params
-        $name = $this->request->getBodyParam('name');
-        $handle = $this->request->getBodyParam('handle');
-        $instructions = $this->request->getBodyParam('instructions');
-        $required = $this->request->getBodyParam('fieldLayoutElement.required');
-        $settings = $this->request->getBodyParam('settings');
+        $layoutElement =  $this->request->getBodyParam('layoutElement');
+        $layoutElement['required'] = $layoutElement['required']  === '1';
 
         // Return params and let JS update field model in layout
         return $this->asJson([
             'success' => true,
             'message' => Craft::t('sprout-module-forms', 'Field updated.'),
-            'layoutElement' => [
-                'required' => $required,
-                'field' => [
-                    'name' => $name,
-                    'handle' => $handle,
-                    'instructions' => $instructions,
-                    'settings' => $settings,
-                ],
-            ],
-            //'params' => $this->request->getBodyParams(),
+            'layoutElement' => $layoutElement,
         ]);
     }
 

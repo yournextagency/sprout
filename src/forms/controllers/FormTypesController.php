@@ -146,15 +146,15 @@ class FormTypesController extends Controller
         $formType->featureSettings = Craft::$app->getRequest()->getBodyParam('featureSettings');
         $formType->enabledFormFieldTypes = Craft::$app->getRequest()->getBodyParam('enabledFormFieldTypes');
 
-        $formType->submissionMethod = Craft::$app->request->getBodyParam('submissionMethod');
-        $formType->errorDisplayMethod = Craft::$app->request->getBodyParam('errorDisplayMethod');
-        $formType->enableSaveData = Craft::$app->request->getBodyParam('enableSaveData');
+        $formType->submissionMethod = Craft::$app->getRequest()->getBodyParam('submissionMethod');
+        $formType->errorDisplayMethod = Craft::$app->getRequest()->getBodyParam('errorDisplayMethod');
+        $formType->enableSaveData = Craft::$app->getRequest()->getBodyParam('enableSaveData');
         $formType->trackRemoteIp = $formType->enableSaveData
-            ? Craft::$app->request->getBodyParam('trackRemoteIp')
+            ? Craft::$app->getRequest()->getBodyParam('trackRemoteIp')
             : false;
-        $formType->allowedAssetVolumes = Craft::$app->request->getBodyParam('allowedAssetVolumes');
-        $formType->defaultUploadLocationSubpath = Craft::$app->request->getBodyParam('defaultUploadLocationSubpath');
-        $formType->enableEditSubmissionViaFrontEnd = Craft::$app->request->getBodyParam('enableEditSubmissionViaFrontEnd');
+        $formType->allowedAssetVolumes = Craft::$app->getRequest()->getBodyParam('allowedAssetVolumes');
+        $formType->defaultUploadLocationSubpath = Craft::$app->getRequest()->getBodyParam('defaultUploadLocationSubpath');
+        $formType->enableEditSubmissionViaFrontEnd = Craft::$app->getRequest()->getBodyParam('enableEditSubmissionViaFrontEnd');
 
         if (!$formType::isEditable()) {
             return $formType;
@@ -169,7 +169,7 @@ class FormTypesController extends Controller
     {
         $this->requireAdmin();
 
-        $elementIds = Craft::$app->request->getQueryParam('elementIds');
+        $elementIds = Craft::$app->getRequest()->getQueryParam('elementIds');
 
         $formTypes = FormTypeHelper::getFormTypes();
         $formTypeOptions = ArrayHelper::map($formTypes, 'uid', 'name');
@@ -188,8 +188,8 @@ class FormTypesController extends Controller
         $this->requireAdmin();
         $this->requirePostRequest();
 
-        $formTypeUid = Craft::$app->request->getRequiredBodyParam('formTypeUid');
-        $elementIds = Craft::$app->request->getRequiredBodyParam('elementIds');
+        $formTypeUid = Craft::$app->getRequest()->getRequiredBodyParam('formTypeUid');
+        $elementIds = Craft::$app->getRequest()->getRequiredBodyParam('elementIds');
         $selectedElementIds = explode(',', $elementIds);
 
         $formType = FormTypeHelper::getFormTypeByUid($formTypeUid);
