@@ -196,27 +196,35 @@ $detailsWidth: 350px;
     color: var(--link-color);
 }
 
+.edit-field-button,
+.form-field-details a.delete {
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
 .edit-field-button {
     //background-color: $blue500;
     //border-bottom-left-radius: $smallBorderRadius;
     //border-top-right-radius: $smallBorderRadius;
     //color: $white;
-    cursor: pointer;
+
     font-size: 18px;
     //font-weight: bold;
     margin-right: 4px;
     margin-top: 4px;
-    opacity: 0;
+
     padding: 3px 5px;
     position: absolute;
     right: 0;
     text-transform: uppercase;
     top: 0;
-    transition: opacity 0.2s ease-in-out;
 }
 
 .layout-field:hover .edit-field-button,
-.layout-field-overlay:hover .edit-field-button {
+.layout-field-overlay:hover .edit-field-button,
+.layout-field:hover .form-field-details a.delete,
+.layout-field-overlay:hover .form-field-details a.delete {
     opacity: 1;
 }
 
@@ -233,7 +241,7 @@ $detailsWidth: 350px;
     background-color: $white;
     border: 2px solid transparent;
     border-radius: $smallBorderRadius;
-    padding: 14px 10px 20px;
+    padding: 14px 10px 0;
     position: relative;
     left: 0;
     box-shadow: inset 0 0 0 1px transparent, 0 0 0 1px rgba(0, 0, 0, 0.025), 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -283,9 +291,18 @@ $detailsWidth: 350px;
 }
 
 .form-field-details {
-    text-align: right;
+    //text-align: right;
+    display: flex;
+    justify-content: space-between;
     font-size: 12px;
     color: $grey400;
+    margin-top: 24px;
+    margin-bottom: 6px
+}
+
+.form-field-details .delete {
+    margin-right: 3px;
+    font-size: 14px;
 }
 
 .layout-field ul.settings {
@@ -345,7 +362,7 @@ $detailsWidth: 350px;
     flex-direction: row;
     flex-wrap: wrap;
     user-select: none;
-    justify-content: space-between;
+    gap: 10px;
 }
 
 #form-source-fields h6 {
@@ -357,22 +374,9 @@ $detailsWidth: 350px;
 .source-field {
     border: 2px solid transparent;
     box-sizing: border-box;
-    margin-bottom: 10px;
     padding: 10px 8px 6px 8px;
     text-align: left;
     width: 155px;
-}
-
-@media only screen and (min-width: 975px) {
-    #form-source-fields .source-field.odd {
-        margin-right: 10px;
-    }
-}
-
-@media only screen and (max-width: 974px) {
-    #form-source-fields .source-field {
-        margin-right: 5px;
-    }
 }
 
 *[draggable=true] {

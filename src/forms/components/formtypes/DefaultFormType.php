@@ -16,7 +16,7 @@ use craft\models\FieldLayoutTab;
 
 class DefaultFormType extends FormType
 {
-    public ?string $formTemplate = '@Sprout/TemplateRoot/forms/default';
+    public ?string $formTemplate = '@Sprout/TemplateRoot/form/default';
 
     public static function displayName(): string
     {

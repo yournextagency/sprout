@@ -132,6 +132,10 @@
                                 <div class="body" x-html="element.uiSettings.exampleInputHtml"></div>
                                 <div class="form-field-details">
                                     <span x-text="element.uiSettings.displayName"></span>
+                                    <a
+                                        x-on:click="deleteFormField(element)"
+                                        class="delete icon"
+                                    ></a>
                                     {# <code x-text="field.uiSettings.fieldHandleHtml"></code> #}
                                 </div>
 
