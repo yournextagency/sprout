@@ -26,8 +26,6 @@ use BarrelStrength\Sprout\forms\components\fields\SubmissionsRelationField;
 use BarrelStrength\Sprout\forms\components\formfeatures\WorkflowTabFormFeature;
 use BarrelStrength\Sprout\forms\components\notificationevents\SaveSubmissionNotificationEvent;
 use BarrelStrength\Sprout\forms\controllers\SubmissionsController;
-use BarrelStrength\Sprout\forms\fields\address\Addresses;
-use BarrelStrength\Sprout\forms\fields\address\AddressFormatter;
 use BarrelStrength\Sprout\forms\formfields\FormFields;
 use BarrelStrength\Sprout\forms\formfields\FrontEndFields;
 use BarrelStrength\Sprout\forms\forms\Forms;
@@ -64,9 +62,6 @@ use yii\base\Module;
  * @property FormIntegrations $formIntegrations
  * @property FormTypes $formTypes
  * @property Captchas $captchas
- *
- * @property Addresses $addressField
- * @property AddressFormatter $addressFormatter
  */
 class FormsModule extends Module implements SproutModuleInterface, MigrationInterface
 {
@@ -122,10 +117,6 @@ class FormsModule extends Module implements SproutModuleInterface, MigrationInte
             //'formIntegrations' => FormIntegrations::class,
             'formTypes' => FormTypes::class,
             'captchas' => Captchas::class,
-
-            // Fields
-            'addressField' => Addresses::class,
-            'addressFormatter' => AddressFormatter::class,
         ]);
 
         Craft::setAlias('@BarrelStrength/Sprout/forms', __DIR__);

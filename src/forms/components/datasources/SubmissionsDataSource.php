@@ -12,7 +12,6 @@ use BarrelStrength\Sprout\forms\components\elements\SubmissionElement;
 use BarrelStrength\Sprout\forms\components\formfields\NameFormFieldData;
 use BarrelStrength\Sprout\forms\components\formfields\PhoneFormFieldData;
 use BarrelStrength\Sprout\forms\db\SproutTable;
-use BarrelStrength\Sprout\forms\fields\address\Address as AddressModel;
 use BarrelStrength\Sprout\forms\FormsModule;
 use Craft;
 use craft\base\ElementInterface;

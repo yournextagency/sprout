@@ -34,7 +34,6 @@ export default ({command}) => ({
                 dataSetIndex: '/data-studio/DataSetIndex.js',
                 sitemapMetadata: '/sitemaps/SitemapMetadata.js',
                 meta: '/meta/Meta.js',
-                addressField: '/fields/AddressField.js',
                 emailField: '/fields/EmailField.js',
                 phoneField: '/fields/PhoneField.js',
                 regularExpressionField: '/fields/RegularExpressionField.js',
