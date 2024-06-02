@@ -5,10 +5,11 @@ namespace BarrelStrength\Sprout\forms\formtypes;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
+use craft\base\FieldLayoutProviderInterface;
 use craft\base\SavableComponent;
 use craft\models\FieldLayout;
 
-abstract class FormType extends SavableComponent implements FormTypeInterface
+abstract class FormType extends SavableComponent implements FormTypeInterface, FieldLayoutProviderInterface
 {
     public ?string $name = null;
 
@@ -63,7 +64,7 @@ abstract class FormType extends SavableComponent implements FormTypeInterface
         return null;
     }
 
-    public function getFieldLayout(): ?FieldLayout
+    public function getFieldLayout(): FieldLayout
     {
         if ($this->_fieldLayout) {
             return $this->_fieldLayout;

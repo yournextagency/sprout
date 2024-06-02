@@ -3,6 +3,7 @@
 namespace BarrelStrength\Sprout\forms\components\elements;
 
 use BarrelStrength\Sprout\core\helpers\ComponentHelper;
+use BarrelStrength\Sprout\core\helpers\ElementRenderHelper;
 use BarrelStrength\Sprout\core\relations\RelationsHelper;
 use BarrelStrength\Sprout\forms\components\elements\actions\ChangeFormType;
 use BarrelStrength\Sprout\forms\components\elements\conditions\FormCondition;
@@ -48,6 +49,7 @@ use craft\validators\UniqueValidator;
 use craft\web\assets\conditionbuilder\ConditionBuilderAsset;
 use craft\web\CpScreenResponseBehavior;
 use Throwable;
+use Twig\Markup;
 use yii\base\ErrorHandler;
 use yii\base\Exception;
 use yii\web\Response;
@@ -169,6 +171,7 @@ class FormElement extends Element
 
         $fieldLayout = new FieldLayout([
             'type' => self::class,
+            'provider' => $this->getFormType(),
         ]);
 
         // No need to build UI for command line requests
@@ -895,7 +898,6 @@ class FormElement extends Element
      */
     public function getIncludeTemplate($name): array
     {
-        /** @var FormType $formType */
         $formType = $this->getFormType();
 
         $defaultTemplates = new DefaultFormType();
@@ -1107,5 +1109,24 @@ class FormElement extends Element
         }
 
         parent::setAttributes($values, $safeOnly);
+    }
+
+    public function render(array $variables = []): Markup
+    {
+        $formType = $this->getFormType();
+
+        if (ElementRenderHelper::isSproutTemplateRoot($formType->formTemplate)) {
+            $generalConfig = Craft::$app->getConfig()->getGeneral();
+            $partialTemplatesPath = $generalConfig->partialTemplatesPath;
+
+            // Temporarily change the partialTemplatesPath so Sprout can support the same _partials template structure as Craft
+            $generalConfig->partialTemplatesPath = ElementRenderHelper::getSproutTemplatePath($formType->formTemplate);
+            $html = parent::render($variables);
+            $generalConfig->partialTemplatesPath = $partialTemplatesPath;
+
+            return $html;
+        }
+
+        return parent::render($variables);
     }
 }
