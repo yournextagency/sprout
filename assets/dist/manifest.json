@@ -65,18 +65,6 @@
     "isEntry": true,
     "src": "data-studio/DataStudio.js"
   },
-  "fields/AddressField.css": {
-    "file": "assets/AddressField-a479678c.css",
-    "src": "fields/AddressField.css"
-  },
-  "fields/AddressField.js": {
-    "css": [
-      "assets/AddressField-a479678c.css"
-    ],
-    "file": "assets/addressField-c5a66b02.js",
-    "isEntry": true,
-    "src": "fields/AddressField.js"
-  },
   "fields/EmailField.css": {
     "file": "assets/EmailField-dc32b53a.css",
     "src": "fields/EmailField.css"
@@ -159,14 +147,14 @@
     "src": "forms/FormTypesSettings.js"
   },
   "forms/Forms.css": {
-    "file": "assets/Forms-7d1cd1b4.css",
+    "file": "assets/Forms-dc8025f6.css",
     "src": "forms/Forms.css"
   },
   "forms/Forms.js": {
     "css": [
-      "assets/Forms-7d1cd1b4.css"
+      "assets/Forms-dc8025f6.css"
     ],
-    "file": "assets/forms-7bf9a75d.js",
+    "file": "assets/forms-3248e201.js",
     "imports": [
       "_module.esm-e3630760.js"
     ],
@@ -208,10 +196,9 @@
     "css": [
       "assets/Meta-669118af.css"
     ],
-    "file": "assets/meta-23d3c209.js",
+    "file": "assets/meta-ed94656b.js",
     "imports": [
       "__commonjsHelpers-725317a4.js",
-      "fields/AddressField.js",
       "fields/EmailField.js",
       "fields/PhoneField.js"
     ],

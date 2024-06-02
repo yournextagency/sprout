@@ -4,7 +4,7 @@ const FieldLayout = {
     // FIELD LAYOUT HTML INPUTS
     // -------------------------------------------------------------------------
 
-    get fieldLayoutInputValue() {
+    get submissionFieldLayoutInputValue() {
 
         let FormBuilder = window.FormBuilder;
 
