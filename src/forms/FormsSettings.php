@@ -42,8 +42,6 @@ class FormsSettings extends BaseConfig
 
     public bool $saveSpamToDatabase = false;
 
-    public bool $enableSaveDataDefaultValue = true;
-
     public string $spamRedirectBehavior = self::SPAM_REDIRECT_BEHAVIOR_NORMAL;
 
     public int $spamLimit = Submissions::SPAM_DEFAULT_LIMIT;
@@ -96,13 +94,6 @@ class FormsSettings extends BaseConfig
     public function saveSpamToDatabase(bool $value): self
     {
         $this->saveSpamToDatabase = $value;
-
-        return $this;
-    }
-
-    public function enableSaveDataDefaultValue(bool $value): self
-    {
-        $this->enableSaveDataDefaultValue = $value;
 
         return $this;
     }

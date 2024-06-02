@@ -1,0 +1,14 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.selectField({
+    label: "Form Type"|t('sprout-module-forms'),
+    instructions: "Choose the Form Type that will be used for the selected forms."|t('sprout-module-forms'),
+    warning: "Updating the Form Type may change your field layout and result in data loss."|t('sprout-module-forms'),
+    name: 'formTypeUid',
+    options: formTypeOptions,
+    value: null,
+    errors: null,
+    first: true
+}) }}
+
+{{ hiddenInput('elementIds', elementIds) }}

@@ -25,7 +25,7 @@
     data-source-fields='{{ form.getSourceFields()|json_encode|raw }}'
 >
 
-    <input id="field-layout-settings" type="hidden" name="submissionFieldLayout" x-bind:value="fieldLayoutInputValue">
+    <input id="field-layout-settings" type="hidden" name="submissionFieldLayout" x-bind:value="FieldLayoutHelper.fieldLayoutInputValue">
 
     {# Tabs #}
     <div id="form-builder-tabs">
@@ -39,12 +39,12 @@
                     role="tab"
                     draggable="true"
 
-                    x-on:dragover.prevent="dragOverLayoutTabNav"
-                    x-on:dragstart.self="dragStartLayoutTabNav"
-                    x-on:dragend.self="dragEndLayoutTabNav"
-                    x-on:dragenter.prevent.self="dragEnterLayoutTabNav"
-                    x-on:dragleave.prevent.self="dragLeaveLayoutTabNav"
-                    x-on:drop="dropOnLayoutTabNav"
+                    x-on:dragover.prevent="DragDropHelper.dragOverLayoutTabNav"
+                    x-on:dragstart.self="DragDropHelper.dragStartLayoutTabNav"
+                    x-on:dragend.self="DragDropHelper.dragEndLayoutTabNav"
+                    x-on:dragenter.prevent.self="DragDropHelper.dragEnterLayoutTabNav"
+                    x-on:dragleave.prevent.self="DragDropHelper.dragLeaveLayoutTabNav"
+                    x-on:drop="DragDropHelper.dropOnLayoutTabNav"
 
                     x-on:click="selectedTabUid = tab.uid"
                     x-bind:uid="tab.uid"
@@ -54,7 +54,7 @@
                 >
                     <span x-text="tab.name"></span>
                     <a
-                        x-on:click="editFormTab(tab)"
+                        x-on:click="FieldLayoutHelper.editTab(tab)"
                         class="settings icon"
                     ></a>
                 </div>
@@ -67,7 +67,7 @@
                 class="btn add icon"
                 href="#"
                 title="New Page"
-                x-on:click="addFormPageButton"
+                x-on:click="FieldLayoutHelper.addTab"
             >
                 {{ "New page"|t('sprout-module-forms') }}
             </a>
@@ -96,10 +96,10 @@
                     x-bind:data-tab-uid="tab.uid"
                     x-show="tab.uid === selectedTabUid"
 
-                    x-on:dragover="dragOverLayoutTabBody"
-                    x-on:dragenter.prevent.self="dragEnterLayoutTabBody"
-                    x-on:dragleave.prevent.self="dragLeaveLayoutTabBody"
-                    x-on:drop="dropOnLayoutTabBody"
+                    x-on:dragover="DragDropHelper.dragOverLayoutTabBody"
+                    x-on:dragenter.prevent.self="DragDropHelper.dragEnterLayoutTabBody"
+                    x-on:dragleave.prevent.self="DragDropHelper.dragLeaveLayoutTabBody"
+                    x-on:drop="DragDropHelper.dropOnLayoutTabBody"
                 >
                     {# Tab with Fields #}
                     <template x-if="tab.elements.length > 0">
@@ -109,18 +109,19 @@
                             {# Layout Field #}
                             <div
                                 class="layout-field drag-target"
-                                x-on:dblclick="editFormField(element)"
+                                x-bind:class="isDragOverFormFieldUid === element.fieldUid ? 'drag-over' : ''"
+                                x-on:dblclick="FieldLayoutHelper.editFieldLayoutElement(element)"
                                 x-bind:data-type="element.field.type"
                                 x-bind:data-tab-uid="tab.uid"
                                 x-bind:data-field-uid="element.fieldUid"
 
                                 draggable="true"
-                                x-on:dragover="dragOverLayoutField"
-                                x-on:dragstart="dragStartLayoutField"
-                                x-on:dragend="dragEndLayoutField"
-                                x-on:dragenter.prevent="dragEnterLayoutField"
-                                x-on:dragleave.prevent="dragLeaveLayoutField"
-                                x-on:drop.prevent.stop="dropOnExistingLayoutField"
+                                x-on:dragover="DragDropHelper.dragOverLayoutField"
+                                x-on:dragstart="DragDropHelper.dragStartLayoutField"
+                                x-on:dragend="DragDropHelper.dragEndLayoutField"
+                                x-on:dragenter.prevent="DragDropHelper.dragEnterLayoutField"
+                                x-on:dragleave.prevent="DragDropHelper.dragLeaveLayoutField"
+                                x-on:drop.prevent.stop="DragDropHelper.dropOnExistingLayoutField"
                             >
 
                                 <div class="layout-field-header">
@@ -135,7 +136,7 @@
                                 </div>
 
                                 <a
-                                    x-on:click="editFormField(element)"
+                                    x-on:click="FieldLayoutHelper.editFieldLayoutElement(element)"
                                     class="settings icon edit-field-button"
                                     title="{{ 'Edit'|t('sprout-module-forms') }}"
                                     role="button"

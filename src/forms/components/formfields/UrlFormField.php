@@ -7,7 +7,6 @@ use BarrelStrength\Sprout\forms\formfields\FormFieldHelper;
 use BarrelStrength\Sprout\forms\formfields\FormFieldInterface;
 use BarrelStrength\Sprout\forms\formfields\FormFieldTrait;
 use BarrelStrength\Sprout\forms\formfields\GroupLabel;
-use BarrelStrength\Sprout\forms\FormsModule;
 use Craft;
 use craft\base\ElementInterface;
 use craft\fields\PlainText as CraftPlainText;
@@ -86,7 +85,7 @@ class UrlFormField extends CraftUrl implements FormFieldInterface
 
     public function getFrontEndInputVariables($value, SubmissionElement $submission, array $renderingOptions = null): array
     {
-        $errorMessage = FormsModule::getInstance()->urlField->getErrorMessage($this);
+        $errorMessage = $this->getErrorMessage($this);
         $placeholder = $this->placeholder ?? '';
 
         return [

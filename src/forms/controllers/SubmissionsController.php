@@ -94,7 +94,7 @@ class SubmissionsController extends BaseController
         $fieldsLocation = $this->request->getParam('fieldsLocation', 'fields');
         $submission->setFieldValuesFromRequest($fieldsLocation);
 
-        $this->addHiddenValuesBasedOnFieldRules($submission);
+        //$this->addHiddenValuesBasedOnFieldRules($submission);
 
         // Populate the submission with post data
         $this->populateSubmissionModel($submission);
@@ -208,13 +208,13 @@ class SubmissionsController extends BaseController
      */
     private function populateSubmissionModel(SubmissionElement $submission): void
     {
-        $settings = FormsModule::getInstance()->getSettings();
+        $formType = $submission->getForm()->getFormType();
 
         $request = Craft::$app->getRequest();
 
         // Our SubmissionElement requires that we assign it a FormElement id
         $submission->formId = $this->form->getId();
-        $submission->ipAddress = $settings->trackRemoteIp ? $request->getRemoteIP() : null;
+        $submission->ipAddress = $formType->trackRemoteIp ? $request->getRemoteIP() : null;
         $submission->referrer = $request->getReferrer();
         $submission->userAgent = $request->getUserAgent();
 

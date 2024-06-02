@@ -64,7 +64,6 @@ class m211101_000000_run_install_migration extends Migration
                 'formTypeUid' => self::FORM_TYPE,
                 'enableSaveData' => true,
                 'saveSpamToDatabase' => false,
-                'enableSaveDataDefaultValue' => true,
 
                 // FormsSettings::SPAM_REDIRECT_BEHAVIOR_NORMAL
                 'spamRedirectBehavior' => self::SPAM_REDIRECT_BEHAVIOR_NORMAL,
@@ -119,7 +118,6 @@ class m211101_000000_run_install_migration extends Migration
                 'messageOnSuccess' => $this->text(),
                 'messageOnError' => $this->text(),
                 'submitButtonText' => $this->string(),
-                'saveData' => $this->boolean()->notNull()->defaultValue(false),
                 'formTypeUid' => $this->uid(),
                 'enableCaptchas' => $this->boolean()->notNull()->defaultValue(true),
                 'dateCreated' => $this->dateTime()->notNull(),

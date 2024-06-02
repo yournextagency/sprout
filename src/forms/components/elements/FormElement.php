@@ -4,6 +4,7 @@ namespace BarrelStrength\Sprout\forms\components\elements;
 
 use BarrelStrength\Sprout\core\helpers\ComponentHelper;
 use BarrelStrength\Sprout\core\relations\RelationsHelper;
+use BarrelStrength\Sprout\forms\components\elements\actions\ChangeFormType;
 use BarrelStrength\Sprout\forms\components\elements\conditions\FormCondition;
 use BarrelStrength\Sprout\forms\components\elements\db\FormElementQuery;
 use BarrelStrength\Sprout\forms\components\elements\fieldlayoutelements\FormBuilderField;
@@ -119,11 +120,6 @@ class FormElement extends Element
         return Craft::t('sprout-module-forms', 'forms');
     }
 
-    public static function hasContent(): bool
-    {
-        return true;
-    }
-
     public static function hasStatuses(): bool
     {
         return true;
@@ -132,6 +128,11 @@ class FormElement extends Element
     public static function refHandle(): ?string
     {
         return 'form';
+    }
+
+    public static function hasContent(): bool
+    {
+        return true;
     }
 
     public function getFormType(): FormType
@@ -346,14 +347,14 @@ class FormElement extends Element
         ];
     }
 
-    public static function createCondition(): ElementConditionInterface
-    {
-        return Craft::createObject(FormCondition::class, [static::class]);
-    }
-
     public static function find(): FormElementQuery
     {
         return new FormElementQuery(static::class);
+    }
+
+    public static function createCondition(): ElementConditionInterface
+    {
+        return Craft::createObject(FormCondition::class, [static::class]);
     }
 
     protected static function defineSources(string $context = null): array
@@ -371,6 +372,10 @@ class FormElement extends Element
     protected static function defineActions(string $source = null): array
     {
         $actions = parent::defineActions($source);
+
+        if (Craft::$app->getUser()->getIsAdmin()) {
+            $actions[] = ChangeFormType::class;
+        }
 
         $actions[] = Duplicate::class;
         $actions[] = Delete::class;
@@ -411,6 +416,7 @@ class FormElement extends Element
         return [
             'name' => ['label' => Craft::t('sprout-module-forms', 'Name')],
             'handle' => ['label' => Craft::t('sprout-module-forms', 'Handle')],
+            'formType' => ['label' => Craft::t('sprout-module-forms', 'Form Type')],
             //'numberOfFields' => ['label' => Craft::t('sprout-module-forms', 'Number of Fields')],
             'totalSubmissions' => ['label' => Craft::t('sprout-module-forms', 'Total Submissions')],
             'formSettings' => ['label' => Craft::t('sprout-module-forms', 'Settings'), 'icon' => 'settings'],
@@ -503,7 +509,7 @@ class FormElement extends Element
         $crumbs = [
             [
                 'label' => Craft::t('sprout-module-forms', 'Forms'),
-                'url' => UrlHelper::url('sprout/forms'),
+                'url' => UrlHelper::url('sprout/forms/forms'),
             ],
         ];
 
@@ -532,7 +538,6 @@ class FormElement extends Element
         $record->titleFormat = $this->titleFormat;
         $record->displaySectionTitles = $this->displaySectionTitles;
         $record->redirectUri = Db::prepareValueForDb($this->redirectUri);
-        $record->saveData = $this->saveData;
         $record->submissionMethod = $this->submissionMethod;
         $record->errorDisplayMethod = $this->errorDisplayMethod;
         $record->messageOnSuccess = $this->messageOnSuccess;
@@ -890,15 +895,16 @@ class FormElement extends Element
      */
     public function getIncludeTemplate($name): array
     {
-        $settings = FormsModule::getInstance()->getSettings();
-
         /** @var FormType $formType */
-        $formType = FormTypeHelper::getFormTypeByUid($settings->formTypeUid);
+        $formType = $this->getFormType();
 
-        // TODO: Just make this a static class
         $defaultTemplates = new DefaultFormType();
 
+        // Additional Template overrides can be added in templates:
+        // {% do form.addTemplateOverridePaths('_overrides/forms-default') %}
+        //  {% do form.addTemplateOverridePaths(['_overrides/forms-special', '_overrides/forms-default']) %}
         $includePaths = array_merge($this->additionalTemplates, [
+            Craft::getAlias($formType->formTemplateOverrideFolder ?? null),
             Craft::getAlias($formType->formTemplate ?? null),
             Craft::getAlias($defaultTemplates->formTemplate),
         ]);
@@ -1008,6 +1014,7 @@ class FormElement extends Element
     {
         return match ($attribute) {
             'handle' => '<code>' . $this->handle . '</code>',
+            'formType' => $this->getFormType()->name,
             //'numberOfFields' => (new Query())
             //    ->select('COUNT(*)')
             //    ->from([Table::FIELDLAYOUTFIELDS])

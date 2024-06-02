@@ -19,7 +19,7 @@ class FormFieldHelper
         }
 
         if ($element !== null) {
-            $context = $element->getSubmissionFieldContext();
+            $context = $element->getForm()->getSubmissionFieldContext();
         }
 
         return $context;

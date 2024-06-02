@@ -22,7 +22,6 @@ class m211101_000001_update_forms_projectconfig extends Migration
             'defaultSidebarTab' => 'submissions',
             'enableEditSubmissionViaFrontEnd' => false,
             'enableSaveData' => true,
-            'enableSaveDataDefaultValue' => true,
             'formTypeUid' => self::OLD_ACCESSIBLE_FORM_TEMPLATES,
             'saveSpamToDatabase' => false,
             'spamLimit' => 500,
@@ -58,17 +57,7 @@ class m211101_000001_update_forms_projectconfig extends Migration
             $newConfig[$key] = isset($oldConfig[$key]) && !empty($oldConfig[$key]) ? $oldConfig[$key] : $defaultValue;
         }
 
-        if ($newConfig['enableSaveDataDefaultValue'] === '1') {
-            $newConfig['enableSaveDataDefaultValue'] = true;
-        }
-
-        if ($newConfig['enableSaveDataDefaultValue'] === 1) {
-            $newConfig['enableSaveDataDefaultValue'] = true;
-        }
-
-        if ($newConfig['enableSaveDataDefaultValue'] === '') {
-            $newConfig['enableSaveDataDefaultValue'] = false;
-        }
+        unset($newConfig['enableSaveDataDefaultValue']);
 
         foreach ($newConfig['captchaSettings'] as $key => $captchaSettings) {
             if ($newConfig['captchaSettings'][$key]['enabled'] === '1') {

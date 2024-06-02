@@ -149,11 +149,6 @@ class Submissions extends Component
         $formType = $form->getFormType();
         $saveData = $formType->enableSaveData;
 
-        if ($saveData) {
-            // Allow Form to override global saveData setting
-            $saveData = (bool)$form->saveData;
-        }
-
         // Let the SPAM setting determine if we save data if we are:
         // 1. Saving data globally and/or at the form level
         // 2. Processing a site request (if it's a CP request Submissions with spam status can always be updated)

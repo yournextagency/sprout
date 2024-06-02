@@ -9,6 +9,7 @@ use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
 use Craft;
+use craft\helpers\ArrayHelper;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\web\assets\userpermissions\UserPermissionsAsset;
@@ -145,6 +146,16 @@ class FormTypesController extends Controller
         $formType->featureSettings = Craft::$app->request->getBodyParam('featureSettings');
         $formType->enabledFormFieldTypes = Craft::$app->request->getBodyParam('enabledFormFieldTypes');
 
+        $formType->submissionMethod = Craft::$app->request->getBodyParam('submissionMethod');
+        $formType->errorDisplayMethod = Craft::$app->request->getBodyParam('errorDisplayMethod');
+        $formType->enableSaveData = Craft::$app->request->getBodyParam('enableSaveData');
+        $formType->trackRemoteIp = $formType->enableSaveData
+            ? Craft::$app->request->getBodyParam('trackRemoteIp')
+            : false;
+        $formType->allowedAssetVolumes = Craft::$app->request->getBodyParam('allowedAssetVolumes');
+        $formType->defaultUploadLocationSubpath = Craft::$app->request->getBodyParam('defaultUploadLocationSubpath');
+        $formType->enableEditSubmissionViaFrontEnd = Craft::$app->request->getBodyParam('enableEditSubmissionViaFrontEnd');
+
         if (!$formType::isEditable()) {
             return $formType;
         }
@@ -152,5 +163,56 @@ class FormTypesController extends Controller
         $formType->formTemplate = Craft::$app->request->getBodyParam('formTemplate');
 
         return $formType;
+    }
+
+    public function actionChangeFormTypeSlideout(): Response
+    {
+        $this->requireAdmin();
+
+        $elementIds = Craft::$app->request->getQueryParam('elementIds');
+
+        $formTypes = FormTypeHelper::getFormTypes();
+        $formTypeOptions = ArrayHelper::map($formTypes, 'uid', 'name');
+
+        return $this->asCpScreen()
+            ->title(Craft::t('sprout-module-forms', 'Change Form Type'))
+            ->action('sprout-module-forms/form-types/change-form-type')
+            ->contentTemplate('sprout-module-forms/forms/_changeFormTypeSlideout.twig', [
+                'elementIds' => implode(',', $elementIds),
+                'formTypeOptions' => $formTypeOptions,
+            ]);
+    }
+
+    public function actionChangeFormType(): Response
+    {
+        $this->requireAdmin();
+        $this->requirePostRequest();
+
+        $formTypeUid = Craft::$app->request->getRequiredBodyParam('formTypeUid');
+        $elementIds = Craft::$app->request->getRequiredBodyParam('elementIds');
+        $selectedElementIds = explode(',', $elementIds);
+
+        $formType = FormTypeHelper::getFormTypeByUid($formTypeUid);
+
+        $formElements = FormElement::find()
+            ->id($selectedElementIds)
+            ->where(['not', ['formTypeUid' => $formTypeUid]])
+            ->all();
+
+        $affected = 0;
+        foreach ($formElements as $formElement) {
+            $formElement->formTypeUid = $formTypeUid;
+            Craft::$app->getElements()->saveElement($formElement);
+            $affected++;
+        }
+
+        if ($affected === 0) {
+            return $this->asSuccess(Craft::t('sprout-module-forms', 'Forms already use selected Form Type.'));
+        }
+
+        return $this->asSuccess(Craft::t('sprout-module-forms', 'Updated {count} Forms to use Form Type {name}', [
+            'count' => $affected,
+            'name' => $formType::displayName(),
+        ]));
     }
 }

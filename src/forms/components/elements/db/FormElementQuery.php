@@ -75,7 +75,6 @@ class FormElementQuery extends ElementQuery
         $this->joinElementTable('sprout_forms');
 
         $this->query->select([
-            'sprout_forms.id',
             'sprout_forms.submissionFieldLayout',
             'sprout_forms.name',
             'sprout_forms.handle',
@@ -103,19 +102,19 @@ class FormElementQuery extends ElementQuery
         //}
 
         if ($this->formTypeUid) {
-            $this->subQuery->andWhere(Db::parseParam(
+            $this->query->andWhere(Db::parseParam(
                 'sprout_forms.formTypeUid', $this->formTypeUid
             ));
         }
 
         if ($this->handle) {
-            $this->subQuery->andWhere(Db::parseParam(
+            $this->query->andWhere(Db::parseParam(
                 'sprout_forms.handle', $this->handle
             ));
         }
 
         if ($this->name) {
-            $this->subQuery->andWhere(Db::parseParam(
+            $this->query->andWhere(Db::parseParam(
                 'sprout_forms.name', $this->name
             ));
         }

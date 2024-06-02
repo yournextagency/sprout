@@ -21,6 +21,7 @@ use craft\elements\actions\Delete;
 use craft\elements\conditions\ElementConditionInterface;
 use craft\elements\User;
 use craft\errors\ElementNotFoundException;
+use craft\helpers\DateTimeHelper;
 use craft\helpers\UrlHelper;
 use craft\models\FieldLayout;
 use craft\web\CpScreenResponseBehavior;
@@ -138,7 +139,7 @@ class SubmissionElement extends Element
             $saveData = FormsModule::getInstance()->submissions->isSaveDataEnabled($form);
             if ($saveData) {
                 $sources[] = [
-                    'key' => 'id:' . $form->id,
+                    'key' => 'formId:' . $form->id,
                     'label' => $form->name,
                     'data' => [
                         'formId' => $form->id,
@@ -289,9 +290,9 @@ class SubmissionElement extends Element
 
     public function canView(User $user): bool
     {
-        $settings = FormsModule::getInstance()->getSettings();
+        $formType = $this->getForm()->getFormType();
 
-        if (!$settings->enableSaveData) {
+        if (!$formType->enableSaveData) {
             return false;
         }
 
@@ -306,19 +307,6 @@ class SubmissionElement extends Element
     public function canDelete(User $user): bool
     {
         return Craft::$app->getUser()->getIdentity()->can(FormsModule::p('editSubmissions'));
-    }
-
-    public function __toString(): string
-    {
-        // @todo - make this work like Entry Type Title Format
-        // We currently run populateElementContent to get the Title to reflect
-        // the Title Format setting. We should be able to do this in some other way.
-        //Craft::$app->getContent()->populateElementContent($this);
-
-        //$fieldsLocation = $this->request->getParam('fieldsLocation', 'fields');
-        $this->setFieldValuesFromRequest('fields');
-
-        return (string)$this->title;
     }
 
     public function prepareEditScreen(Response $response, string $containerId): void
@@ -351,9 +339,9 @@ class SubmissionElement extends Element
     {
         $html = parent::getSidebarHtml($static);
 
-        $html .= Craft::$app->getView()->renderTemplate('sprout-module-forms/submissions/_sidebarIntegrations', [
-            'submission' => $this,
-        ]);
+        //$html .= Craft::$app->getView()->renderTemplate('sprout-module-forms/submissions/_sidebarIntegrations', [
+        //    'submission' => $this,
+        //]);
 
         $html .= Craft::$app->getView()->renderTemplate('sprout-module-forms/submissions/_sidebarSpam', [
             'submission' => $this,
@@ -366,7 +354,23 @@ class SubmissionElement extends Element
     {
         return [
             Craft::t('sprout-module-forms', 'Form Name') => $this->getForm()->name,
+            Craft::t('sprout-module-forms', 'IP Address') => $this->ipAddress,
+            Craft::t('sprout-module-forms', 'Referrer') => '<input type="text" class="" value="' . $this->referrer . '" disabled readonly style="border:none;margin:0;padding:0!important;">',
+            Craft::t('sprout-module-forms', 'User Agent') => '<input type="text" class="" value="' . $this->userAgent . '" disabled readonly style="border:none;margin:0;padding:0!important;">',
         ];
+    }
+
+    public function beforeSave(bool $isNew): bool
+    {
+        $form = $this->getForm();
+
+        $title = Craft::$app->getView()->renderObjectTemplate($form->titleFormat, $this);
+
+        $this->title = !empty($title)
+            ? $title
+            : DateTimeHelper::now()->format('D, d M Y H:i:s');
+
+        return parent::beforeSave($isNew);
     }
 
     public function afterSave(bool $isNew): void

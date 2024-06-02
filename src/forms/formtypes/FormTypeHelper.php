@@ -87,6 +87,13 @@ class FormTypeHelper
             'formTemplateOverrideFolder' => $formTypeSettings['formTemplateOverrideFolder'] ?? null,
             'featureSettings' => $formTypeSettings['featureSettings'] ?? null,
             'enabledFormFieldTypes' => $formTypeSettings['enabledFormFieldTypes'] ?? null,
+            'submissionMethod' => $formTypeSettings['submissionMethod'] ?? null,
+            'errorDisplayMethod' => $formTypeSettings['errorDisplayMethod'] ?? null,
+            'enableSaveData' => $formTypeSettings['enableSaveData'] ?? true,
+            'trackRemoteIp' => $formTypeSettings['trackRemoteIp'] ?? false,
+            'allowedAssetVolumes' => $formTypeSettings['allowedAssetVolumes'] ?? [],
+            'defaultUploadLocationSubpath' => $formTypeSettings['defaultUploadLocationSubpath'] ?? null,
+            'enableEditSubmissionViaFrontEnd' => $formTypeSettings['enableEditSubmissionViaFrontEnd'] ?? null,
             'uid' => $uid ?? StringHelper::UUID(),
         ]);
 
