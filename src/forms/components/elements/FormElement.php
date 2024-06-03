@@ -65,7 +65,7 @@ class FormElement extends Element
 
     public ?string $handle = null;
 
-    public ?string $submissionFieldLayout = null;
+    public ?string $submissionFieldLayoutConfig = null;
 
     public ?string $titleFormat = null;
 
@@ -265,10 +265,20 @@ class FormElement extends Element
 
     public function getSubmissionFieldLayout(): FieldLayout
     {
-        if ($this->submissionFieldLayout) {
-            $config = Json::decodeIfJson($this->submissionFieldLayout) ?? [];
+        if ($this->submissionFieldLayoutConfig) {
+            $config = Json::decodeIfJson($this->submissionFieldLayoutConfig) ?? [];
+
+            // modify $config.tabs[].fields to use $config.tabs[].fields.fieldUid as the index
+            // so we can get a full layout when we call FieldLayout::createFromConfig
+            foreach ($config['tabs'] as $tabIndex => $tab) {
+                $config['tabs'][$tabIndex]['fields'] = array_reduce($tab['fields'], static function($carry, $field) {
+                    $carry[$field['fieldUid']] = $field;
+
+                    return $carry;
+                }, []);
+            }
+
             $layout = FieldLayout::createFromConfig($config);
-            $layout->setTabs(reset($config));
         } else {
             $layout = new FieldLayout();
         }
@@ -282,8 +292,8 @@ class FormElement extends Element
 
     public function getFormBuilderSubmissionFieldLayout(): array
     {
-        if ($this->submissionFieldLayout) {
-            $config = Json::decodeIfJson($this->submissionFieldLayout) ?? [];
+        if ($this->submissionFieldLayoutConfig) {
+            $config = Json::decodeIfJson($this->submissionFieldLayoutConfig) ?? [];
         } else {
             $layout = new FieldLayout();
             $layout->type = SubmissionElement::class;
@@ -294,6 +304,20 @@ class FormElement extends Element
             $layout->setTabs([$layoutTab]);
 
             $config = $layout->getConfig();
+            // @todo - explore when this becomes 'fields' and when it becomes 'elements'
+            // Need it as 'fields' to populate the FieldLayout::createFromConfig() behavior
+            // So just converting it here right now
+            foreach ($config['tabs'] as $tabIndex => $tab) {
+                $config['tabs'][$tabIndex]['fields'] = array_reduce($tab['elements'], static function($carry, $field) {
+                    $carry[] = $field;
+
+                    return $carry;
+                }, []);
+                unset($config['tabs'][$tabIndex]['elements']);
+            }
+
+            //$config['fields'] = $config['elements'];
+            //unset($config['elements']);
         }
 
         $tabs = reset($config);
@@ -301,11 +325,11 @@ class FormElement extends Element
         $uiSettings = [];
 
         array_walk($tabs, static function(&$tab) use (&$fields, &$uiSettings) {
-            if (empty($tab['elements'])) {
+            if (empty($tab['fields'])) {
                 return;
             }
 
-            array_walk($tab['elements'], static function(&$layoutElement) use (&$fields, &$uiSettings) {
+            array_walk($tab['fields'], static function(&$layoutElement) use (&$fields, &$uiSettings) {
                 $fieldUid = $layoutElement['fieldUid'] ?? null;
 
                 if (!$fieldUid) {
@@ -323,19 +347,11 @@ class FormElement extends Element
                     'field' => $fieldData['field'] ?? [],
                     'uiSettings' => $fieldData['uiSettings'] ?? [],
                 ]);
-
-                //$layoutElement['field'] = $fieldData['field'] ?? [];
-                //$layoutElement['uiSettings'] = $fieldData['uiSettings'] ?? [];
             });
         });
 
-        //$config['id'] = $this->id; // Use the Form Element ID as Submission Layout ID
-        //$config['type'] = SubmissionElement::class;
-
         $config['uid'] = $this->getSubmissionLayoutUid();
         $config['tabs'] = $tabs ?? [];
-        $config['fields'] = $fields;
-        $config['uiSettings'] = $uiSettings;
 
         return $config;
     }
@@ -456,11 +472,6 @@ class FormElement extends Element
         return 'sproutForms:' . $this->id;
     }
 
-    public function getSubmissionContentTable(): string
-    {
-        return FormContentTableHelper::getContentTable($this->id);
-    }
-
     public function cpEditUrl(): ?string
     {
         $path = UrlHelper::cpUrl('sprout/forms/forms/edit/' . $this->id);
@@ -549,7 +560,7 @@ class FormElement extends Element
         $record->formTypeUid = $this->formTypeUid;
         $record->enableCaptchas = $this->enableCaptchas;
 
-        $record->submissionFieldLayout = $this->submissionFieldLayout;
+        $record->submissionFieldLayoutConfig = $this->submissionFieldLayoutConfig;
 
         $record->save(false);
 
@@ -679,7 +690,7 @@ class FormElement extends Element
         if (!$fieldsService->saveField($field)) {
             Craft::error('Field does not validate.', __METHOD__);
             // @todo - handle errors on layout
-            //$this->addError('submissionFieldLayout', 'Field does not validate.');
+            //$this->addError('submissionFieldLayoutConfig', 'Field does not validate.');
         }
 
         // Check if the handle is updated to also update the titleFormat, rules and integrations
@@ -697,11 +708,11 @@ class FormElement extends Element
     public function updateSubmissionLayout(): void
     {
         // Save Field Layout
-        if (!$this->submissionFieldLayout) {
+        if (!$this->submissionFieldLayoutConfig) {
             return;
         }
 
-        $layout = Json::decodeIfJson($this->submissionFieldLayout);
+        $layout = Json::decodeIfJson($this->submissionFieldLayoutConfig);
 
         if (!$layout) {
             return;
@@ -725,7 +736,7 @@ class FormElement extends Element
         $newFieldUids = [];
 
         foreach ($layout['tabs'] as $index => $tab) {
-            foreach ($tab['elements'] as $elementIndex => $element) {
+            foreach ($tab['fields'] as $elementIndex => $element) {
                 $fieldUid = $element['fieldUid'] ?? null;
                 $newFieldUids[] = $fieldUid; // do this here because we might exit
 
@@ -770,14 +781,14 @@ class FormElement extends Element
 
         // remove 'field' attribute from layout.tabs.elements
         array_walk($layout['tabs'], static function(&$tab) {
-            array_walk($tab['elements'], static function(&$element) {
+            array_walk($tab['fields'], static function(&$element) {
                 unset($element['field']);
             });
         });
 
         Craft::$app->getDb()->createCommand()->update(
             SproutTable::FORMS,
-            ['submissionFieldLayout' => Json::encode($layout)],
+            ['submissionFieldLayoutConfig' => Json::encode($layout)],
             ['id' => $this->id]
         )->execute();
     }
@@ -1054,7 +1065,7 @@ class FormElement extends Element
             'except' => self::SCENARIO_ESSENTIALS,
         ];
 
-        $rules[] = [['submissionFieldLayout'], 'safe'];
+        $rules[] = [['submissionFieldLayoutConfig'], 'safe'];
         $rules[] = [['titleFormat'], 'required'];
         $rules[] = [['displaySectionTitles'], 'safe'];
         $rules[] = [

@@ -6,7 +6,7 @@ const Integrations = {
 
         let fieldLayout = {};
 
-        if (FormBuilder.tabs.length && !FormBuilder.tabs[0].elements.length) {
+        if (FormBuilder.tabs.length && !FormBuilder.tabs[0].fields.length) {
             return [];
         }
 
@@ -14,7 +14,7 @@ const Integrations = {
 
         for (const tab of FormBuilder.tabs) {
 
-            for (const element of tab.elements) {
+            for (const element of tab.fields) {
 
                 let fieldData = FormBuilder.FieldLayoutHelper.getFormFieldAttributes(element);
 

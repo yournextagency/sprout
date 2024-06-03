@@ -27,8 +27,8 @@ export const FormBuilder = (formId) => ({
      *   {
      *     id: 123,
      *     label: 'X',
-     *     elements: [
-     *        {
+     *     fields: [
+     *        'fieldUid': {
      *          id: 123,
      *          name: 'Y',
      *          required,
@@ -42,8 +42,8 @@ export const FormBuilder = (formId) => ({
      * ]
      */
     tabs: [],
-    fields: [],
-    uiSettings: [],
+    // fields: [],
+    // uiSettings: [],
 
     fieldLayoutUid: null,
 

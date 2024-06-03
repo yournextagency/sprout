@@ -76,7 +76,7 @@ class FormElementQuery extends ElementQuery
         $this->joinElementTable('sprout_forms');
 
         $this->query->select([
-            'sprout_forms.submissionFieldLayout',
+            'sprout_forms.submissionFieldLayoutConfig',
             'sprout_forms.name',
             'sprout_forms.handle',
             'sprout_forms.titleFormat',
@@ -130,16 +130,12 @@ class FormElementQuery extends ElementQuery
 
     protected function fieldLayouts(): array
     {
-        if (!$this->formTypeUid) {
-            return parent::fieldLayouts();
+        $fieldLayouts = [];
+
+        foreach (FormTypeHelper::getFormTypes() as $formType) {
+            $fieldLayouts[] = $formType->getFieldLayout();
         }
         
-        $layout = FormTypeHelper::getFormTypeByUid($this->formTypeUid);
-
-        if ($layout) {
-            return [$layout->getFieldLayout()];
-        }
-
-        return parent::fieldLayouts();
+        return $fieldLayouts;
     }
 }

@@ -4,13 +4,13 @@ const FieldLayout = {
     // FIELD LAYOUT HTML INPUTS
     // -------------------------------------------------------------------------
 
-    get submissionFieldLayoutInputValue() {
+    get submissionFieldLayoutConfig() {
 
         let FormBuilder = window.FormBuilder;
 
         let fieldLayout = {};
 
-        if (FormBuilder.tabs.length && !FormBuilder.tabs[0].elements.length) {
+        if (FormBuilder.tabs.length && !FormBuilder.tabs[0].fields.length) {
             return [];
         }
 
@@ -20,7 +20,7 @@ const FieldLayout = {
 
             let fieldLayoutFields = [];
 
-            for (const element of tab.elements) {
+            for (const element of tab.fields) {
 
                 let field = this.getFormFieldAttributes(element);
 
@@ -34,10 +34,9 @@ const FieldLayout = {
                 sortOrder: null,
                 userCondition: null,
                 elementCondition: null,
-                elements: fieldLayoutFields,
+                fields: fieldLayoutFields,
             });
         }
-
         fieldLayout['tabs'] = fieldLayoutTabs;
 
         return JSON.stringify(fieldLayout);
@@ -69,7 +68,7 @@ const FieldLayout = {
             name: 'New Page',
             userCondition: null,
             elementCondition: null,
-            elements: [],
+            fields: [],
         };
 
         this.tabs.push(tab);
@@ -171,7 +170,7 @@ const FieldLayout = {
     // -------------------------------------------------------------------------
 
     getFieldIndexByFieldUid(tab, fieldUid) {
-        return tab.elements.findIndex(item => item.fieldUid === fieldUid);
+        return tab.fields.findIndex(item => item.fieldUid === fieldUid);
     },
 
     getFieldByType(type) {
@@ -204,7 +203,7 @@ const FieldLayout = {
 
         let tabIndex = this.getTabIndexByTabUid(FormBuilder.selectedTabUid);
         let layoutElement = this.getLayoutElement(fieldUid, fieldData.field, fieldData.uiSettings);
-        FormBuilder.tabs[tabIndex].elements.push(layoutElement);
+        FormBuilder.tabs[tabIndex].fields.push(layoutElement);
 
         if (beforeFieldUid) {
 
@@ -212,16 +211,16 @@ const FieldLayout = {
             let tab = FormBuilder.tabs[tabIndex];
 
             let fieldIndex = this.getFieldIndexByFieldUid(tab, fieldUid);
-            let targetField = tab.elements[fieldIndex];
+            let targetField = tab.fields[fieldIndex];
 
             // Remove the updated field
-            tab.elements.splice(fieldIndex, 1);
+            tab.fields.splice(fieldIndex, 1);
 
-            // let beforeFieldIndex = tab.elements.length + 1;
+            // let beforeFieldIndex = tab.fields.length + 1;
             let beforeFieldIndex = this.getFieldIndexByFieldUid(tab, beforeFieldUid);
 
             // Insert the updated field before the target field
-            tab.elements.splice(beforeFieldIndex, 0, targetField);
+            tab.fields.splice(beforeFieldIndex, 0, targetField);
 
             // Update tab
             FormBuilder.tabs[tabIndex] = tab;
@@ -289,7 +288,7 @@ const FieldLayout = {
         let tabIndex = this.getTabIndexByTabUid(FormBuilder.selectedTabUid);
         let tab = FormBuilder.tabs[tabIndex];
         let fieldIndex = this.getFieldIndexByFieldUid(tab, fieldUid);
-        let targetFieldLayoutElement = tab.elements[fieldIndex];
+        let targetFieldLayoutElement = tab.fields[fieldIndex];
 
         targetFieldLayoutElement.required = fieldLayoutElement.required;
         targetFieldLayoutElement.field.name = fieldLayoutElement.field.name;
@@ -301,7 +300,7 @@ const FieldLayout = {
             targetFieldLayoutElement.field.settings[index] = value;
         });
 
-        tab.elements[fieldIndex] = targetFieldLayoutElement;
+        tab.fields[fieldIndex] = targetFieldLayoutElement;
     },
 
     updateFieldLayoutElementPosition(originTabUid, targetTabUid, fieldUid, beforeFieldUid = null) {
@@ -320,19 +319,19 @@ const FieldLayout = {
         }
 
         let originFieldIndex = this.getFieldIndexByFieldUid(originTab, fieldUid);
-        let targetField = originTab.elements[originFieldIndex];
+        let targetField = originTab.fields[originFieldIndex];
 
         // Remove the updated field from the layout
-        // this might change the indexes of the elements on the tab
-        originTab.elements.splice(originFieldIndex, 1);
+        // this might change the indexes of the fields on the tab
+        originTab.fields.splice(originFieldIndex, 1);
 
         if (beforeFieldUid) {
             let beforeFieldIndex = this.getFieldIndexByFieldUid(targetTab, beforeFieldUid);
 
             // Insert the updated field before the target field
-            targetTab.elements.splice(beforeFieldIndex, 0, targetField);
+            targetTab.fields.splice(beforeFieldIndex, 0, targetField);
         } else {
-            targetTab.elements.push(targetField);
+            targetTab.fields.push(targetField);
         }
 
         // Update tab
@@ -350,7 +349,7 @@ const FieldLayout = {
         let fieldIndex = this.getFieldIndexByFieldUid(tab, targetFieldUid);
 
         // remove field from tab
-        FormBuilder.tabs[tabIndex].elements.splice(fieldIndex, 1);
+        FormBuilder.tabs[tabIndex].fields.splice(fieldIndex, 1);
     },
 
     // -------------------------------------------------------------------------

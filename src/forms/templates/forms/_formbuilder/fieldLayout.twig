@@ -25,7 +25,7 @@
     data-source-fields='{{ form.getSourceFields()|json_encode|raw }}'
 >
 
-    <input id="field-layout-settings" type="hidden" name="submissionFieldLayout" x-bind:value="FieldLayoutHelper.submissionFieldLayoutInputValue">
+    <input id="field-layout-settings" type="hidden" name="submissionFieldLayoutConfig" x-bind:value="FieldLayoutHelper.submissionFieldLayoutConfig">
 
     {# Tabs #}
     <div id="form-builder-tabs">
@@ -102,9 +102,9 @@
                     x-on:drop="DragDropHelper.dropOnLayoutTabBody"
                 >
                     {# Tab with Fields #}
-                    <template x-if="tab.elements.length > 0">
+                    <template x-if="tab.fields.length > 0">
 
-                        <template x-for="element in tab.elements">
+                        <template x-for="element in tab.fields">
 
                             {# Layout Field #}
                             <div
@@ -153,7 +153,7 @@
                     </template>
 
                     {# Tab with no Fields #}
-                    <template x-if="tab.elements.length === 0">
+                    <template x-if="tab.fields.length === 0">
 
                         <div class="field placeholder-field">
                             {{ zilchHtml }}
@@ -167,7 +167,7 @@
 
             <template x-for="tab in tabs">
 
-                <template x-for="element in tab.elements">
+                <template x-for="element in tab.fields">
                     <div
                         x-bind:id="'field-settings-slideout-' + element.fieldUid"
                         x-bind:data-field-uid="element.fieldUid"
