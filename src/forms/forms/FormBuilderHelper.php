@@ -51,7 +51,6 @@ class FormBuilderHelper
             'instructions' => $field->instructions,
             'type' => $field::class,
             'tabUid' => $field->tabUid ?? 1,
-            'sortOrder' => $field->sortOrder,
             'uid' => $field->uid,
             'settings' => $field->getSettings(),
         ];
