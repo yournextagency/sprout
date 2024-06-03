@@ -23,6 +23,11 @@ class DefaultFormType extends FormType
         return Craft::t('sprout-module-forms', 'Default Templates');
     }
 
+    public function getHandle(): ?string
+    {
+        return 'default';
+    }
+
     public static function defineNativeFields(DefineFieldLayoutFieldsEvent $event): void
     {
     }

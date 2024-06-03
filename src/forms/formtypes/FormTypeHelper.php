@@ -83,6 +83,7 @@ class FormTypeHelper
 
         $formType = new $type([
             'name' => $formTypeSettings['name'] ?? null,
+            'handle' => $formTypeSettings['handle'] ?? null,
             'formTemplate' => $formTypeSettings['formTemplate'] ?? null,
             'formTemplateOverrideFolder' => $formTypeSettings['formTemplateOverrideFolder'] ?? null,
             'featureSettings' => $formTypeSettings['featureSettings'] ?? null,

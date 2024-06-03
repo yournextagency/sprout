@@ -133,6 +133,7 @@ class FormTypesController extends Controller
         /** @var FormType $formType */
         $formType = new $type();
         $formType->name = Craft::$app->getRequest()->getBodyParam('name');
+        $formType->handle = Craft::$app->getRequest()->getBodyParam('handle');
         $formType->uid = !empty($uid) ? $uid : StringHelper::UUID();
 
         $integrationTypes = Craft::$app->getRequest()->getBodyParam('enabledIntegrationTypes');

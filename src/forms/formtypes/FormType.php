@@ -13,6 +13,8 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
 {
     public ?string $name = null;
 
+    public ?string $handle = null;
+
     public ?string $formTemplate = null;
 
     public ?string $formTemplateOverrideFolder = null;
@@ -116,6 +118,7 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
         $config = [
             'type' => static::class,
             'name' => $this->name,
+            'handle' => $this->handle,
             'formTemplate' => $this->formTemplate,
             'formTemplateOverrideFolder' => $this->formTemplateOverrideFolder,
             'featureSettings' => $this->featureSettings,

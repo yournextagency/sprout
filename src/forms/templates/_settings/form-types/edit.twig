@@ -67,6 +67,17 @@
             first: true,
         }) }}
 
+        {{ forms.textField({
+            label: "Handle"|t('sprout-module-forms'),
+            instructions: "How you will refer to this Form Type when rendering Form Elements as templates."|t('sprout-module-forms'),
+            id: 'handle',
+            name: 'handle',
+            value: formType.handle,
+            errors: formType.getErrors('handle'),
+            warning: sproutConfigWarning(module, 'handle'),
+            required: true,
+        }) }}
+
         {{ forms.autosuggestField({
             label: "Form Template"|t('sprout-module-forms'),
             instructions: "The template that will be used to render your form."|t('sprout-module-forms'),

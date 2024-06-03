@@ -24,6 +24,11 @@ class CustomTemplatesFormType extends FormType
         return Craft::t('sprout-module-forms', 'Custom Templates');
     }
 
+    public function getHandle(): ?string
+    {
+        return $this->handle;
+    }
+
     public static function isEditable(): bool
     {
         return true;
