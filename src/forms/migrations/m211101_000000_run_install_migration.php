@@ -103,7 +103,7 @@ class m211101_000000_run_install_migration extends Migration
         if (!$this->getDb()->tableExists(self::FORMS_TABLE)) {
             $this->createTable(self::FORMS_TABLE, [
                 'id' => $this->primaryKey(),
-                'submissionFieldLayout' => $this->mediumText(),
+                'submissionFieldLayoutConfig' => $this->mediumText(),
                 'name' => $this->string()->notNull(),
                 'handle' => $this->string()->notNull(),
                 'titleFormat' => $this->string()->notNull(),

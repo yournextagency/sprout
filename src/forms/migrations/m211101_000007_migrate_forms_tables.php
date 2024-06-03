@@ -11,8 +11,6 @@ use craft\db\Table;
 use craft\fieldlayoutelements\HorizontalRule;
 use craft\fieldlayoutelements\TextareaField;
 use craft\fieldlayoutelements\TextField;
-use craft\helpers\DateTimeHelper;
-use craft\helpers\Db;
 use craft\helpers\Json;
 use craft\helpers\ProjectConfig;
 use craft\helpers\StringHelper;
@@ -113,7 +111,7 @@ class m211101_000007_migrate_forms_tables extends Migration
             'dateUpdated',
             'uid',
 
-            'submissionFieldLayout', // Convert from fieldLayoutId and remove fieldLayoutId column
+            'submissionFieldLayoutConfig', // Convert from fieldLayoutId and remove fieldLayoutId column
             'formTypeUid',
         ];
 
@@ -132,7 +130,7 @@ class m211101_000007_migrate_forms_tables extends Migration
 
             foreach ($rows as $key => $row) {
 
-                $rows[$key]['submissionFieldLayout'] = null;
+                $rows[$key]['submissionFieldLayoutConfig'] = null;
 
                 if (isset($row['fieldLayoutId'])) {
                     $layoutId = $row['fieldLayoutId'];
@@ -142,7 +140,7 @@ class m211101_000007_migrate_forms_tables extends Migration
 
                     if ($layout) {
                         // @todo - review. Is this all we need to do?
-                        $rows[$key]['submissionFieldLayout'] = Json::encode($layout->getConfig());
+                        $rows[$key]['submissionFieldLayoutConfig'] = Json::encode($layout->getConfig());
                     }
                 }
 
@@ -334,44 +332,8 @@ class m211101_000007_migrate_forms_tables extends Migration
                 continue;
             }
 
-            if (!$formId = $form['id'] ?? null) {
-                continue;
-            }
-
-            // create a new row in the {{%content}} table
-            $now = Db::prepareDateForDb(DateTimeHelper::now());
-
-            // Create a row in the content table for each element to support custom fields
-            $this->insert(Table::CONTENT, [
-                'elementId' => $form['id'],
-                'siteId' => $form['siteId'],
-                'dateCreated' => $now,
-                'dateUpdated' => $now,
-                'uid' => StringHelper::UUID(),
-            ]);
-
-            // Establish our old table and new table names
+            //    // Establish our old table and new table names
             $oldContentTable = "{{%sproutformscontent_$formHandle}}";
-            $newContentTable = "{{%sprout_formcontent_$formId}}";
-
-            // If the new table already exists, carry on
-            if ($this->db->tableExists($newContentTable)) {
-                continue;
-            }
-
-            // Simplify the old table by removing indices and foreign keys
-            Db::dropAllForeignKeysToTable($oldContentTable);
-
-            //            @todo - drop all indexes. Need to do so one by one.
-            //            Db::dropIndexIfExists($oldContentTable);
-
-            // Rename the old table to the the new table name
-            Db::renameTable($oldContentTable, $newContentTable);
-
-            $this->createIndex(null, $newContentTable, ['elementId', 'siteId'], true);
-            $this->addForeignKey(null, $newContentTable, ['elementId'], Table::ELEMENTS, ['id'], 'CASCADE');
-            $this->addForeignKey(null, $newContentTable, ['siteId'], Table::SITES, ['id'], 'CASCADE', 'CASCADE');
-
             $this->dropTableIfExists($oldContentTable);
         }
     }
@@ -392,7 +354,7 @@ class m211101_000007_migrate_forms_tables extends Migration
         $config = [
             'type' => 'BarrelStrength\Sprout\forms\components\formtypes\DefaultFormType',
             'name' => $name,
-            'formTemplate' => '@Sprout/TemplateRoot/forms/default',
+            'formTemplate' => '@Sprout/TemplateRoot/form/default',
             'formTemplateOverrideFolder' => null,
             'featureSettings' => [
                 'BarrelStrength\Sprout\transactional\components\formfeatures\TransactionalFormFeature' => [
