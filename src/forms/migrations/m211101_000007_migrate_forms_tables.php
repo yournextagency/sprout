@@ -323,21 +323,6 @@ class m211101_000007_migrate_forms_tables extends Migration
         return false;
     }
 
-    // @todo Does this work for migrating form content?
-    public function createFormContentTables($formRows): void
-    {
-        foreach ($formRows as $form) {
-            // If no form handle exists, keep moving
-            if (!$formHandle = $form['handle'] ?? null) {
-                continue;
-            }
-
-            //    // Establish our old table and new table names
-            $oldContentTable = "{{%sproutformscontent_$formHandle}}";
-            $this->dropTableIfExists($oldContentTable);
-        }
-    }
-
     public function getDefaultFormTypeFieldLayoutConfig($name, $formSettings): array
     {
         $moduleSettingsKey = self::SPROUT_KEY . '.' . self::MODULE_ID;
