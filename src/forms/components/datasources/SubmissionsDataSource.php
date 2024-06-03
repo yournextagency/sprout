@@ -64,15 +64,13 @@ class SubmissionsDataSource extends DataSource implements DateRangeInterface
             return [];
         }
 
-        $contentTable = $form->contentTable;
-
         $query = new Query();
 
         $formQuery = $query
             ->select([
                 'elementId' => 'elements.id',
                 'siteId' => 'elements_sites.siteId',
-                'title' => 'formcontenttable.title',
+                'title' => 'content.title',
                 'submissionStatusName' => 'submissionstatuses.name',
                 'ipAddress' => '[[submissions.ipAddress',
                 'referrer' => 'submissions.referrer',
@@ -80,9 +78,9 @@ class SubmissionsDataSource extends DataSource implements DateRangeInterface
                 'dateCreated' => 'submissions.dateCreated',
                 'dateUpdated' => 'submissions.dateUpdated',
             ])
-            ->from(['formcontenttable' => $contentTable])
-            ->innerJoin(['elements' => Table::ELEMENTS],
-                '[[formcontenttable.elementId]] = [[elements.id]]')
+            //->from(['formcontenttable' => $contentTable])
+            //->innerJoin(['elements' => Table::ELEMENTS],
+            //    '[[formcontenttable.elementId]] = [[elements.id]]')
             ->innerJoin(['elements_sites' => Table::ELEMENTS_SITES],
                 '[[elements_sites.elementId]] = [[elements.id]]')
             ->innerJoin(['submissions' => SproutTable::FORM_SUBMISSIONS],
@@ -92,10 +90,10 @@ class SubmissionsDataSource extends DataSource implements DateRangeInterface
             ->where(['elements.dateDeleted' => null]);
 
         if ($startDate && $endDate) {
-            $formQuery->andWhere('[[formcontenttable.dateCreated]] > :startDate', [
+            $formQuery->andWhere('[[element_sites.dateCreated]] > :startDate', [
                 ':startDate' => $startDate->format('Y-m-d H:i:s'),
             ]);
-            $formQuery->andWhere('[[formcontenttable.dateCreated]] < :endDate', [
+            $formQuery->andWhere('[[element_sites.dateCreated]] < :endDate', [
                 ':endDate' => $endDate->format('Y-m-d H:i:s'),
             ]);
         }
@@ -163,9 +161,9 @@ class SubmissionsDataSource extends DataSource implements DateRangeInterface
                     if ($selectedOptions !== []) {
                         $value = implode(', ', $selectedOptions);
                     }
-                } elseif ($field instanceof AddressModel) {
-                    $addressWithSpanTags = FormsModule::getInstance()->addressFormatter->getAddressDisplayHtml($field);
-                    $value = strip_tags($addressWithSpanTags);
+                //} elseif ($field instanceof AddressModel) {
+                //    $addressWithSpanTags = FormsModule::getInstance()->addressFormatter->getAddressDisplayHtml($field);
+                //    $value = strip_tags($addressWithSpanTags);
                 } elseif ($field instanceof NameFormFieldData) {
                     $value = $field->getFullName();
                 } elseif ($field instanceof PhoneFormFieldData) {

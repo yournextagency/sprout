@@ -5,7 +5,6 @@ namespace BarrelStrength\Sprout\forms\controllers;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
-use BarrelStrength\Sprout\forms\migrations\helpers\FormContentTableHelper;
 use Craft;
 use craft\base\Element;
 use craft\errors\WrongEditionException;
@@ -97,9 +96,6 @@ class FormsController extends BaseController
         if (!Craft::$app->getDrafts()->saveElementAsDraft($form, Craft::$app->getUser()->getId(), null, null, false)) {
             throw new ServerErrorHttpException(sprintf('Unable to save report as a draft: %s', implode(', ', $form->getErrorSummary(true))));
         }
-
-        $contentTableName = FormContentTableHelper::getContentTable($form->id);
-        FormContentTableHelper::createContentTable($contentTableName);
 
         return $this->redirect($form->getCpEditUrl());
     }

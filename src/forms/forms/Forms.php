@@ -75,21 +75,7 @@ class Forms extends Component
     //
     //        // Set the field context
     //        Craft::$app->content->fieldContext = $form->getFieldContext();
-    //        Craft::$app->content->contentTable = $form->getContentTable();
-    //
-    //        // Create the content table first since the form will need it
-    //        $oldContentTable = $this->getContentTableName($form, true);
-    //        $newContentTable = $this->getContentTableName($form);
-    //
-    //        // Do we need to create/rename the content table?
-    //        if (!Craft::$app->getDb()->tableExists($newContentTable) && !$duplicate) {
-    //            if ($oldContentTable && Craft::$app->getDb()->tableExists($oldContentTable)) {
-    //                Db::renameTable($oldContentTable, $newContentTable);
-    //            } else {
-    //                $this->_createContentTable($newContentTable);
-    //            }
-    //        }
-    //
+
     //        // Save the Form
     //        if (!Craft::$app->getElements()->saveElement($form)) {
     //            Craft::error('Couldn’t save Element.', __METHOD__);

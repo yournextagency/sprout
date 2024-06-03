@@ -168,13 +168,14 @@ class EmailFormField extends CraftEmail implements FormFieldInterface
         $value = $element->getFieldValue($this->handle);
 
         $fieldHandle = $element->fieldColumnPrefix . $this->handle;
-        $contentTable = $element->contentTable;
+        //$contentTable = $element->contentTable;
 
+        // @todo - need to update query to check against element_sites.content column
         $query = (new Query())
             ->select($fieldHandle)
-            ->from($contentTable)
-            ->innerJoin(['elements' => Table::ELEMENTS],
-                '[[elements.id]] = ' . $contentTable . '.`elementId`')
+            //->from($contentTable)
+            //->innerJoin(['elements' => Table::ELEMENTS],
+            //    '[[elements.id]] = ' . $contentTable . '.`elementId`')
             ->where([$fieldHandle => $value])
             ->andWhere(['elements.draftId' => null])
             ->andWhere(['elements.revisionId' => null])

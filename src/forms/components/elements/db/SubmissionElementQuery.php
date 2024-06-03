@@ -96,9 +96,6 @@ class SubmissionElementQuery extends ElementQuery
     {
         $this->joinElementTable('sprout_form_submissions');
 
-        // Figure out which content table to use
-        $this->contentTable = null;
-
         if (!$this->formId && $this->id) {
             $formIds = (new Query())
                 ->select(['formId'])
@@ -113,10 +110,6 @@ class SubmissionElementQuery extends ElementQuery
         if ($this->formId && is_numeric($this->formId)) {
             /** @var FormElement $form */
             $form = FormsModule::getInstance()->forms->getFormById($this->formId);
-
-            if ($form) {
-                $this->contentTable = $form->getSubmissionContentTable();
-            }
         }
 
         $this->query->select([

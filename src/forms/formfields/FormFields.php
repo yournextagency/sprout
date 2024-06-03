@@ -101,7 +101,6 @@ class FormFields extends Component
                 ]);
 
                 Craft::$app->content->fieldContext = $form->getFieldContext();
-                Craft::$app->content->contentTable = $form->getContentTable();
 
                 // Save duplicate field
                 Craft::$app->getFields()->saveField($field);
