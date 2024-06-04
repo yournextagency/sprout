@@ -188,32 +188,16 @@ class SubmissionElementQuery extends ElementQuery
         return Db::parseParam('sprout_form_submissions_statuses.handle', $status);
     }
 
-    protected function customFields(): array
-    {
-        if (!$this->formId) {
-            return [];
-        }
-
-        // This method won't get called if $this->formId isn't set to a single int
-        $form = FormsModule::getInstance()->forms->getFormById($this->formId);
-
-        if (!$form) {
-            return [];
-        }
-
-        $fields = Craft::$app->getFields()->getAllFields($form->getSubmissionFieldContext());
-
-        return $fields;
-    }
-
     protected function fieldLayouts(): array
     {
-        $form = FormsModule::getInstance()->forms->getFormById($this->formId);
+        $forms = FormsModule::getInstance()->forms->getAllForms();
 
-        if ($form) {
-            return [$form->getSubmissionFieldLayout()];
+        $layouts = [];
+
+        foreach ($forms as $form) {
+            $layouts[] = $form->getSubmissionFieldLayout();
         }
 
-        return parent::fieldLayouts();
+        return $layouts;
     }
 }
