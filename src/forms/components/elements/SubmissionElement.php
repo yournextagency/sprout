@@ -233,7 +233,7 @@ class SubmissionElement extends Element
 
         if (preg_match('#^form:(.+)$#', $source, $matches) &&
             ($form = FormsModule::getInstance()->forms->getFormById($matches[1])) &&
-            $fieldLayout = $form->getFieldLayout()) {
+            $fieldLayout = $form->getSubmissionFieldLayout()) {
             $fieldLayouts[] = $fieldLayout;
         }
 

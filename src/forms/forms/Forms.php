@@ -35,68 +35,6 @@ class Forms extends Component
         return static::$fieldVariables;
     }
 
-    //public function saveForm(FormElement $form, bool $duplicate = false): bool
-    //{
-    //    $isNew = !$form->getId();
-    //
-    //    if (!$isNew) {
-    //        // Add the oldHandle to our model so we can determine if we
-    //        // need to rename the content table
-    //        /** @var FormRecord $formRecord */
-    //        $formRecord = FormRecord::findOne($form->getId());
-    //        $form->oldHandle = $formRecord->getOldHandle();
-    //        $oldForm = $formRecord;
-    //
-    //        if ($duplicate) {
-    //            $form->name = $oldForm->name;
-    //            $form->handle = $oldForm->handle;
-    //            $form->oldHandle = null;
-    //        }
-    //    }
-    //
-    //    $form->validate();
-    //
-    //    if ($form->hasErrors()) {
-    //        Craft::error($form->getErrors(), __METHOD__);
-    //
-    //        return false;
-    //    }
-    //
-    //    /** @var Transaction $transaction */
-    //    $transaction = Craft::$app->getDb()->beginTransaction();
-    //
-    //    try {
-    //        // Save the field layout
-    //        $fieldLayout = $form->getFieldLayout();
-    //        Craft::$app->getFields()->saveLayout($fieldLayout);
-    //
-    //        // Assign our new layout id info to our form model and record
-    //        $form->setFieldLayoutId($fieldLayout->id);
-    //
-    //        // Set the field context
-    //        Craft::$app->content->fieldContext = $form->getFieldContext();
-
-    //        // Save the Form
-    //        if (!Craft::$app->getElements()->saveElement($form)) {
-    //            Craft::error('Couldn’t save Element.', __METHOD__);
-    //
-    //            return false;
-    //        }
-    //
-    //        // FormRecord saved on afterSave form element
-    //        $transaction->commit();
-    //
-    //        Craft::info('Form Saved.', __METHOD__);
-    //    } catch (Exception $exception) {
-    //        Craft::error('Unable to save form: ' . $exception->getMessage(), __METHOD__);
-    //        $transaction->rollBack();
-    //
-    //        throw $exception;
-    //    }
-    //
-    //    return true;
-    //}
-
     /**
      * Returns an array of models for forms found in the database
      *
@@ -220,42 +158,4 @@ class Forms extends Component
 
         return true;
     }
-
-    //public function getTabsForFieldLayout(FormElement $form): array
-    //{
-    //    $tabs = [];
-    //
-    //    $fieldLayout = $form->getFieldLayout();
-    //    $fieldLayoutTabs = $fieldLayout->getTabs();
-    //    if (empty($fieldLayoutTabs)) {
-    //        $fieldLayoutTabs[] = new FieldLayoutTab([
-    //            'name' => FormsModule::getInstance()->formFields->getDefaultTabName(),
-    //            'sortOrder' => 1,
-    //        ]);
-    //        $fieldLayout->setTabs($fieldLayoutTabs);
-    //        Craft::$app->getFields()->saveLayout($fieldLayout);
-    //    }
-    //
-    //    foreach ($fieldLayoutTabs as $tab) {
-    //        // Do any of the fields on this tab have errors?
-    //        $hasErrors = false;
-    //
-    //        if ($form->hasErrors()) {
-    //            foreach ($tab->getFields() as $field) {
-    //                /** @var Field $field */
-    //                if ($hasErrors = $form->hasErrors($field->handle . '.*')) {
-    //                    break;
-    //                }
-    //            }
-    //        }
-    //
-    //        $tabs[$tab->id] = [
-    //            'label' => Craft::t('sprout-module-forms', $tab->name),
-    //            'url' => '#sproutforms-tab-' . $tab->id,
-    //            'class' => $hasErrors ? 'error' : null,
-    //        ];
-    //    }
-    //
-    //    return $tabs;
-    //}
 }
