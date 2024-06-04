@@ -25,8 +25,6 @@ class SingleLineFormField extends PlainText implements FormFieldInterface
 
     public ?int $charLimit = null;
 
-    public ?string $columnType = Schema::TYPE_TEXT;
-
     public static function getGroupLabel(): string
     {
         return GroupLabel::label(GroupLabel::GROUP_COMMON);
@@ -88,11 +86,6 @@ class SingleLineFormField extends PlainText implements FormFieldInterface
                 'value' => $value,
                 'field' => $this,
             ]);
-    }
-
-    public function getContentColumnType(): string
-    {
-        return $this->columnType;
     }
 
     public function getExampleInputHtml(): string

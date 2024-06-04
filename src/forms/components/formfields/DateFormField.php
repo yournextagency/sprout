@@ -63,7 +63,7 @@ class DateFormField extends CraftDate implements FormFieldInterface
         return Craft::t('sprout-module-forms', 'Date/Time');
     }
 
-    public function getContentColumnType(): array|string
+    public static function dbType(): array|string
     {
         return Schema::TYPE_DATETIME;
     }

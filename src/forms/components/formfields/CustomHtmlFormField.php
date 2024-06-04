@@ -47,11 +47,6 @@ class CustomHtmlFormField extends Field implements FormFieldInterface, Previewab
         return false;
     }
 
-    public function getContentColumnType(): array|string
-    {
-        return Schema::TYPE_TEXT;
-    }
-
     public function getSvgIconPath(): string
     {
         return '@Sprout/Assets/dist/static/fields/icons/code.svg';

@@ -23,8 +23,6 @@ class ParagraphFormField extends CraftPlainText implements FormFieldInterface
 
     public ?int $charLimit = null;
 
-    public ?string $columnType = Schema::TYPE_TEXT;
-
     public static function getGroupLabel(): string
     {
         return GroupLabel::label(GroupLabel::GROUP_COMMON);
@@ -33,11 +31,6 @@ class ParagraphFormField extends CraftPlainText implements FormFieldInterface
     public static function displayName(): string
     {
         return Craft::t('sprout-module-forms', 'Paragraph');
-    }
-
-    public function getContentColumnType(): string
-    {
-        return $this->columnType;
     }
 
     public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed

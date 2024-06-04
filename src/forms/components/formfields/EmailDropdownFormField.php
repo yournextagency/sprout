@@ -31,7 +31,7 @@ class EmailDropdownFormField extends CraftDropdownField implements FormFieldInte
         return Craft::t('sprout-module-forms', 'Email Dropdown');
     }
 
-    public function getContentColumnType(): string
+    public static function dbType(): string
     {
         return Schema::TYPE_STRING;
     }
