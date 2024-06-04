@@ -286,6 +286,17 @@ class FormElement extends Element
         $layout->type = SubmissionElement::class;
         $layout->uid = $this->getSubmissionLayoutUid();
 
+        // This block ensures that our FieldLayoutElements have a uid set so that
+        // when a form is submitted from the front-end the content column data is saved
+        // with the format {layoutElementUid: value}... in Element::_saveElementInternal
+        // around the code that has: if ($saveContent) { ... }
+        foreach ($layout->getTabs() as $tabIndex => $tab) {
+            foreach ($tab->getElements() as $elementIndex => $element) {
+                $fieldLayoutElementUid = $config['tabs'][$tabIndex]['fields'][$element->getField()->uid]['uid'] ?? null;
+                $element->uid =$fieldLayoutElementUid;
+            }
+        }
+
         return $layout;
     }
 
