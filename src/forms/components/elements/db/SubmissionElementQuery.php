@@ -2,12 +2,8 @@
 
 namespace BarrelStrength\Sprout\forms\components\elements\db;
 
-use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\db\SproutTable;
 use BarrelStrength\Sprout\forms\FormsModule;
-use BarrelStrength\Sprout\forms\submissions\SubmissionStatus;
-use Craft;
-use craft\db\Query;
 use craft\elements\db\ElementQuery;
 use craft\helpers\Db;
 
@@ -96,22 +92,6 @@ class SubmissionElementQuery extends ElementQuery
     {
         $this->joinElementTable('sprout_form_submissions');
 
-        if (!$this->formId && $this->id) {
-            $formIds = (new Query())
-                ->select(['formId'])
-                ->distinct()
-                ->from([SproutTable::FORM_SUBMISSIONS])
-                ->where(Db::parseParam('id', $this->id))
-                ->column();
-
-            $this->formId = count($formIds) === 1 ? $formIds[0] : $formIds;
-        }
-
-        if ($this->formId && is_numeric($this->formId)) {
-            /** @var FormElement $form */
-            $form = FormsModule::getInstance()->forms->getFormById($this->formId);
-        }
-
         $this->query->select([
             'sprout_form_submissions.formId',
             'sprout_form_submissions.statusId',
@@ -128,13 +108,6 @@ class SubmissionElementQuery extends ElementQuery
 
         $this->query->innerJoin(['sprout_forms' => SproutTable::FORMS], '[[sprout_forms.id]] = [[sprout_form_submissions.formId]]');
         $this->query->innerJoin(['sprout_form_submissions_statuses' => SproutTable::FORM_SUBMISSIONS_STATUSES], '[[sprout_form_submissions_statuses.id]] = [[sprout_form_submissions.statusId]]');
-
-        $this->query->andWhere(Db::parseParam(
-            '[[sprout_forms.saveData]]', true
-        ));
-
-        $this->subQuery->innerJoin(['sprout_forms' => SproutTable::FORMS], '[[sprout_forms.id]] = [[sprout_form_submissions.formId]]');
-        $this->subQuery->innerJoin(['sprout_form_submissions_statuses' => SproutTable::FORM_SUBMISSIONS_STATUSES], '[[sprout_form_submissions_statuses.id]] = [[sprout_form_submissions.statusId]]');
 
         if ($this->formId) {
             $this->subQuery->andWhere(Db::parseParam(
