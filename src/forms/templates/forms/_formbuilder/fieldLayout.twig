@@ -102,16 +102,16 @@
                     x-on:drop="DragDropHelper.dropOnLayoutTabBody"
                 >
                     {# Tab with Fields #}
-                    <template x-if="tab.fields.length > 0">
+                    <template x-if="tab.elements.length > 0">
 
-                        <template x-for="element in tab.fields">
+                        <template x-for="element in tab.elements">
 
                             {# Layout Field #}
                             <div
                                 class="layout-field drag-target"
                                 x-bind:class="isDragOverFormFieldUid === element.fieldUid ? 'drag-over' : ''"
                                 x-on:dblclick="FieldLayoutHelper.editFieldLayoutElement(element)"
-                                x-bind:data-type="element.field.type"
+                                x-bind:data-type="element.formField.type"
                                 x-bind:data-tab-uid="tab.uid"
                                 x-bind:data-field-uid="element.fieldUid"
 
@@ -125,13 +125,13 @@
                             >
 
                                 <div class="layout-field-header">
-                                    <h2 x-bind:class="element.required" x-text="element.field.name"></h2>
-                                    <p x-show="element.field.instructions" x-text="element.field.instructions"></p>
+                                    <h2 x-bind:class="element.required" x-text="element.formField.name"></h2>
+                                    <p x-show="element.formField.instructions" x-text="element.formField.instructions"></p>
                                 </div>
 
-                                <div class="body" x-html="element.uiSettings.exampleInputHtml"></div>
+                                <div class="body" x-html="element.formFieldUi.exampleInputHtml"></div>
                                 <div class="form-field-details">
-                                    <span x-text="element.uiSettings.displayName"></span>
+                                    <span x-text="element.formFieldUi.displayName"></span>
                                     <a
                                         x-on:click="deleteFormField(element)"
                                         class="delete icon"
@@ -153,7 +153,7 @@
                     </template>
 
                     {# Tab with no Fields #}
-                    <template x-if="tab.fields.length === 0">
+                    <template x-if="tab.elements.length === 0">
 
                         <div class="field placeholder-field">
                             {{ zilchHtml }}
@@ -167,7 +167,7 @@
 
             <template x-for="tab in tabs">
 
-                <template x-for="element in tab.fields">
+                <template x-for="element in tab.elements">
                     <div
                         x-bind:id="'field-settings-slideout-' + element.fieldUid"
                         x-bind:data-field-uid="element.fieldUid"

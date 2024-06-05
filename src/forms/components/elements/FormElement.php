@@ -267,43 +267,7 @@ class FormElement extends Element
         if ($this->submissionFieldLayoutConfig) {
             $config = Json::decodeIfJson($this->submissionFieldLayoutConfig) ?? [];
 
-            // modify $config.tabs[].fields to use $config.tabs[].fields.fieldUid as the index
-            // so we can get a full layout when we call FieldLayout::createFromConfig
-            foreach ($config['tabs'] as $tabIndex => $tab) {
-                $config['tabs'][$tabIndex]['fields'] = array_reduce($tab['fields'], static function($carry, $field) {
-                    $carry[$field['fieldUid']] = $field;
-
-                    return $carry;
-                }, []);
-            }
-
-            $layout = FieldLayout::createFromConfig($config);
-        } else {
-            $layout = new FieldLayout();
-        }
-
-        // layout is never saved, it has no id and we don't want to store one on the element
-        $layout->type = SubmissionElement::class;
-        $layout->uid = $this->getSubmissionLayoutUid();
-
-        // This block ensures that our FieldLayoutElements have a uid set so that
-        // when a form is submitted from the front-end the content column data is saved
-        // with the format {layoutElementUid: value}... in Element::_saveElementInternal
-        // around the code that has: if ($saveContent) { ... }
-        foreach ($layout->getTabs() as $tabIndex => $tab) {
-            foreach ($tab->getElements() as $elementIndex => $element) {
-                $fieldLayoutElementUid = $config['tabs'][$tabIndex]['fields'][$element->getField()->uid]['uid'] ?? null;
-                $element->uid =$fieldLayoutElementUid;
-            }
-        }
-
-        return $layout;
-    }
-
-    public function getFormBuilderSubmissionFieldLayout(): array
-    {
-        if ($this->submissionFieldLayoutConfig) {
-            $config = Json::decodeIfJson($this->submissionFieldLayoutConfig) ?? [];
+            $layout = FormBuilderHelper::createSubmissionFieldLayoutFromConfig($config);
         } else {
             $layout = new FieldLayout();
             $layout->type = SubmissionElement::class;
@@ -313,67 +277,12 @@ class FormElement extends Element
             $layoutTab->uid = StringHelper::UUID();
             $layout->setTabs([$layoutTab]);
 
-            $config = $layout->getConfig();
-            // @todo - explore when this becomes 'fields' and when it becomes 'elements'
-            // Need it as 'fields' to populate the FieldLayout::createFromConfig() behavior
-            // So just converting it here right now
-            foreach ($config['tabs'] as $tabIndex => $tab) {
-                $config['tabs'][$tabIndex]['fields'] = array_reduce($tab['elements'], static function($carry, $field) {
-                    $carry[] = $field;
-
-                    return $carry;
-                }, []);
-                unset($config['tabs'][$tabIndex]['elements']);
-            }
-
-            //$config['fields'] = $config['elements'];
-            //unset($config['elements']);
         }
 
-        $tabs = reset($config);
-        $fields = [];
-        $uiSettings = [];
+        // layout is never saved, it has no id and we don't want to store one on the element
+        $layout->uid = $this->getSubmissionLayoutUid();
 
-        array_walk($tabs, static function(&$tab) use (&$fields, &$uiSettings) {
-            if (empty($tab['fields'])) {
-                return;
-            }
-
-            array_walk($tab['fields'], static function(&$layoutElement) use (&$fields, &$uiSettings) {
-                $fieldUid = $layoutElement['fieldUid'] ?? null;
-
-                if (!$fieldUid) {
-                    return;
-                }
-
-                $field = FormBuilderHelper::getFieldData($fieldUid);
-                $fieldData = FormBuilderHelper::getFieldUiSettings($field);
-
-                $fields[$fieldUid] = $fieldData['field'] ?? [];
-                $uiSettings[$fieldUid] = $fieldData['uiSettings'] ?? [];
-
-                // merge field and uiSettings into layoutElement
-                $layoutElement = array_merge($layoutElement, [
-                    'field' => $fieldData['field'] ?? [],
-                    'uiSettings' => $fieldData['uiSettings'] ?? [],
-                ]);
-            });
-        });
-
-        $config['uid'] = $this->getSubmissionLayoutUid();
-        $config['tabs'] = $tabs ?? [];
-
-        return $config;
-    }
-
-    public function getDefaultSubmissionTabs(): array
-    {
-        $fieldLayoutTab = new FieldLayoutTab();
-        $fieldLayoutTab->name = Craft::t('sprout-module-forms', 'Page');
-
-        return [
-            $fieldLayoutTab,
-        ];
+        return $layout;
     }
 
     public static function find(): FormElementQuery
@@ -726,7 +635,7 @@ class FormElement extends Element
         $newFieldUids = [];
 
         foreach ($layout['tabs'] as $index => $tab) {
-            foreach ($tab['fields'] as $elementIndex => $element) {
+            foreach ($tab['elements'] as $elementIndex => $element) {
                 $fieldUid = $element['fieldUid'] ?? null;
                 $newFieldUids[] = $fieldUid; // do this here because we might exit
 
@@ -751,7 +660,7 @@ class FormElement extends Element
 
                 // @TODO - extract fields and validate them before saving ANY
 
-                $this->saveFormField($fieldData);
+                //$this->saveFormField($fieldData);
             }
         }
 
@@ -771,16 +680,16 @@ class FormElement extends Element
 
         // remove 'field' attribute from layout.tabs.elements
         array_walk($layout['tabs'], static function(&$tab) {
-            array_walk($tab['fields'], static function(&$element) {
+            array_walk($tab['elements'], static function(&$element) {
                 unset($element['field']);
             });
         });
 
-        Craft::$app->getDb()->createCommand()->update(
-            SproutTable::FORMS,
-            ['submissionFieldLayoutConfig' => Json::encode($layout)],
-            ['id' => $this->id]
-        )->execute();
+        //Craft::$app->getDb()->createCommand()->update(
+        //    SproutTable::FORMS,
+        //    ['submissionFieldLayoutConfig' => Json::encode($layout)],
+        //    ['id' => $this->id]
+        //)->execute();
     }
 
     /**

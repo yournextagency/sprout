@@ -26,12 +26,12 @@ class FormBuilderController extends BaseController
 
         /** @var FormElement $form */
         $form = Craft::$app->getElements()->getElementById($formId, FormElement::class);
-        $layout = $form->getFormBuilderSubmissionFieldLayout();
+        $layout = $form->getSubmissionFieldLayout();
 
         return $this->asJson([
             'success' => true,
             'formId' => $formId,
-            'layout' => $layout,
+            'layout' => $layout->getConfig(),
         ]);
     }
 
@@ -99,7 +99,8 @@ class FormBuilderController extends BaseController
 
         $layoutElementConfig = Craft::$app->getRequest()->getRequiredParam('layoutElement');
         $layoutElementConfig = Json::decodeIfJson($layoutElementConfig);
-        $fieldConfig = $layoutElementConfig['field'];
+
+        $fieldConfig = $layoutElementConfig['formField'];
 
         $class = $fieldConfig['type'] ?? null;
         $fieldSettings = $fieldConfig['settings'] ?? [];

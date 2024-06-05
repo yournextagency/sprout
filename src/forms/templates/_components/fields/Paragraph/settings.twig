@@ -27,19 +27,19 @@
     errors: field.getErrors('charLimit')
 }) }}
 
-{% if craft.app.db.isMysql %}
-    {{ forms.selectField({
-        label: "Column Type"|t('sprout-module-forms'),
-        id: 'column-type',
-        name: 'columnType',
-        instructions: "The type of column this field should get in the database."|t('sprout-module-forms'),
-        options: [
-            { value: 'string', label: 'varchar (255B)' },
-            { value: 'text', label: 'text (~64KB)' },
-            { value: 'mediumtext', label: 'mediumtext (~16MB)' },
-        ],
-        value: field.columnType,
-        warning: field.id ? "Changing this may result in data loss."|t('sprout-module-forms'),
-    }) }}
-{% endif %}
+{#{% if craft.app.db.isMysql %}#}
+{#    {{ forms.selectField({#}
+{#        label: "Column Type"|t('sprout-module-forms'),#}
+{#        id: 'column-type',#}
+{#        name: 'columnType',#}
+{#        instructions: "The type of column this field should get in the database."|t('sprout-module-forms'),#}
+{#        options: [#}
+{#            { value: 'string', label: 'varchar (255B)' },#}
+{#            { value: 'text', label: 'text (~64KB)' },#}
+{#            { value: 'mediumtext', label: 'mediumtext (~16MB)' },#}
+{#        ],#}
+{#        value: field.columnType,#}
+{#        warning: field.id ? "Changing this may result in data loss."|t('sprout-module-forms'),#}
+{#    }) }}#}
+{#{% endif %}#}
 

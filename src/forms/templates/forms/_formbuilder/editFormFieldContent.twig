@@ -9,7 +9,7 @@
 {% endset %}
 
 {% set fieldHtml %}
-    {% namespace 'field' %}
+    {% namespace 'formField' %}
         {{ forms.textField({
             label: 'Name'|t('sprout-module-forms') ~ sproutCp.infoIcon(
                 'The field label displayed to your users.'|t('sprout-module-forms')

@@ -6,6 +6,10 @@ use craft\fieldlayoutelements\CustomField;
 
 class CustomFormField extends CustomField
 {
+    public array $formField = [];
+
+    public array $formFieldUi = [];
+
     // Disable Conditional behavior, for now
     protected function conditional(): bool
     {
