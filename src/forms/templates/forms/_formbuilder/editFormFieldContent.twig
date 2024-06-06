@@ -23,14 +23,6 @@
             first: not field.allowRequired()
         }) }}
 
-        {{ forms.textField({
-            label: 'Handle'|t('sprout-module-forms'),
-            name: 'handle',
-            value: field.handle,
-            errors: field.getErrors('handle'),
-            required: true,
-        }) }}
-
         {% if field.displayInstructionsField %}
             {{ forms.textareaField({
                 label: 'Instructions'|t('sprout-module-forms') ~ sproutCp.infoIcon(
@@ -65,6 +57,36 @@
         {{ fieldHtml }}
 
     {% endnamespace %}
+</div>
+
+<div id="form-field-metadata" class="hidden">
+
+    {{ forms.textField({
+        label: 'Handle'|t('sprout-module-forms'),
+        name: 'handle',
+        value: field.handle,
+        errors: field.getErrors('handle'),
+        required: true,
+    }) }}
+
+    <hr>
+
+    {{ forms.textField({
+        label: 'Field Type'|t('sprout-module-forms'),
+        name: 'type',
+        value: field.displayName(),
+        readonly: true,
+        disabled: true,
+    }) }}
+
+    {{ forms.textField({
+        label: 'Field Class'|t('sprout-module-forms'),
+        name: 'class',
+        value: className(field),
+        readonly: true,
+        disabled: true,
+    }) }}
+
 </div>
 
 <div id="form-field-rules" class="hidden">
