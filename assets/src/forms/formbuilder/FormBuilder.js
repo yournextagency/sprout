@@ -42,8 +42,6 @@ export const FormBuilder = (formId) => ({
      * ]
      */
     tabs: [],
-    // fields: [],
-    // uiSettings: [],
 
     fieldLayoutUid: null,
 
@@ -83,8 +81,6 @@ export const FormBuilder = (formId) => ({
             //   },
             // ];
             self.tabs = response.data.layout.tabs;
-            // self.fields = response.data.layout.fields;
-            // self.uiSettings = response.data.layout.uiSettings;
             self.fieldLayoutUid = response.data.layout.uid;
 
             // get uid of first tab in tabs array

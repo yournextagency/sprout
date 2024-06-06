@@ -14,6 +14,7 @@ use BarrelStrength\Sprout\forms\components\formfields\MissingFormField;
 use BarrelStrength\Sprout\forms\components\formtypes\DefaultFormType;
 use BarrelStrength\Sprout\forms\components\notificationevents\SaveSubmissionNotificationEvent;
 use BarrelStrength\Sprout\forms\db\SproutTable;
+use BarrelStrength\Sprout\forms\formfields\CustomFormField;
 use BarrelStrength\Sprout\forms\forms\FormBuilderHelper;
 use BarrelStrength\Sprout\forms\forms\FormRecord;
 use BarrelStrength\Sprout\forms\FormsModule;
@@ -276,7 +277,6 @@ class FormElement extends Element
             $layoutTab->name = Craft::t('sprout-module-forms', 'Page');
             $layoutTab->uid = StringHelper::UUID();
             $layout->setTabs([$layoutTab]);
-
         }
 
         // layout is never saved, it has no id and we don't want to store one on the element
@@ -888,7 +888,8 @@ class FormElement extends Element
                 $field = $formFields[$type];
                 unset($formFields[$type]);
 
-                $fieldData = FormBuilderHelper::getFieldUiSettings($field);
+                $fieldData['formField'] = FormBuilderHelper::getFormFieldData($field);
+                $fieldData['formFieldUi'] = FormBuilderHelper::getFormFieldUiData($field);
                 $fieldData['groupName'] = $groupName; // Form Field Sidebar UI specific
                 $sourceFields[] = $fieldData;
             }
@@ -897,7 +898,8 @@ class FormElement extends Element
         // if we have more fields add them to the group 'custom'
         if (count($formFields) > 0) {
             foreach ($formFields as $formField) {
-                $fieldData = FormBuilderHelper::getFieldUiSettings($formField);
+                $fieldData['formField'] = FormBuilderHelper::getFormFieldData($formField);
+                $fieldData['formFieldUi'] = FormBuilderHelper::getFormFieldUiData($formField);
                 $fieldData['groupName'] = Craft::t('sprout-module-forms', 'Custom');
                 $sourceFields[] = $fieldData;
             }

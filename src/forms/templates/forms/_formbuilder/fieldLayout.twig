@@ -126,7 +126,7 @@
 
                                 <div class="layout-field-header">
                                     <h2 x-bind:class="element.required" x-text="element.formField.name"></h2>
-                                    <p x-show="element.formField.instructions" x-text="element.formField.instructions"></p>
+                                    <p x-show="element.formField.exampleInputHtml" x-text="element.formField.exampleInputHtml"></p>
                                 </div>
 
                                 <div class="body" x-html="element.formFieldUi.exampleInputHtml"></div>
@@ -136,7 +136,6 @@
                                         x-on:click="deleteFormField(element)"
                                         class="delete icon"
                                     ></a>
-                                    {# <code x-text="field.uiSettings.fieldHandleHtml"></code> #}
                                 </div>
 
                                 <a

@@ -42,11 +42,11 @@ const FieldLayout = {
         return JSON.stringify(fieldLayout);
     },
 
-    // Removes uiSettings from element/field data
+    // Removes formFieldUi settings from the submissionFieldLayoutConfig schema
     getFormFieldAttributes(fieldData) {
 
         const {
-            uiSettings,
+            formFieldUi,
             ...fieldAttributes
         } = fieldData;
 
@@ -174,7 +174,7 @@ const FieldLayout = {
     },
 
     getFieldByType(type) {
-        return window.FormBuilder.sourceFields.filter(item => item.field.type === type)[0] ?? null;
+        return window.FormBuilder.sourceFields.filter(item => item.formField.type === type)[0] ?? null;
     },
 
     // -------------------------------------------------------------------------
@@ -187,22 +187,23 @@ const FieldLayout = {
         let FormBuilder = window.FormBuilder;
 
         let fieldData = this.getFieldByType(type);
-        fieldData.field.type = type;
+        fieldData.formField.type = type;
 
         if (FormBuilder.dragOrigin === FormBuilder.DragOrigins.sourceField) {
-            fieldData.field.name = fieldData.formFieldUi.displayName;
-            fieldData.field.handle = fieldData.formFieldUi.defaultHandle + '_' + Craft.randomString(4);
-            fieldData.field.uid = Craft.uuid();
+            fieldData.formField.name = fieldData.formFieldUi.displayName;
+            fieldData.formField.handle = fieldData.formFieldUi.defaultHandle + '_' + Craft.randomString(4);
+            fieldData.formField.uid = Craft.uuid();
         }
 
         if (FormBuilder.dragOrigin === FormBuilder.DragOrigins.layoutField) {
 
         }
 
-        let fieldUid = fieldData.field.uid;
+        let fieldUid = fieldData.formField.uid;
 
         let tabIndex = this.getTabIndexByTabUid(FormBuilder.selectedTabUid);
-        let layoutElement = this.getLayoutElement(fieldUid, fieldData.field, fieldData.uiSettings);
+
+        let layoutElement = this.getLayoutElement(fieldUid, fieldData);
         FormBuilder.tabs[tabIndex].elements.push(layoutElement);
 
         if (beforeFieldUid) {
@@ -231,7 +232,7 @@ const FieldLayout = {
         }
     },
 
-    getLayoutElement(fieldUid, field, uiSettings) {
+    getLayoutElement(fieldUid, field) {
         return {
             type: 'BarrelStrength\\Sprout\\forms\\submissions\\CustomFormField',
             required: false,
@@ -240,8 +241,8 @@ const FieldLayout = {
             userCondition: null,
             elementCondition: null,
             fieldUid: fieldUid,
-            formField: field,
-            formFieldUi: uiSettings,
+            formField: field.formField,
+            formFieldUi: field.formFieldUi,
         };
     },
 

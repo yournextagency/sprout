@@ -120,7 +120,7 @@ const DragDrop = {
             FieldLayoutHelper.addFieldToLayoutTab(type);
 
             let fieldData = FieldLayoutHelper.getFieldByType(type);
-            let layoutElement = FieldLayoutHelper.getLayoutElement(fieldData.field.uid, fieldData.field, fieldData.uiSettings);
+            let layoutElement = FieldLayoutHelper.getLayoutElement(fieldData.formField.uid, fieldData);
             FieldLayoutHelper.editFieldLayoutElement(layoutElement);
         }
 
