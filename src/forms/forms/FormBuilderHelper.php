@@ -8,6 +8,7 @@ use BarrelStrength\Sprout\forms\formfields\CustomFormField;
 use BarrelStrength\Sprout\forms\formfields\FormFieldInterface;
 use Craft;
 use craft\base\FieldInterface;
+use craft\base\FieldLayoutElement;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Cp;
 use craft\helpers\StringHelper;
@@ -43,6 +44,25 @@ class FormBuilderHelper
         return $layout;
     }
 
+    public static function appendFormFieldUiData(FieldLayout $layout): array
+    {
+        $tabs = $layout->getTabs();
+        $fieldLayoutElements = [];
+
+        foreach ($tabs as $tab) {
+            /** @var FieldLayoutElement $fieldLayoutElements */
+            $fieldLayoutElements = array_map(static function($fieldLayoutElement) {
+                $field = $fieldLayoutElement->getField();
+                $formFieldUiData = self::getFormFieldUiData($field);
+                $fieldLayoutElement->formFieldUi = $formFieldUiData;
+
+                return $fieldLayoutElement;
+            }, $tab->getElements());
+        }
+
+        return $fieldLayoutElements;
+    }
+
     public static function createSubmissionFieldLayoutTabFromConfig(FieldLayout $fieldLayout, array $config): FieldLayoutTab
     {
         $elements = $config['elements'] ?? $config['fields'] ?? [];
@@ -72,12 +92,6 @@ class FormBuilderHelper
             $fieldLayoutElement->uid = $layoutElementConfig['uid'];
             $fieldLayoutElement->formField = $layoutElementConfig['formField'] ?? null;
 
-            // Only add FormBuilder UI helper stuff on CP requests
-            if (Craft::$app->getRequest()->getIsCpRequest()) {
-                $formFieldUiData = self::getFormFieldUiData($field);
-                $fieldLayoutElement->formFieldUi = $formFieldUiData;
-            }
-
             $fieldLayoutElements[] = $fieldLayoutElement;
         }
 
@@ -96,6 +110,10 @@ class FormBuilderHelper
         ];
     }
 
+    /**
+     * Avoid calling this method in non-Form Builder scenarios. It will try to render
+     * the exampleHtml template and throw an error.
+     */
     public static function getFormFieldUiData(FormFieldInterface $field): array
     {
         $svg = Craft::getAlias($field->getSvgIconPath());

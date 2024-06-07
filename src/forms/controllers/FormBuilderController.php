@@ -5,6 +5,7 @@ namespace BarrelStrength\Sprout\forms\controllers;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\formfields\CustomFormField;
 use BarrelStrength\Sprout\forms\formfields\FormFieldLayoutTab;
+use BarrelStrength\Sprout\forms\forms\FormBuilderHelper;
 use BarrelStrength\Sprout\forms\FormsModule;
 use Craft;
 use craft\elements\conditions\users\UserCondition;
@@ -27,6 +28,8 @@ class FormBuilderController extends BaseController
         /** @var FormElement $form */
         $form = Craft::$app->getElements()->getElementById($formId, FormElement::class);
         $layout = $form->getSubmissionFieldLayout();
+
+        FormBuilderHelper::appendFormFieldUiData($layout);
 
         return $this->asJson([
             'success' => true,
