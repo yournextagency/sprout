@@ -144,7 +144,7 @@ class InvisibleFormField extends Field implements FormFieldInterface, Previewabl
 
         if ($this->value) {
             try {
-                $value = Craft::$app->getView()->renderObjectTemplate($this->value, Forms::getFieldVariables());
+                $value = Craft::$app->getView()->renderObjectTemplate($this->value, Forms::getFormMetadataVariables());
                 Craft::$app->getSession()->set($this->handle, $value);
             } catch (Exception $exception) {
                 Craft::error($exception->getMessage(), __METHOD__);

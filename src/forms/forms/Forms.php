@@ -13,7 +13,7 @@ use yii\base\Component;
 
 class Forms extends Component
 {
-    protected static array $fieldVariables = [];
+    protected static array $formMetadataVariables = [];
 
     public array $activeSubmissions = [];
 
@@ -22,17 +22,17 @@ class Forms extends Component
      * Allows a user to add variables to an object that can be parsed by fields
      *
      * @example
-     * {% do sprout.forms.addFieldVariables({ submissionTitle: submission.title }) %}
+     * {% do sprout.forms.addFormMetadataVariables({ submissionTitle: submission.title }) %}
      * {{ sprout.forms.displayForm('contact') }}
      */
-    public static function addFieldVariables(array $variables): void
+    public static function addFormMetadataVariables(array $variables): void
     {
-        static::$fieldVariables = array_merge(static::$fieldVariables, $variables);
+        static::$formMetadataVariables = array_merge(static::$formMetadataVariables, $variables);
     }
 
-    public static function getFieldVariables(): array
+    public static function getFormMetadataVariables(): array
     {
-        return static::$fieldVariables;
+        return static::$formMetadataVariables;
     }
 
     /**

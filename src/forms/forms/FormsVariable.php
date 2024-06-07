@@ -91,9 +91,9 @@ class FormsVariable
         Craft::$app->getSession()->set('totalSteps', $totalSteps);
     }
 
-    public function addFieldVariables(array $variables): void
+    public function addFormMetadataVariables(array $variables): void
     {
-        Forms::addFieldVariables($variables);
+        Forms::addFormMetadataVariables($variables);
     }
 
     /**

@@ -34,7 +34,7 @@ class SubmissionsHelper
         foreach ($enabledFormMetadata as $key => $value) {
             $formMetadataValues[$key] = Craft::$app->getView()->renderObjectTemplate(
                 $value,
-                Forms::getFieldVariables()
+                Forms::getFormMetadataVariables()
             );
         }
 
