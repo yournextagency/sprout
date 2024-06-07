@@ -159,10 +159,14 @@ class FormsSettings extends BaseConfig
     public function setAttributes($values, $safeOnly = true): void
     {
         parent::setAttributes($values, $safeOnly);
+
         foreach (array_keys($this->captchaSettings) as $captchaType) {
             $this->captchaSettings[$captchaType]['enabled'] =
                 (bool)$this->captchaSettings[$captchaType]['enabled'];
         }
+
+        // reindex keys to allow re-ordering
+        $this->formMetadata = array_values($this->formMetadata);
     }
 
     public function getSpamRedirectBehaviorsAsOptions(): array
