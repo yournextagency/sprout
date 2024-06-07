@@ -72,9 +72,7 @@ class SubmissionsDataSource extends DataSource implements DateRangeInterface
                 'siteId' => 'elements_sites.siteId',
                 'title' => 'content.title',
                 'submissionStatusName' => 'submissionstatuses.name',
-                'ipAddress' => '[[submissions.ipAddress',
-                'referrer' => 'submissions.referrer',
-                'userAgent' => 'submissions.userAgent',
+                'formMetadata' => 'submissions.formMetadata',
                 'dateCreated' => 'submissions.dateCreated',
                 'dateUpdated' => 'submissions.dateUpdated',
             ])
@@ -114,9 +112,7 @@ class SubmissionsDataSource extends DataSource implements DateRangeInterface
             $rows[$key]['siteId'] = $result['siteId'];
             $rows[$key]['title'] = $result['title'];
             $rows[$key]['status'] = $result['submissionStatusName'];
-            $rows[$key]['ipAddress'] = $result['ipAddress'];
-            $rows[$key]['referrer'] = $result['referrer'];
-            $rows[$key]['userAgent'] = $result['userAgent'];
+            $rows[$key]['formMetadata'] = $result['formMetadata'];
             $rows[$key]['dateCreated'] = $result['dateCreated'];
             $rows[$key]['dateUpdated'] = $result['dateUpdated'];
 

@@ -17,9 +17,11 @@ use BarrelStrength\Sprout\forms\db\SproutTable;
 use BarrelStrength\Sprout\forms\formfields\CustomFormField;
 use BarrelStrength\Sprout\forms\forms\FormBuilderHelper;
 use BarrelStrength\Sprout\forms\forms\FormRecord;
+use BarrelStrength\Sprout\forms\forms\Forms;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
+use BarrelStrength\Sprout\forms\submissions\SubmissionsHelper;
 use BarrelStrength\Sprout\transactional\components\elements\TransactionalEmailElement;
 use BarrelStrength\Sprout\uris\links\AbstractLink;
 use BarrelStrength\Sprout\uris\links\LinkInterface;
@@ -265,6 +267,7 @@ class FormElement extends Element
 
     public function getSubmissionFieldLayout(): FieldLayout
     {
+
         if ($this->submissionFieldLayoutConfig) {
             $config = Json::decodeIfJson($this->submissionFieldLayoutConfig) ?? [];
 
@@ -1035,10 +1038,12 @@ class FormElement extends Element
             $generalConfig->partialTemplatesPath = ElementRenderHelper::getSproutTemplatePath($formType->formTemplate);
             $html = parent::render($variables);
             $generalConfig->partialTemplatesPath = $partialTemplatesPath;
-
-            return $html;
+        } else {
+            $html = parent::render($variables);
         }
 
-        return parent::render($variables);
+        SubmissionsHelper::setFormMetadataSessionVariable($this->id);
+
+        return $html;
     }
 }

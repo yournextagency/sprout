@@ -13,8 +13,7 @@ use yii\db\ActiveQueryInterface;
  * @property int $formId
  * @property int $statusId
  * @property string $title
- * @property string $ipAddress
- * @property string $userAgent
+ * @property array $formMetadata
  * @property ActiveQueryInterface $element
  * @property ActiveQueryInterface $submissionStatuses
  * @property ActiveQueryInterface $form

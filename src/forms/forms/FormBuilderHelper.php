@@ -70,11 +70,13 @@ class FormBuilderHelper
             $fieldLayoutElement->required = $layoutElementConfig['required'] === true;
             $fieldLayoutElement->width = $layoutElementConfig['width'];
             $fieldLayoutElement->uid = $layoutElementConfig['uid'];
-
-            $formFieldUiData = self::getFormFieldUiData($field);
-
             $fieldLayoutElement->formField = $layoutElementConfig['formField'] ?? null;
-            $fieldLayoutElement->formFieldUi = $formFieldUiData;
+
+            // Only add FormBuilder UI helper stuff on CP requests
+            if (Craft::$app->getRequest()->getIsCpRequest()) {
+                $formFieldUiData = self::getFormFieldUiData($field);
+                $fieldLayoutElement->formFieldUi = $formFieldUiData;
+            }
 
             $fieldLayoutElements[] = $fieldLayoutElement;
         }

@@ -21,6 +21,7 @@ use craft\elements\conditions\ElementConditionInterface;
 use craft\elements\User;
 use craft\errors\ElementNotFoundException;
 use craft\helpers\DateTimeHelper;
+use craft\helpers\Html;
 use craft\helpers\UrlHelper;
 use craft\models\FieldLayout;
 use craft\web\CpScreenResponseBehavior;
@@ -39,11 +40,7 @@ class SubmissionElement extends Element
 
     public ?string $formName = null;
 
-    public ?string $ipAddress = null;
-
-    public ?string $referrer = null;
-
-    public ?string $userAgent = null;
+    public array $formMetadata = [];
 
     /** @var Captcha[] $captchas */
     protected array $captchas = [];
@@ -338,12 +335,18 @@ class SubmissionElement extends Element
 
     public function metadata(): array
     {
-        return [
-            Craft::t('sprout-module-forms', 'Form Name') => $this->getForm()->name,
-            Craft::t('sprout-module-forms', 'IP Address') => $this->ipAddress,
-            Craft::t('sprout-module-forms', 'Referrer') => '<input type="text" class="" value="' . $this->referrer . '" disabled readonly style="border:none;margin:0;padding:0!important;">',
-            Craft::t('sprout-module-forms', 'User Agent') => '<input type="text" class="" value="' . $this->userAgent . '" disabled readonly style="border:none;margin:0;padding:0!important;">',
-        ];
+        $metadata[Craft::t('sprout-module-forms', 'Form Name')] = $this->getForm()->name;
+
+        foreach ($this->formMetadata as $key => $value) {
+            $metadata[$key] = Html::input('text', '', $value, [
+                'class' => 'text small',
+                'disabled' => 'disabled',
+                'readonly' => 'readonly',
+                'style' => 'border:none;margin:0;padding:0!important;',
+            ]);
+        }
+
+        return $metadata;
     }
 
     public function beforeSave(bool $isNew): bool
@@ -375,8 +378,7 @@ class SubmissionElement extends Element
         $record->formId = $this->formId;
         $record->statusId = $this->statusId;
         $record->title = $this->title;
-        $record->ipAddress = $this->ipAddress;
-        $record->userAgent = $this->userAgent;
+        $record->formMetadata = $this->formMetadata;
 
         $record->save(false);
 

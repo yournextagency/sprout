@@ -11,10 +11,6 @@ class SubmissionElementQuery extends ElementQuery
 {
     public ?int $statusId = null;
 
-    public string $ipAddress = '';
-
-    public string $userAgent = '';
-
     public int|array|null $formId = null;
 
     public string $formHandle = '';
@@ -96,8 +92,7 @@ class SubmissionElementQuery extends ElementQuery
             'sprout_form_submissions.formId',
             'sprout_form_submissions.statusId',
             'sprout_form_submissions.title',
-            'sprout_form_submissions.ipAddress',
-            'sprout_form_submissions.userAgent',
+            'sprout_form_submissions.formMetadata',
             'sprout_form_submissions.dateCreated',
             'sprout_form_submissions.dateUpdated',
             'sprout_form_submissions.uid',

@@ -159,23 +159,6 @@ abstract class Integration extends SavableComponent implements IntegrationInterf
                 ],
                 'fieldType' => SingleLineFormField::class,
             ],
-            [
-                'label' => Craft::t('sprout-module-forms', 'IP Address'),
-                'value' => 'ipAddress',
-                'compatibleCraftFields' => [
-                    CraftPlainText::class,
-                    CraftDropdown::class,
-                ],
-                'fieldType' => SingleLineFormField::class,
-            ],
-            [
-                'label' => Craft::t('sprout-module-forms', 'User Agent'),
-                'value' => 'userAgent',
-                'compatibleCraftFields' => [
-                    CraftPlainText::class,
-                ],
-                'fieldType' => SingleLineFormField::class,
-            ],
         ]);
 
         // @todo - move custom field logic to be handled by js
@@ -367,23 +350,6 @@ abstract class Integration extends SavableComponent implements IntegrationInterf
                 'handle' => 'dateCreated',
                 'compatibleCraftFields' => [
                     CraftDate::class,
-                ],
-                'type' => SingleLineFormField::class,
-            ],
-            [
-                'name' => Craft::t('sprout-module-forms', 'IP Address'),
-                'handle' => 'ipAddress',
-                'compatibleCraftFields' => [
-                    CraftPlainText::class,
-                    CraftDropdown::class,
-                ],
-                'type' => SingleLineFormField::class,
-            ],
-            [
-                'name' => Craft::t('sprout-module-forms', 'User Agent'),
-                'handle' => 'userAgent',
-                'compatibleCraftFields' => [
-                    CraftPlainText::class,
                 ],
                 'type' => SingleLineFormField::class,
             ],

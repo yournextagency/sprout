@@ -30,6 +30,8 @@ class FormsSettings extends BaseConfig
 
     public string $defaultSidebarTab = 'submissions';
 
+    public array $formMetadata = [];
+
     public string $defaultSubmissionMethod = 'sync';
 
     public array $integrationTypes = [];

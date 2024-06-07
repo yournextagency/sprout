@@ -4,7 +4,7 @@
 {% import "sprout-module-fields/_macros/forms" as sproutFields %}
 {% import "sprout-module-core/_macros/sproutcp" as sproutCp %}
 
-{% set currentSubNavKey = 'general' %}
+{% set currentSubNavKey = 'form-defaults' %}
 {% set module = sprout.modules.forms %}
 {% set settings = module.getSettings() %}
 
@@ -27,5 +27,56 @@
         value: not settings.enableSaveData ? 'forms' : settings.defaultSidebarTab,
         warning: sproutConfigWarning(module, 'enableSaveData'),
     }) }}
+
+    {{ forms.editableTableField({
+        label: "Form Metadata"|t('sprout-module-forms'),
+        instructions: "Define the form metadata below that will be captured on every form submission."|t('sprout-module-forms'),
+        tip: "Metadata can use Twig Shortcut Syntax and reference global Twig variables."|t('sprout-module-forms'),
+        id: 'formMetadata',
+        name: 'formMetadata',
+        cols: {
+            enabled: {
+                type: 'lightswitch',
+                thin: true
+            },
+            label: {
+                type: 'singleline',
+                heading: "Label"|t('sprout-module-forms'),
+                info: 'Short, user-friendly label of the metadatum to be captured.',
+            },
+            metadatumFormat: {
+                type: 'singleline',
+                heading: "Metadatum"|t('sprout-module-forms'),
+                info: 'Twig shortcut syntax that will be used to parse the metadatum into its captured value.',
+                class: 'code',
+            },
+        }|filter,
+        defaultValues: {
+            enabled: true,
+        },
+        rows: settings.formMetadata,
+        fullWidth: true,
+        allowAdd: true,
+        allowReorder: true,
+        allowDelete: true,
+        errors: settings.getErrors('formMetadata'),
+    }) }}
+
+    {% if not settings.formMetadata|length %}
+        <div class="readable">
+            <blockquote class="tip note">
+                <p>{{ "Some common form metadata types:" }}</p>
+
+                <ul>
+                    <li>{{ 'IP Address'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getRemoteIP}{% endverbatim %}</code></li>
+                    <li>{{ 'Referrer URL'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getReferrer}{% endverbatim %}</code></li>
+                    <li>{{ 'User Agent'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getUserAgent}{% endverbatim %}</code></li>
+                    <li>{{ 'UTM Source Parameter'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getParam("utm_source")}}{% endverbatim %}</code></li>
+                    <li>{{ 'UTM Medium Parameter'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getParam("utm_medium")}}{% endverbatim %}</code></li>
+                    <li>{{ 'UTM Campaign Parameter'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getParam("utm_campaign")}}{% endverbatim %}</code></li>
+                </ul>
+            </blockquote>
+        </div>
+    {% endif %}
 
 {% endblock %}

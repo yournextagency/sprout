@@ -338,8 +338,8 @@ class FormsModule extends Module implements SproutModuleInterface, MigrationInte
     protected function getSproutCpSettingsNavItems(): array
     {
         return [
-            'general' => [
-                'label' => Craft::t('sprout-module-forms', 'General'),
+            'form-defaults' => [
+                'label' => Craft::t('sprout-module-forms', 'Default Settings'),
                 'url' => 'sprout/settings/general',
             ],
             'form-types' => [

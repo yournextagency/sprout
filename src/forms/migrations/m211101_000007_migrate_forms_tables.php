@@ -202,7 +202,7 @@ class m211101_000007_migrate_forms_tables extends Migration
                 ->execute();
         }
 
-        $cols = [
+        $oldCols = [
             'id',
             'formId',
             'statusId',
@@ -214,14 +214,40 @@ class m211101_000007_migrate_forms_tables extends Migration
             'uid',
         ];
 
+        $newCols = [
+            'id',
+            'formId',
+            'statusId',
+            'dateCreated',
+            'dateUpdated',
+            'uid',
+            'formMetadata',
+        ];
+
         if ($this->getDb()->tableExists(self::OLD_SUBMISSIONS_TABLE)) {
             $rows = (new Query())
-                ->select($cols)
+                ->select($oldCols)
                 ->from([self::OLD_SUBMISSIONS_TABLE])
                 ->all();
 
+            foreach ($rows as $key => $row) {
+                $formMetadata = [
+                    'ipAddress' => $row['ipAddress'],
+                    'referrer' => $row['referrer'],
+                    'userAgent' => $row['userAgent'],
+                ];
+
+                $rows[$key]['formMetadata'] = Json::encode($formMetadata);
+
+                unset(
+                    $rows[$key]['ipAddress'],
+                    $rows[$key]['referrer'],
+                    $rows[$key]['userAgent'],
+                );
+            }
+
             Craft::$app->getDb()->createCommand()
-                ->batchInsert(self::FORM_SUBMISSIONS_TABLE, $cols, $rows)
+                ->batchInsert(self::FORM_SUBMISSIONS_TABLE, $newCols, $rows)
                 ->execute();
         }
 

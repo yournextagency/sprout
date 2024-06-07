@@ -6,9 +6,11 @@ use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\components\elements\SubmissionElement;
 use BarrelStrength\Sprout\forms\components\events\OnBeforePopulateSubmissionEvent;
 use BarrelStrength\Sprout\forms\components\events\OnBeforeValidateSubmissionEvent;
+use BarrelStrength\Sprout\forms\forms\Forms;
 use BarrelStrength\Sprout\forms\forms\SubmissionMethod;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\FormsSettings;
+use BarrelStrength\Sprout\forms\submissions\SubmissionsHelper;
 use Craft;
 use craft\base\ElementInterface;
 use craft\helpers\UrlHelper;
@@ -211,9 +213,7 @@ class SubmissionsController extends BaseController
 
         // Our SubmissionElement requires that we assign it a FormElement id
         $submission->formId = $this->form->getId();
-        $submission->ipAddress = $formType->trackRemoteIp ? $request->getRemoteIP() : null;
-        $submission->referrer = $request->getReferrer();
-        $submission->userAgent = $request->getUserAgent();
+        $submission->formMetadata = SubmissionsHelper::getFormMetadataSessionVariable($this->form->getId());
 
         // Set the submission attributes, defaulting to the existing values for whatever is missing from the post data
         $fieldsLocation = $request->getBodyParam('fieldsLocation', 'fields');
