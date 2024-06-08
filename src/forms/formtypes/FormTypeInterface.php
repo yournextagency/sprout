@@ -11,6 +11,6 @@ interface FormTypeInterface
     public function getRenderTemplatesFolder(): ?string;
 
     public function getDefaultTemplatesFolder(): ?string;
-    
+
     //public function getFieldLayout(): FieldLayout;
 }
