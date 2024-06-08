@@ -44,11 +44,6 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
 
     public ?string $uid = null;
 
-    public static function isEditable(): bool
-    {
-        return false;
-    }
-
     public function getIncludeTemplates(): array
     {
         return [

@@ -156,10 +156,6 @@ class FormTypesController extends Controller
         $formType->defaultUploadLocationSubpath = Craft::$app->getRequest()->getBodyParam('defaultUploadLocationSubpath');
         $formType->enableEditSubmissionViaFrontEnd = Craft::$app->getRequest()->getBodyParam('enableEditSubmissionViaFrontEnd');
 
-        if (!$formType::isEditable()) {
-            return $formType;
-        }
-
         $formType->customTemplatesFolder = Craft::$app->getRequest()->getBodyParam('customTemplatesFolder');
 
         return $formType;

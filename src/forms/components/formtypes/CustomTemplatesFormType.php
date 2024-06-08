@@ -29,11 +29,6 @@ class CustomTemplatesFormType extends FormType
         return $this->handle;
     }
 
-    public static function isEditable(): bool
-    {
-        return true;
-    }
-
     public static function defineNativeFields(DefineFieldLayoutFieldsEvent $event): void
     {
     }
