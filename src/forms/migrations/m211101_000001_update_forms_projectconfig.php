@@ -52,7 +52,6 @@ class m211101_000001_update_forms_projectconfig extends Migration
             'saveSpamToDatabase' => false,
             'spamLimit' => 500,
             'spamRedirectBehavior' => 'redirectAsNormal',
-            'trackRemoteIp' => false,
             'captchaSettings' => [
                 'BarrelStrength\Sprout\forms\components\captchas\DuplicateCaptcha' => [
                     'enabled' => false,

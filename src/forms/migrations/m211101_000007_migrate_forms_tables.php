@@ -404,7 +404,6 @@ class m211101_000007_migrate_forms_tables extends Migration
             ],
             'submissionMethod' => $formSettings['submissionMethod'] ?? null,
             'errorDisplayMethod' => $formSettings['errorDisplayMethod'] ?? null,
-            'trackRemoteIp' => $projectConfigSettings['trackRemoteIp'] ?? null,
             'allowedAssetVolumes' => $projectConfigSettings['allowedAssetVolumes'] ?? [],
             'defaultUploadLocationSubpath' => $projectConfigSettings['defaultUploadLocationSubpath'] ?? null,
             'enableEditSubmissionViaFrontEnd' => $projectConfigSettings['enableEditFormEntryViaFrontEnd'] ?? '',

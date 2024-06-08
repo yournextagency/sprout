@@ -66,7 +66,6 @@ class m211101_000000_run_install_migration extends Migration
             'spamRedirectBehavior' => self::SPAM_REDIRECT_BEHAVIOR_NORMAL,
             'spamLimit' => 500,
             'cleanupProbability' => 1000,
-            'trackRemoteIp' => false,
             'enableEditSubmissionViaFrontEnd' => false,
             // @todo - provide all settings. overwrites all nested settings.
             //            'captchaSettings' => [
