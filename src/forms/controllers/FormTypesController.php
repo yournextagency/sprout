@@ -143,7 +143,6 @@ class FormTypesController extends Controller
         $fieldLayout->type = $type;
         $formType->setFieldLayout($fieldLayout);
 
-        $formType->formTemplateOverrideFolder = Craft::$app->getRequest()->getBodyParam('formTemplateOverrideFolder');
         $formType->featureSettings = Craft::$app->getRequest()->getBodyParam('featureSettings');
         $formType->enabledFormFieldTypes = Craft::$app->getRequest()->getBodyParam('enabledFormFieldTypes');
 
@@ -161,7 +160,7 @@ class FormTypesController extends Controller
             return $formType;
         }
 
-        $formType->formTemplate = Craft::$app->getRequest()->getBodyParam('formTemplate');
+        $formType->customTemplatesFolder = Craft::$app->getRequest()->getBodyParam('customTemplatesFolder');
 
         return $formType;
     }

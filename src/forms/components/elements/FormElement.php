@@ -14,10 +14,8 @@ use BarrelStrength\Sprout\forms\components\formfields\MissingFormField;
 use BarrelStrength\Sprout\forms\components\formtypes\DefaultFormType;
 use BarrelStrength\Sprout\forms\components\notificationevents\SaveSubmissionNotificationEvent;
 use BarrelStrength\Sprout\forms\db\SproutTable;
-use BarrelStrength\Sprout\forms\formfields\CustomFormField;
 use BarrelStrength\Sprout\forms\forms\FormBuilderHelper;
 use BarrelStrength\Sprout\forms\forms\FormRecord;
-use BarrelStrength\Sprout\forms\forms\Forms;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
@@ -50,7 +48,9 @@ use craft\validators\HandleValidator;
 use craft\validators\UniqueValidator;
 use craft\web\assets\conditionbuilder\ConditionBuilderAsset;
 use craft\web\CpScreenResponseBehavior;
+use craft\web\View;
 use Throwable;
+use Twig\Error\LoaderError as TwigLoaderError;
 use Twig\Markup;
 use yii\base\ErrorHandler;
 use yii\base\Exception;
@@ -790,15 +790,15 @@ class FormElement extends Element
         }, $query->all());
     }
 
-    public string|array $additionalTemplates = [];
+    public string|array $templateFolderPaths = [];
 
-    public function addTemplateOverridePaths(string|array $additionalTemplates = []): void
+    public function addTemplateFolderPaths(string|array $templateFolderPaths = []): void
     {
-        if (!is_array($additionalTemplates)) {
-            $additionalTemplates = [$additionalTemplates];
+        if (!is_array($templateFolderPaths)) {
+            $templateFolderPaths = [$templateFolderPaths];
         }
 
-        $this->additionalTemplates = $additionalTemplates;
+        $this->templateFolderPaths = $templateFolderPaths;
     }
 
     /**
@@ -809,24 +809,18 @@ class FormElement extends Element
      *    'sprout-forms-settings/form-type-folder', (default templates can be set per Theme/FormType)
      * ]
      */
-    public function getIncludeTemplate($name): array
+    public function getIncludeTemplates($name): array
     {
         $formType = $this->getFormType();
 
-        $defaultTemplates = new DefaultFormType();
-
         // Additional Template overrides can be added in templates:
-        // {% do form.addTemplateOverridePaths('_overrides/forms-default') %}
-        //  {% do form.addTemplateOverridePaths(['_overrides/forms-special', '_overrides/forms-default']) %}
-        $includePaths = array_merge($this->additionalTemplates, [
-            Craft::getAlias($formType->formTemplateOverrideFolder ?? null),
-            Craft::getAlias($formType->formTemplate ?? null),
-            Craft::getAlias($defaultTemplates->formTemplate),
-        ]);
+        // {% do form.addTemplateFolderPaths('_overrides/forms-default') %}
+        //  {% do form.addTemplateFolderPaths(['_overrides/forms-special', '_overrides/forms-default']) %}
+        $includePaths = array_merge($this->templateFolderPaths, $formType->getIncludeTemplates());
 
         return array_map(static function($path) use ($name) {
             return $path . '/' . $name;
-        }, $includePaths);
+        }, array_filter($includePaths));
     }
 
     public function getCaptchaHtml(): ?string
@@ -1028,22 +1022,27 @@ class FormElement extends Element
 
     public function render(array $variables = []): Markup
     {
-        $formType = $this->getFormType();
+        $formTemplateFolder = null;
 
-        if (ElementRenderHelper::isSproutTemplateRoot($formType->formTemplate)) {
-            $generalConfig = Craft::$app->getConfig()->getGeneral();
-            $partialTemplatesPath = $generalConfig->partialTemplatesPath;
+        // Resolve the include templates for the form template and use the first one that exists
+        // tab and field templates will be resolved in the include tags of our templates using
+        // our array of valid template paths from form.getIncludeTemplates()
+        foreach ($this->getIncludeTemplates('form') as $includeTemplate) {
+            if (Craft::$app->getView()->doesTemplateExist($includeTemplate)) {
+                $formTemplateFolder = $includeTemplate;
+                break;
+            }
+        }
 
-            // Temporarily change the partialTemplatesPath so Sprout can support the same _partials template structure as Craft
-            $generalConfig->partialTemplatesPath = ElementRenderHelper::getSproutTemplatePath($formType->formTemplate);
-            $html = parent::render($variables);
-            $generalConfig->partialTemplatesPath = $partialTemplatesPath;
-        } else {
-            $html = parent::render($variables);
+        try {
+            $variables['form'] = $this;
+            $output[] = Craft::$app->getView()->renderTemplate($formTemplateFolder, $variables, View::TEMPLATE_MODE_SITE);
+        } catch (TwigLoaderError $e) {
+            throw new TwigLoaderError($e->getMessage());
         }
 
         SubmissionsHelper::setFormMetadataSessionVariable($this->id);
 
-        return $html;
+        return new Markup(implode("\n", $output), Craft::$app->charset);
     }
 }

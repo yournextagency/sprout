@@ -16,8 +16,6 @@ use craft\models\FieldLayoutTab;
 
 class DefaultFormType extends FormType
 {
-    public ?string $formTemplate = '@Sprout/TemplateRoot/form/default';
-
     public static function displayName(): string
     {
         return Craft::t('sprout-module-forms', 'Default Templates');
@@ -26,6 +24,11 @@ class DefaultFormType extends FormType
     public function getHandle(): ?string
     {
         return 'default';
+    }
+
+    public function getDefaultTemplatesFolder(): ?string
+    {
+        return '@Sprout/TemplateRoot/form/default';
     }
 
     public static function defineNativeFields(DefineFieldLayoutFieldsEvent $event): void

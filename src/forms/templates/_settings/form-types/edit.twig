@@ -52,7 +52,9 @@
         } %}
     </header>
 
-    {% set notEditableTipMessage = not formType.isEditable() ? "This setting is defined by the selected form type and is not editable."|t('sprout-module-forms') : null %}
+    {% set notEditableTipMessage = not formType.isEditable()
+        ? "This setting is defined by the selected form type and is not editable."|t('sprout-module-forms')
+        : null %}
 
     <div id="general">
         {{ forms.textField({
@@ -78,31 +80,62 @@
             required: true,
         }) }}
 
-        {{ forms.autosuggestField({
-            label: "Form Template"|t('sprout-module-forms'),
-            instructions: "The template that will be used to render your form."|t('sprout-module-forms'),
-            tip: notEditableTipMessage,
-            id: 'formTemplate',
-            name: 'formTemplate',
-            suggestEnvVars: false,
-            suggestions: craft.cp.getTemplateSuggestions(),
-            placeholder: "_forms/form-type/form.twig"|t('sprout-module-forms'),
-            value: formType.formTemplate ?? null,
-            errors: formType.getErrors('formTemplate'),
-            required: true,
-            disabled: not formType.isEditable(),
-        }) }}
+        {% set generalConfig = craft.app.config.getGeneral() %}
 
-        {{ forms.autosuggestField({
-            label: "Form Template Override Folder"|t('sprout-module-forms'),
-            instructions: "The folder that will take precedence over any form type files."|t('sprout-module-forms'),
-            id: 'formTemplateOverrideFolder',
-            name: 'formTemplateOverrideFolder',
-            suggestEnvVars: false,
-            suggestions: craft.cp.getTemplateSuggestions(),
-            placeholder: "_forms/form-type/overrides"|t('sprout-module-forms'),
-            value: formType.formTemplateOverrideFolder ?? null,
-            errors: formType.getErrors('formTemplateOverrideFolder'),
+        {% set formTemplates = {
+            customTemplatesFolder: {
+                heading: 'Custom Folder (Optional) <span class="info">Templates in this folder will receive the highest priority and override templates in both the Render and Default Folder locations. This folder can be helpful if you have a Form Type that requires a small variation on primary Form, Tab, or Field templates managed in the Render Folder.</span>',
+                template: include('_includes/forms/autosuggest', {
+                    name: 'formTemplate',
+                    suggestions: sproutTemplateFolderSuggestions(),
+                    suggestEnvVars: false,
+                    suggestAliases: false,
+                    value: formType.customTemplatesFolder ?? null,
+                    disabled: false,
+                    labelledBy: 'headingId',
+                    describedBy: 'describedBy',
+                    code: true,
+                }),
+            },
+            renderTemplatesFolder: {
+                heading: 'Render Folder (Craft) <span class="info">If you prefer organizing your custom form templates using the Craft element render convention, add your templates here. Form templates in the Render Folder will override templates in the Sprout Default Folder.</span>',
+                template: alias(generalConfig.partialTemplatesPath ~ '/form/' ~ formType.handle),
+            },
+        } %}
+
+        {% if formType.getDefaultTemplatesFolder() %}
+            {% set formTemplates = formTemplates|merge( {
+                defaultTemplatesFolder: {
+                    heading: 'Default Folder (Sprout) <span class="info">Sprout default templates render a simple output for all supported form components. Override these if you have specific design requirements.</span>',
+                    template: alias(formType.getDefaultTemplatesFolder()),
+                }
+            }) %}
+        {% endif %}
+
+        {{ forms.editableTableField({
+            label: "Form Templates"|t('sprout-module=forms'),
+            instructions: "The location of the form templates folder. As forms can reference many templates, this setting must point to the template folder. The existence of each form, tab, and field template is optional and the `form.render()` method will use the template from the highest priority match found."|t('sprout-module-forms'),
+            tip: notEditableTipMessage,
+            id: 'formTemplates',
+            name: 'formTemplates',
+            cols: {
+                heading: {
+                    type: 'heading',
+                    heading: "Type"|t('sprout-module-forms'),
+                    thin: true
+                },
+                template: {
+                    type: 'heading',
+                    heading: "Form Templates Folder"|t('sprout-module-forms'),
+                    info: "The folder that contains any or all form, tab, and field templates. Additional locations can be added in templates using `form.addTemplateFolderPaths`"|t('sprout-module-forms'),
+                },
+            }|filter,
+            rows: formTemplates,
+            fullWidth: true,
+            allowAdd: false,
+            allowDelete: false,
+            allowReorder: false,
+            errors: []|unique
         }) }}
 
         {{ forms.textField({
@@ -112,6 +145,34 @@
             disabled: true,
         }) }}
 
+        {% css %}
+            {#            {% if formType.isEditable() %} #}
+            #formTemplates tbody tr th.heading-cell:nth-of-type(2) { border-left: 1px solid #cdd8e4; padding-top: 0px; padding-bottom: 0px; opacity: 1; }
+            {#            {% endif %} #}
+        {% endcss %}
+        {% js on ready %}
+            {#            {% if formType.isEditable() %} #}
+            $('[data-id="customTemplatesFolder"] th.heading-cell:nth-of-type(2)').addClass('code');
+            $('[data-id="customTemplatesFolder"] th.heading-cell:nth-of-type(2)').css({backgroundColor: '#ffffff'})
+            {#            {% else %} #}
+            {#                $('[data-id="customTemplatesFolder"] td.template-cell').addClass('disabled'); #}
+            {#            {% endif %} #}
+            $('[data-id="renderTemplatesFolder"] th.heading-cell:nth-of-type(2)').addClass('code disabled');
+            $('[data-id="renderTemplatesFolder"] th.heading-cell:nth-of-type(2)').css({paddingLeft: '20px'})
+            $('[data-id="defaultTemplatesFolder"] th.heading-cell:nth-of-type(2)').addClass('code disabled');
+            $('[data-id="defaultTemplatesFolder"] th.heading-cell:nth-of-type(2)').css({paddingLeft: '20px'})
+
+            // Update the Partial Template Path in the UI when the Handle is updated
+            $('#handle').on('input', function() {
+            let renderTemplatesFolderCell = $('[data-id="renderTemplatesFolder"] th.heading-cell:nth-of-type(2)');
+            let oldPartialTemplatePath = renderTemplatesFolderCell.text();
+            let renderTemplatesFolderSegments = oldPartialTemplatePath.split("/");
+            let oldHandle = renderTemplatesFolderSegments.pop();
+            let newPartialTemplatePath = renderTemplatesFolderSegments.join("/") + '/' + $('#handle').val();
+            console.log(newPartialTemplatePath);
+            renderTemplatesFolderCell.text(newPartialTemplatePath);
+            });
+        {% endjs %}
     </div>
 
     <div id="features" class="hidden">
@@ -289,7 +350,7 @@
         <hr>
 
         {{ forms.lightswitchField({
-            label: "Allow Forms to be edited in front-end templates"|t('sprout-module-forms'),
+            label: "Allow Form Submissions to be edited in front-end templates"|t('sprout-module-forms'),
             instructions: "Enable this setting to allow users to edit existing submissions in front-end templates. Enabling this feature may have some workflow or security considerations as forms allow anonymous submissions."|t('sprout-module-forms'),
             id: 'enableEditSubmissionViaFrontEnd',
             name: 'enableEditSubmissionViaFrontEnd',

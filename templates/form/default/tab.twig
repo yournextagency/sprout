@@ -33,14 +33,14 @@
 
         {% set inlineErrorHtml %}
             {% if inlineErrorsEnabled and errors|length %}
-                {% include form.getIncludeTemplate('errors') with {
+                {% include form.getIncludeTemplates('errors') with {
                     errors: errors,
                     name: name
                 } only %}
             {% endif %}
         {% endset %}
 
-        {%- include form.getIncludeTemplate('field') with {
+        {%- include form.getIncludeTemplates('field') with {
             label: field.name,
             instructions: instructions,
             name: name,

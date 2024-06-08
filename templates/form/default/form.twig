@@ -25,7 +25,7 @@
             {% set globalErrors = globalErrors|merge([error]) %}
         {% endfor %}
     {% endfor %}
-    {% include form.getIncludeTemplate('errors') with {
+    {% include form.getIncludeTemplates('errors') with {
         errors: globalErrors
     } only %}
 {%- endset -%}
@@ -72,7 +72,7 @@
 
     <div data-label="form-fields">
         {%- for tab in form.getSubmissionFieldLayout().getTabs() %}
-            {% include form.getIncludeTemplate('tab') with {
+            {% include form.getIncludeTemplates('tab') with {
                 form: form,
                 submission: submission,
                 tab: tab,

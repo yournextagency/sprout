@@ -103,7 +103,7 @@ trait FormFieldTrait
     {
         $inputTemplate = 'fields/' . $this->getFieldInputFolder() . '/input';
 
-        return $form->getIncludeTemplate($inputTemplate);
+        return $form->getIncludeTemplates($inputTemplate);
     }
 
     /**
