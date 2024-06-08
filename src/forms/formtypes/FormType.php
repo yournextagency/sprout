@@ -5,6 +5,7 @@ namespace BarrelStrength\Sprout\forms\formtypes;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
+use Craft;
 use craft\base\FieldLayoutProviderInterface;
 use craft\base\SavableComponent;
 use craft\models\FieldLayout;
@@ -15,9 +16,7 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
 
     public ?string $handle = null;
 
-    public ?string $formTemplate = null;
-
-    public ?string $formTemplateOverrideFolder = null;
+    public ?string $customTemplatesFolder = null;
 
     public array $featureSettings = [];
 
@@ -48,6 +47,32 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
     public static function isEditable(): bool
     {
         return false;
+    }
+
+    public function getIncludeTemplates(): array
+    {
+        return [
+            Craft::getAlias($this->getCustomTemplatesFolder()),
+            $this->getRenderTemplatesFolder(),
+            Craft::getAlias($this->getDefaultTemplatesFolder()),
+        ];
+    }
+
+    public function getCustomTemplatesFolder(): ?string
+    {
+        return $this->customTemplatesFolder;
+    }
+
+    public function getRenderTemplatesFolder(): ?string
+    {
+        $generalConfig = Craft::$app->getConfig()->getGeneral();
+
+        return $generalConfig->partialTemplatesPath . DIRECTORY_SEPARATOR . FormElement::refHandle() . DIRECTORY_SEPARATOR . $this->handle;
+    }
+
+    public function getDefaultTemplatesFolder(): ?string
+    {
+        return null;
     }
 
     /**
@@ -119,8 +144,7 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
             'type' => static::class,
             'name' => $this->name,
             'handle' => $this->handle,
-            'formTemplate' => $this->formTemplate,
-            'formTemplateOverrideFolder' => $this->formTemplateOverrideFolder,
+            'customTemplatesFolder' => $this->customTemplatesFolder,
             'featureSettings' => $this->featureSettings,
             'enabledFormFieldTypes' => $this->enabledFormFieldTypes,
             'submissionMethod' => $this->submissionMethod,
