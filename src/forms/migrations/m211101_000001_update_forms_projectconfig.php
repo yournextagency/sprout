@@ -24,32 +24,26 @@ class m211101_000001_update_forms_projectconfig extends Migration
             'enableSaveData' => true,
             'formMetadata' => [
                 [
-                    'enabled' => '1',
                     'label' => 'IP Address',
                     'metadatumFormat' => '{craft.app.request.getRemoteIP}',
                 ],
                 [
-                    'enabled' => '1',
                     'label' => 'Referrer URL',
                     'metadatumFormat' => '{craft.app.request.getReferrer}',
                 ],
                 [
-                    'enabled' => '1',
                     'label' => 'User Agent',
                     'metadatumFormat' => '{craft.app.request.getUserAgent}',
                 ],
                 [
-                    'enabled' => '1',
                     'label' => 'UTM Source',
                     'metadatumFormat' => '{craft.app.request.getParam("utm_source")}',
                 ],
                 [
-                    'enabled' => '1',
                     'label' => 'UTM Medium',
                     'metadatumFormat' => '{craft.app.request.getParam("utm_medium")}',
                 ],
                 [
-                    'enabled' => '1',
                     'label' => 'UTM Campaign',
                     'metadatumFormat' => '{craft.app.request.getParam("utm_campaign")}',
                 ],

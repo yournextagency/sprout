@@ -365,8 +365,6 @@ class m211101_000007_migrate_forms_tables extends Migration
         $config = [
             'type' => 'BarrelStrength\Sprout\forms\components\formtypes\DefaultFormType',
             'name' => $name,
-            'formTemplate' => '@Sprout/TemplateRoot/form/default',
-            'formTemplateOverrideFolder' => null,
             'featureSettings' => [
                 'BarrelStrength\Sprout\transactional\components\formfeatures\TransactionalFormFeature' => [
                     'enabled' => $isNotificationsTabEnabled,
@@ -498,8 +496,7 @@ class m211101_000007_migrate_forms_tables extends Migration
         $config = [
             'type' => 'BarrelStrength\Sprout\forms\components\formtypes\CustomTemplatesFormType',
             'name' => $name,
-            'formTemplate' => $formTemplate,
-            'formTemplateOverrideFolder' => null,
+            'customTemplatesFolder' => $formTemplate,
             'featureSettings' => [
                 'BarrelStrength\Sprout\transactional\components\formfeatures\TransactionalFormFeature' => [
                     'enabled' => '1',
