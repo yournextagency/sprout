@@ -45,13 +45,7 @@ class SubmissionsController extends BaseController
 
     public function actionSubmissionsIndexTemplate(): Response
     {
-        $settings = FormsModule::getInstance()->getSettings();
-
-        if (!$settings->enableSaveData) {
-            return Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('sprout/forms'));
-        }
-
-        $config = FormsModule::getInstance()->getSettings();
+        $this->requirePermission(FormsModule::p('viewSubmissions'));
 
         return $this->renderTemplate('sprout-module-forms/submissions/index', [
             'title' => SubmissionElement::pluralDisplayName(),

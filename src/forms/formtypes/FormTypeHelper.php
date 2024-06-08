@@ -90,7 +90,6 @@ class FormTypeHelper
             'submissionMethod' => $formTypeSettings['submissionMethod'] ?? null,
             'errorDisplayMethod' => $formTypeSettings['errorDisplayMethod'] ?? null,
             'enableSaveData' => $formTypeSettings['enableSaveData'] ?? true,
-            'trackRemoteIp' => $formTypeSettings['trackRemoteIp'] ?? false,
             'allowedAssetVolumes' => $formTypeSettings['allowedAssetVolumes'] ?? [],
             'defaultUploadLocationSubpath' => $formTypeSettings['defaultUploadLocationSubpath'] ?? null,
             'enableEditSubmissionViaFrontEnd' => $formTypeSettings['enableEditSubmissionViaFrontEnd'] ?? null,

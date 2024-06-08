@@ -11,15 +11,11 @@
 
     {% set saveSpamWarning = sproutConfigWarning(module, 'saveSpamToDatabase') %}
 
-    {% if not settings.enableSaveData %}
-        {% set saveSpamWarning = "'Save data to the Craft database' on the 'Forms' settings page must also be enabled."|t('sprout-module-forms') %}
-    {% endif %}
-
     {{ forms.lightswitchField({
         label: "Save Spam to the database",
         instructions: "How submissions will behave after a submission is flagged as spam.",
         name: 'saveSpamToDatabase',
-        on: settings.saveSpamToDatabase,
+        on: "'Save data to the Craft database' in the 'Form Type' settings must also be enabled."|t('sprout-module-forms'),
         onLabel: "Save Data"|t('sprout-module-forms'),
         offLabel: "Don't Save Data"|t('sprout-module-forms'),
         warning: saveSpamWarning,

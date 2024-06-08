@@ -297,20 +297,6 @@
             offLabel: "Don't Save Data"|t('sprout-module-forms'),
         }) }}
 
-        <div id="settings-savedatadetails"
-            class="{{ not formType.enableSaveData ? "hidden" : '' }}">
-
-            {{ forms.lightswitchField({
-                label: "Track Remote IP"|t('sprout-module-forms'),
-                instructions: "Enable to capture the IP Address used when a Submission is saved. IP Addresses may be considered personal information."|t('sprout-module-forms'),
-                name: 'trackRemoteIp',
-                on: formType.trackRemoteIp ? true : false,
-                onLabel: "Save Data"|t('sprout-module-forms'),
-                offLabel: "Don't Save Data"|t('sprout-module-forms'),
-            }) }}
-
-        </div>
-
         <hr>
 
         {% set assetField = create('craft\\fields\\Assets') %}

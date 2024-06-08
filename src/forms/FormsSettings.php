@@ -40,8 +40,6 @@ class FormsSettings extends BaseConfig
 
     public ?string $formTypeUid = null;
 
-    public bool $enableSaveData = true;
-
     public bool $saveSpamToDatabase = false;
 
     public string $spamRedirectBehavior = self::SPAM_REDIRECT_BEHAVIOR_NORMAL;
@@ -49,8 +47,6 @@ class FormsSettings extends BaseConfig
     public int $spamLimit = Submissions::SPAM_DEFAULT_LIMIT;
 
     public int $cleanupProbability = 1000;
-
-    public bool $trackRemoteIp = false;
 
     public array $captchaSettings = self::DEFAULT_CAPTCHA_SETTINGS;
 
@@ -86,13 +82,6 @@ class FormsSettings extends BaseConfig
         return $this;
     }
 
-    public function enableSaveData(bool $value): self
-    {
-        $this->enableSaveData = $value;
-
-        return $this;
-    }
-
     public function saveSpamToDatabase(bool $value): self
     {
         $this->saveSpamToDatabase = $value;
@@ -117,13 +106,6 @@ class FormsSettings extends BaseConfig
     public function cleanupProbability(int $value): self
     {
         $this->cleanupProbability = $value;
-
-        return $this;
-    }
-
-    public function trackRemoteIp(bool $value): self
-    {
-        $this->trackRemoteIp = $value;
 
         return $this;
     }

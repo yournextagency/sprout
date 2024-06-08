@@ -30,8 +30,6 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
 
     public bool $enableSaveData = true;
 
-    public bool $trackRemoteIp = false;
-
     public array|string $allowedAssetVolumes = [];
 
     public ?string $defaultUploadLocationSubpath = null;
@@ -144,8 +142,6 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
             'enabledFormFieldTypes' => $this->enabledFormFieldTypes,
             'submissionMethod' => $this->submissionMethod,
             'errorDisplayMethod' => $this->errorDisplayMethod,
-            'enableSaveData' => $this->enableSaveData,
-            'trackRemoteIp' => $this->trackRemoteIp,
             'allowedAssetVolumes' => $this->allowedAssetVolumes,
             'defaultUploadLocationSubpath' => $this->defaultUploadLocationSubpath,
             'enableEditSubmissionViaFrontEnd' => $this->enableEditSubmissionViaFrontEnd,
