@@ -10,7 +10,6 @@ use BarrelStrength\Sprout\forms\components\elements\conditions\FormCondition;
 use BarrelStrength\Sprout\forms\components\elements\db\FormElementQuery;
 use BarrelStrength\Sprout\forms\components\elements\fieldlayoutelements\FormBuilderField;
 use BarrelStrength\Sprout\forms\components\events\RegisterFormFeatureTabsEvent;
-use BarrelStrength\Sprout\forms\components\formfields\MissingFormField;
 use BarrelStrength\Sprout\forms\components\formtypes\DefaultFormType;
 use BarrelStrength\Sprout\forms\components\notificationevents\SaveSubmissionNotificationEvent;
 use BarrelStrength\Sprout\forms\db\SproutTable;
@@ -37,7 +36,6 @@ use craft\elements\User;
 use craft\errors\MissingComponentException;
 use craft\fieldlayoutelements\TextField;
 use craft\helpers\Db;
-use craft\helpers\ElementHelper;
 use craft\helpers\Html;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
@@ -455,69 +453,54 @@ class FormElement extends Element
 
     public function afterSave(bool $isNew): void
     {
-        // Get the form record
-        if (!$isNew) {
-            $record = FormRecord::findOne($this->id);
+        if (!$this->propagating) {
+            // Get the form record
+            if (!$isNew) {
+                $record = FormRecord::findOne($this->id);
 
-            if (!$record instanceof FormRecord) {
-                throw new Exception('Invalid Form ID: ' . $this->id);
+                if (!$record instanceof FormRecord) {
+                    throw new Exception('Invalid Form ID: ' . $this->id);
+                }
+            } else {
+                $record = new FormRecord();
+                $record->id = $this->id;
             }
-        } else {
-            $record = new FormRecord();
-            $record->id = $this->id;
-        }
 
-        $record->name = $this->name;
-        $record->handle = $this->handle;
-        $record->titleFormat = $this->titleFormat;
-        $record->displaySectionTitles = $this->displaySectionTitles;
-        $record->redirectUri = Db::prepareValueForDb($this->redirectUri);
-        $record->submissionMethod = $this->submissionMethod;
-        $record->errorDisplayMethod = $this->errorDisplayMethod;
-        $record->messageOnSuccess = $this->messageOnSuccess;
-        $record->messageOnError = $this->messageOnError;
-        $record->submitButtonText = $this->submitButtonText;
-        $record->formTypeUid = $this->formTypeUid;
-        $record->enableCaptchas = $this->enableCaptchas;
+            $record->name = $this->name;
+            $record->titleFormat = $this->titleFormat;
+            $record->displaySectionTitles = $this->displaySectionTitles;
+            $record->redirectUri = Db::prepareValueForDb($this->redirectUri);
+            $record->submissionMethod = $this->submissionMethod;
+            $record->errorDisplayMethod = $this->errorDisplayMethod;
+            $record->messageOnSuccess = $this->messageOnSuccess;
+            $record->messageOnError = $this->messageOnError;
+            $record->submitButtonText = $this->submitButtonText;
+            $record->formTypeUid = $this->formTypeUid;
+            $record->enableCaptchas = $this->enableCaptchas;
 
-        $record->submissionFieldLayoutConfig = $this->submissionFieldLayoutConfig;
+            if ($this->duplicateOf) {
+                $record->name = $this->name . ' - ' . Craft::t('sprout-module-forms', 'Copy');
+                $record->handle = StringHelper::toHandle($this->name) . '_' . StringHelper::randomString(6);
+                $record->submissionFieldLayoutConfig = $this->duplicateSubmissionFieldLayoutConfig();
+            } else {
+                $record->handle = $this->handle;
+                $record->submissionFieldLayoutConfig = $this->submissionFieldLayoutConfig;
+            }
 
-        $record->save(false);
+            $record->save(false);
 
-        // Set our form record so we can use it in afterPropagate
-        $this->_formRecord = $record;
+            // Set our form record so we can use it in afterPropagate
+            $this->_formRecord = $record;
 
-        // Re-save Submission Elements if titleFormat has changed
-        $oldTitleFormat = $record->getOldAttribute('titleFormat');
+            // Re-save Submission Elements if titleFormat has changed
+            $oldTitleFormat = $record->getOldAttribute('titleFormat');
 
-        if ($record->titleFormat !== $oldTitleFormat) {
-            FormsModule::getInstance()->submissions->resaveElements($this->getId());
+            if ($record->titleFormat !== $oldTitleFormat) {
+                FormsModule::getInstance()->submissions->resaveElements($this->getId());
+            }
         }
 
         parent::afterSave($isNew);
-    }
-
-    public function afterPropagate(bool $isNew): void
-    {
-        //if (!$this->_formRecord) {
-        //    return;
-        //}
-
-        //$oldFieldContext = Craft::$app->content->fieldContext;
-        //
-        ////Set our field content and content table to work with our form output
-        //Craft::$app->content->fieldContext = $this->getSubmissionFieldContext();
-
-        if (ElementHelper::isDraftOrRevision($this)) {
-            return;
-        }
-
-        $this->updateSubmissionLayout();
-
-        // Reset field context and content table to original values
-        //Craft::$app->content->fieldContext = $oldFieldContext;
-
-        parent::afterPropagate($isNew); // TODO: Change the autogenerated stub
     }
 
     public function beforeDelete(): bool
@@ -541,156 +524,37 @@ class FormElement extends Element
         return parent::beforeDelete();
     }
 
-    public function saveFormField($fieldConfig): void
+    public function duplicateSubmissionFieldLayoutConfig(): ?string
     {
-        // @todo how/where do we determine handles for these fields? Do we need to?
-        $fieldsService = Craft::$app->getFields();
-
-        $type = $fieldConfig['type'];
-
-        // @todo - what to do with missing fields?
-        if ($type === MissingFormField::class) {
-            return;
-        }
-
-        /** @var Field $field */
-        $field = $fieldsService->createField([
-            //'id' => $fieldConfig['id'],
-            'type' => $type,
-            'uid' => $fieldConfig['uid'],
-            'name' => $fieldConfig['name'],
-            // @todo - handle needs to be dynamic
-            'handle' => StringHelper::toHandle($type::displayName()) . '_' . StringHelper::randomString(6),
-            'instructions' => $fieldConfig['instructions'],
-            // @todo - confirm locales/Sites work as expected
-            'translationMethod' => Field::TRANSLATION_METHOD_NONE,
-            'settings' => $fieldConfig['settings'] ?? [],
-        ]);
-
-        // Set our field context
-        //Craft::$app->content->fieldContext = $this->getSubmissionFieldContext();
-
-        /** @var Field $oldField */
-        $oldField = $fieldsService->getFieldByUid($field->uid);
-
-        if ($oldField) {
-            // existing field
-            $field->id = $oldField->id;
-            $field->handle = $oldField->handle;
-            $field->columnSuffix = $oldField->columnSuffix;
-
-            $isNewField = false;
-            $oldHandle = $oldField->handle;
-        } else {
-            // new field
-            $isNewField = true;
-            $oldHandle = null;
-        }
-
-        if (!$fieldsService->saveField($field)) {
-            Craft::error('Field does not validate.', __METHOD__);
-            // @todo - handle errors on layout
-            //$this->addError('submissionFieldLayoutConfig', 'Field does not validate.');
-        }
-
-        // Check if the handle is updated to also update the titleFormat, rules and integrations
-        if (!$isNewField && $oldHandle !== $field->handle) {
-            if (str_contains($this->titleFormat, $oldHandle)) {
-                $newTitleFormat = FormsModule::getInstance()->forms->updateTitleFormat($oldHandle, $field->handle, $this->titleFormat);
-                $this->titleFormat = $newTitleFormat;
-            }
-
-            //FormsModule::getInstance()->forms->updateFieldOnFieldRules($oldHandle, $field->handle, $this);
-            //FormsModule::getInstance()->forms->updateFieldOnIntegrations($oldHandle, $field->handle, $this);
-        }
-    }
-
-    public function updateSubmissionLayout(): void
-    {
-        // Save Field Layout
         if (!$this->submissionFieldLayoutConfig) {
-            return;
+            return null;
         }
 
         $layout = Json::decodeIfJson($this->submissionFieldLayoutConfig);
 
         if (!$layout) {
-            return;
+            return null;
         }
 
-        if ($this->duplicateOf) {
-            // duplicate fields and remap submissionFieldLayout uids
-
-            // Does craft have a method for this?
-            // id, uid
-            // do userCondition and elementCondition need to be updated?
-            // they probably store uids as references
-            // fields.id, fields.userCondition, fields.elementCondition
-
-            // refreshUUID() method
-            // find all UUIDs in text blob with regex
-            // map every old UUID to a new UUID
-            // and do a find/replace
-        }
-
-        $newFieldUids = [];
+        // @todo - also consider userCondition, elementCondition, rules,
+        //  and integrations or anywhere UIDs may be stored as references
 
         foreach ($layout['tabs'] as $index => $tab) {
+            $newTabId = StringHelper::UUID();
+            $layout['tabs'][$index]['id'] = $newTabId;
+            $layout['tabs'][$index]['uid'] = $newTabId;
+
             foreach ($tab['elements'] as $elementIndex => $element) {
-                $fieldUid = $element['fieldUid'] ?? null;
-                $newFieldUids[] = $fieldUid; // do this here because we might exit
+                $newLayoutElementUid = StringHelper::UUID();
+                $layout['tabs'][$index]['elements'][$elementIndex]['uid'] = $newLayoutElementUid;
 
-                $fieldData = $element['field'] ?? null;
-
-                // Remove field details. We have the fieldUid and will add back when needed.
-                //unset($layout['tabs'][$index]['elements'][$elementIndex]['field']);
-
-                // AFTER PROPAGATE SAVES THINGS TWICE (<sigh>... calling applyDraft after the initial save
-                // since we remove our field data from the submissionLayout after the first save, we need to
-                // exit here so we don't delete fields below
-                // BUT if we remove this, then after we save a field once, somehow field data gets added
-                // to the submission Layout field in the db
-                //if (empty($element['field'])) {
-                //    return;
-                //}
-
-                //if (!$fieldUid || empty($element['field']) {
-                if (!$fieldUid || empty($fieldData)) {
-                    continue;
-                }
-
-                // @TODO - extract fields and validate them before saving ANY
-
-                //$this->saveFormField($fieldData);
+                $newFieldUid = StringHelper::UUID();
+                $layout['tabs'][$index]['elements'][$elementIndex]['fieldUid'] = $newFieldUid;
+                $layout['tabs'][$index]['elements'][$elementIndex]['formField']['uid'] = $newFieldUid;
             }
         }
 
-        $oldFieldUids = (new Query())
-            ->select(['uid'])
-            ->from([Table::FIELDS])
-            ->where(['context' => $this->getSubmissionFieldContext()])
-            ->column();
-
-        // Delete fields that are no longer in the layout
-        $deletedFieldUids = array_diff($oldFieldUids, array_filter($newFieldUids));
-        array_walk($deletedFieldUids, static function($fieldUid) {
-            if ($field = Craft::$app->getFields()->getFieldByUid($fieldUid)) {
-                Craft::$app->getFields()->deleteField($field);
-            }
-        });
-
-        // remove 'field' attribute from layout.tabs.elements
-        array_walk($layout['tabs'], static function(&$tab) {
-            array_walk($tab['elements'], static function(&$element) {
-                unset($element['field']);
-            });
-        });
-
-        //Craft::$app->getDb()->createCommand()->update(
-        //    SproutTable::FORMS,
-        //    ['submissionFieldLayoutConfig' => Json::encode($layout)],
-        //    ['id' => $this->id]
-        //)->execute();
+        return Json::encode($layout);
     }
 
     /**
