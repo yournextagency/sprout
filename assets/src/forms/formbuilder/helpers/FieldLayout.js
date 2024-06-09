@@ -106,6 +106,8 @@ const FieldLayout = {
                 ? FormBuilder.tabs[tabIndex - 1].uid
                 : FormBuilder.tabs[tabIndex + 1].uid;
 
+            confirm(Craft.t('sprout-module-forms', 'All fields and related submission field content will be deleted too. Are you sure you want to continue?'));
+
             FormBuilder.tabs.splice(tabIndex, 1);
 
             let newTabIndex = self.getTabIndexByTabUid(newSelectedTabUid);

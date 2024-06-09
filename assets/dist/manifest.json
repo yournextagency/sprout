@@ -147,14 +147,14 @@
     "src": "forms/FormTypesSettings.js"
   },
   "forms/Forms.css": {
-    "file": "assets/Forms-dc8025f6.css",
+    "file": "assets/Forms-ac1ae3ba.css",
     "src": "forms/Forms.css"
   },
   "forms/Forms.js": {
     "css": [
-      "assets/Forms-dc8025f6.css"
+      "assets/Forms-ac1ae3ba.css"
     ],
-    "file": "assets/forms-61fb77ce.js",
+    "file": "assets/forms-310cb492.js",
     "imports": [
       "_module.esm-e3630760.js"
     ],
