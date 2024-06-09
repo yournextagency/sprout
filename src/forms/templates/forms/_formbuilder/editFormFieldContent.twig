@@ -1,14 +1,14 @@
 {% import "_includes/forms" as forms %}
 {% import "sprout-module-core/_macros/sproutcp" as sproutCp %}
 
-{# Add a settings namespace to our field settings#}
+{# Add a settings namespace to our field settings #}
 {% set fieldSettingsHtml %}
     {% namespace 'settings' %}
         {{ settingsHtml|raw }}
     {% endnamespace %}
 {% endset %}
 
-{% set fieldHtml %}
+{% set fieldTabHtml %}
     {% namespace 'formField' %}
         {{ forms.textField({
             label: 'Name'|t('sprout-module-forms') ~ sproutCp.infoIcon(
@@ -41,53 +41,56 @@
 
 {% endset %}
 
-<div id="form-field-general">
-    {% namespace 'layoutElement' %}
-    {% if field.allowRequired() %}
-        {{ forms.lightswitchField({
-            label: "Required"|t('sprout-module-forms'),
-            name: 'required',
-            on: fieldLayoutElement.required ?? false,
-            first: true
+{% set metadataTabHtml %}
+    {% namespace 'formField' %}
+        {{ forms.textField({
+            label: 'Handle'|t('sprout-module-forms'),
+            name: 'handle',
+            value: field.handle,
+            errors: field.getErrors('handle'),
+            required: true,
         }) }}
-    {% else %}
-        {{ hiddenInput('required', '') }}
-    {% endif %}
 
-        {{ fieldHtml }}
+        <hr>
 
+        {{ forms.textField({
+            label: 'Field Type'|t('sprout-module-forms'),
+            name: 'type',
+            value: field.displayName(),
+            readonly: true,
+            disabled: true,
+        }) }}
+
+        {{ forms.textField({
+            label: 'Field Class'|t('sprout-module-forms'),
+            name: 'class',
+            value: className(field),
+            readonly: true,
+            disabled: true,
+        }) }}
     {% endnamespace %}
-</div>
+{% endset %}
 
-<div id="form-field-metadata" class="hidden">
+{% namespace 'layoutElement' %}
+    <div id="form-field-general">
+        {% if field.allowRequired() %}
+            {{ forms.lightswitchField({
+                label: "Required"|t('sprout-module-forms'),
+                name: 'required',
+                on: fieldLayoutElement.required ?? false,
+                first: true
+            }) }}
+        {% else %}
+            {{ hiddenInput('required', '') }}
+        {% endif %}
 
-    {{ forms.textField({
-        label: 'Handle'|t('sprout-module-forms'),
-        name: 'handle',
-        value: field.handle,
-        errors: field.getErrors('handle'),
-        required: true,
-    }) }}
+        {{ fieldTabHtml }}
+    </div>
 
-    <hr>
-
-    {{ forms.textField({
-        label: 'Field Type'|t('sprout-module-forms'),
-        name: 'type',
-        value: field.displayName(),
-        readonly: true,
-        disabled: true,
-    }) }}
-
-    {{ forms.textField({
-        label: 'Field Class'|t('sprout-module-forms'),
-        name: 'class',
-        value: className(field),
-        readonly: true,
-        disabled: true,
-    }) }}
-
-</div>
+    <div id="form-field-metadata" class="hidden">
+        {{ metadataTabHtml }}
+    </div>
+{% endnamespace %}
 
 <div id="form-field-rules" class="hidden">
 

@@ -103,10 +103,11 @@ class FormBuilderHelper
     public static function getFormFieldData(mixed $field): array
     {
         return [
+            'type' => $field::class,
             'name' => $field->name ?? $field::displayName(),
             'handle' => $field->handle, // Default created in JS
             'instructions' => $field->instructions,
-            'type' => $field::class,
+            'settings'  => $field->getSettings(),
         ];
     }
 

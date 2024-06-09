@@ -68,7 +68,7 @@ const FieldLayout = {
             name: 'New Page',
             userCondition: null,
             elementCondition: null,
-            fields: [],
+            elements: [],
         };
 
         this.tabs.push(tab);
