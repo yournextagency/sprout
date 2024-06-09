@@ -85,8 +85,6 @@ class FormElement extends Element
 
     public string $submitButtonText = '';
 
-    public bool $saveData = true;
-
     public ?string $formTypeUid = null;
 
     public bool $enableCaptchas = true;
@@ -980,7 +978,6 @@ class FormElement extends Element
         $rules[] = [['messageOnSuccess'], 'safe'];
         $rules[] = [['messageOnError'], 'safe'];
         $rules[] = [['submitButtonText'], 'safe'];
-        $rules[] = [['saveData'], 'safe'];
         $rules[] = [['formTypeUid'], 'safe'];
         $rules[] = [['enableCaptchas'], 'safe'];
 

@@ -32,8 +32,6 @@ class FormElementQuery extends ElementQuery
     //
     //    public string $submitButtonText;
     //
-    //    public bool $saveData = false;
-    //
     //    public bool $enableCaptchas = false;
 
     public int $totalSubmissions = 0;
@@ -82,7 +80,6 @@ class FormElementQuery extends ElementQuery
             'sprout_forms.titleFormat',
             'sprout_forms.displaySectionTitles',
             'sprout_forms.redirectUri',
-            'sprout_forms.saveData',
             'sprout_forms.submissionMethod',
             'sprout_forms.errorDisplayMethod',
             'sprout_forms.messageOnSuccess',

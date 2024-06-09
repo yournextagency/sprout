@@ -105,7 +105,6 @@ class m211101_000007_migrate_forms_tables extends Migration
             'messageOnSuccess', // successMessage
             'messageOnError', // errorMessage
             'submitButtonText',
-            'saveData',
             'enableCaptchas',
             'dateCreated',
             'dateUpdated',
@@ -161,6 +160,7 @@ class m211101_000007_migrate_forms_tables extends Migration
                     $formTypes[$customTemplatesFormTypeUUID] = $this->getCustomTemplatesFormTypeFieldLayoutConfig(
                         'Custom ' . StringHelper::substr($customTemplatesFormTypeUUID, 1, 5),
                         $formTemplate,
+                        $row['saveData'],
                     );
 
                     // Map custom template to formType settings and save settings
@@ -191,6 +191,7 @@ class m211101_000007_migrate_forms_tables extends Migration
                     $rows[$key]['fieldLayoutId'],
                     $rows[$key]['formTemplateId'],
                     $rows[$key]['siteId'],
+                    $rows[$key]['saveData'],
                 );
             }
 
@@ -490,7 +491,7 @@ class m211101_000007_migrate_forms_tables extends Migration
         return $config;
     }
 
-    public function getCustomTemplatesFormTypeFieldLayoutConfig($name, $formTemplate): array
+    public function getCustomTemplatesFormTypeFieldLayoutConfig($name, $formTemplate, $saveData): array
     {
         $config = [
             'type' => 'BarrelStrength\Sprout\forms\components\formtypes\CustomTemplatesFormType',
@@ -533,6 +534,7 @@ class m211101_000007_migrate_forms_tables extends Migration
                 'BarrelStrength\Sprout\forms\components\formfields\CustomHtmlFormField',
                 'BarrelStrength\Sprout\forms\components\formfields\PrivateNotesFormField',
             ],
+            'enableSaveData' => $saveData ?? true,
         ];
 
         $fieldLayout = new FieldLayout([
