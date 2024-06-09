@@ -59,7 +59,6 @@ class FormBuilderController extends BaseController
         }
 
         $tabConfig = Craft::$app->getRequest()->getRequiredParam('tab');
-        $tabConfig = Json::decode($tabConfig);
 
         $tab = new FormFieldLayoutTab();
         $tab->name = $tabConfig['name'] ?? Craft::t('sprout-module-forms', 'Page');

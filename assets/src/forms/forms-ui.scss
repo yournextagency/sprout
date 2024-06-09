@@ -196,8 +196,7 @@ $detailsWidth: 350px;
     color: var(--link-color);
 }
 
-.edit-field-button,
-.form-field-details a.delete {
+.edit-field-button {
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
@@ -222,9 +221,7 @@ $detailsWidth: 350px;
 }
 
 .layout-field:hover .edit-field-button,
-.layout-field-overlay:hover .edit-field-button,
-.layout-field:hover .form-field-details a.delete,
-.layout-field-overlay:hover .form-field-details a.delete {
+.layout-field-overlay:hover .edit-field-button {
     opacity: 1;
 }
 
@@ -298,11 +295,6 @@ $detailsWidth: 350px;
     color: $grey400;
     margin-top: 24px;
     margin-bottom: 6px
-}
-
-.form-field-details .delete {
-    margin-right: 3px;
-    font-size: 14px;
 }
 
 .layout-field ul.settings {
