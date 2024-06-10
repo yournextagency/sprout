@@ -2,6 +2,8 @@
 
 namespace BarrelStrength\Sprout\forms\components\formtypes;
 
+use BarrelStrength\Sprout\forms\components\formtypes\fieldlayoutelements\EnableCaptchasField;
+use BarrelStrength\Sprout\forms\components\formtypes\fieldlayoutelements\RedirectUrlField;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
 use Craft;
 use craft\events\DefineFieldLayoutFieldsEvent;
@@ -31,6 +33,13 @@ class CustomTemplatesFormType extends FormType
 
     public static function defineNativeFields(DefineFieldLayoutFieldsEvent $event): void
     {
+        /** @var FieldLayout $fieldLayout */
+        $fieldLayout = $event->sender;
+
+        if ($fieldLayout->type === self::class) {
+            $event->fields[] = RedirectUrlField::class;
+            $event->fields[] = EnableCaptchasField::class;
+        }
     }
 
     public function createFieldLayout(): ?FieldLayout
