@@ -10,20 +10,11 @@ use yii\db\ActiveQueryInterface;
 /**
  * @property int $id
  * @property string $submissionFieldLayoutConfig
- * @property string $fieldLayoutSettings
  * @property string $name
  * @property string $handle
  * @property string $titleFormat
- * @property bool $displaySectionTitles
- * @property Element $element
- * @property string $redirectUri
- * @property string $submissionMethod
- * @property string $errorDisplayMethod
- * @property string $messageOnSuccess
- * @property string $messageOnError
- * @property string $submitButtonText
  * @property string $formTypeUid
- * @property bool $enableCaptchas
+ * @property array $formTypeSettings
  */
 class FormRecord extends ActiveRecord
 {
