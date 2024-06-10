@@ -36,12 +36,14 @@ class FormTypesController extends Controller
     {
         $this->requireAdmin();
 
-        if ($formTypeUid) {
-            $formType = FormTypeHelper::getFormTypeByUid($formTypeUid);
-        }
+        if (!$formType) {
+            if ($formTypeUid) {
+                $formType = FormTypeHelper::getFormTypeByUid($formTypeUid);
+            }
 
-        if (!$formType && $type) {
-            $formType = new $type();
+            if (!$formType && $type) {
+                $formType = new $type();
+            }
         }
 
         $formSettingsEvent = new DefineFormFeatureSettingsEvent([

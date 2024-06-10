@@ -251,41 +251,6 @@
 
     <div id="behavior" class="hidden">
 
-        {{ forms.selectField({
-            label: 'Submission Method'|t('sprout-module-forms'),
-            instructions: 'The method used to submit your forms.'|t('sprout-module-forms'),
-            id: 'submissionMethod',
-            name: 'submissionMethod',
-            value: formType.submissionMethod,
-            options: [{
-                value: "sync",
-                label: "Reload Page (Synchronous)"|t('sprout-module-forms')
-            },{
-                value: "async",
-                label: "AJAX (Asynchronous)"|t('sprout-module-forms'),
-            }],
-        }) }}
-
-        {{ forms.selectField({
-            label: 'Error Display Method'|t('sprout-module-forms'),
-            instructions: 'The method used to display errors after a form fails validation.'|t('sprout-module-forms'),
-            id: 'errorDisplayMethod',
-            name: 'errorDisplayMethod',
-            value: formType.errorDisplayMethod,
-            options: [{
-                label: 'Inline - Display errors alongside their respective fields',
-                value: 'inline',
-            },{
-                label: 'Globally - Display errors together in a list',
-                value: 'global',
-            },{
-                label: 'Inline & Globally - Display errors everywhere!',
-                value: 'both',
-            }],
-        }) }}
-
-        <hr>
-
         {{ forms.lightswitchField({
             label: "Save data to the Craft database"|t('sprout-module-forms'),
             instructions: "Disable this setting to stop Sprout Forms from saving all form submission data to the Craft database and hide the Submissions tab. Existing data will not be deleted, but will no longer be accessible via the Control Panel."|t('sprout-module-forms'),
@@ -295,6 +260,16 @@
             on: formType.enableSaveData,
             onLabel: "Save Data"|t('sprout-module-forms'),
             offLabel: "Don't Save Data"|t('sprout-module-forms'),
+        }) }}
+
+        {{ forms.lightswitchField({
+            label: "Allow Form Submissions to be edited in front-end templates"|t('sprout-module-forms'),
+            instructions: "Enable this setting to allow users to edit existing submissions in front-end templates. Enabling this feature may have some workflow or security considerations as forms allow anonymous submissions."|t('sprout-module-forms'),
+            id: 'enableEditSubmissionViaFrontEnd',
+            name: 'enableEditSubmissionViaFrontEnd',
+            on: formType.enableEditSubmissionViaFrontEnd,
+            onLabel: "Allow Edits"|t('sprout-module-forms'),
+            offLabel: "Don't Allow Edits"|t('sprout-module-forms'),
         }) }}
 
         <hr>
@@ -322,14 +297,33 @@
 
         <hr>
 
-        {{ forms.lightswitchField({
-            label: "Allow Form Submissions to be edited in front-end templates"|t('sprout-module-forms'),
-            instructions: "Enable this setting to allow users to edit existing submissions in front-end templates. Enabling this feature may have some workflow or security considerations as forms allow anonymous submissions."|t('sprout-module-forms'),
-            id: 'enableEditSubmissionViaFrontEnd',
-            name: 'enableEditSubmissionViaFrontEnd',
-            on: formType.enableEditSubmissionViaFrontEnd,
-            onLabel: "Allow Edits"|t('sprout-module-forms'),
-            offLabel: "Don't Allow Edits"|t('sprout-module-forms'),
+        {{ forms.editableTableField({
+            label: "Form Type Metadata"|t('sprout-module-forms'),
+            instructions: "The form metadata that will be captured on every form submission of this form type."|t('sprout-module-forms'),
+            tip: "Configure global Form Metadata in the Default Settings for metadata that will be captured across all form types."|t('sprout-module-forms'),
+            id: 'formTypeMetadata',
+            name: 'formTypeMetadata',
+            cols: {
+                label: {
+                    type: 'singleline',
+                    heading: "Label"|t('sprout-module-forms'),
+                    info: 'Short, user-friendly label of the metadatum to be captured.',
+                },
+                metadatumFormat: {
+                    type: 'singleline',
+                    heading: "Metadatum Format"|t('sprout-module-forms'),
+                    info: 'Twig shortcut syntax that will be used to parse the metadatum into its captured value. i.e. `{craft.app.request.getParam("utm_source")}`',
+                    class: 'code',
+                },
+            }|filter,
+            rows: formType.formTypeMetadata|default([
+                { label: '', metadatumFormat: '' },
+            ]),
+            fullWidth: true,
+            allowAdd: true,
+            allowReorder: true,
+            allowDelete: true,
+            errors: settings.getErrors('formTypeMetadata'),
         }) }}
 
     </div>
@@ -394,4 +388,6 @@
         });
     {% endjs %}
 
-    {# {% js "new Craft.HandleGenerator('#name', '#handle');" %} #}
+{% if not formType.name %}
+    {% js "new Craft.HandleGenerator('#name', '#handle');" %}
+{% endif %}

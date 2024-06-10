@@ -24,7 +24,7 @@
                 value: 'forms'
             }
         ],
-        value: not settings.enableSaveData ? 'forms' : settings.defaultSidebarTab,
+        value: settings.defaultSidebarTab ?? 'forms',
         warning: sproutConfigWarning(module, 'enableSaveData'),
     }) }}
 
@@ -64,9 +64,9 @@
                     <li>{{ 'IP Address'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getRemoteIP}{% endverbatim %}</code></li>
                     <li>{{ 'Referrer URL'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getReferrer}{% endverbatim %}</code></li>
                     <li>{{ 'User Agent'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getUserAgent}{% endverbatim %}</code></li>
-                    <li>{{ 'UTM Source Parameter'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getParam("utm_source")}}{% endverbatim %}</code></li>
-                    <li>{{ 'UTM Medium Parameter'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getParam("utm_medium")}}{% endverbatim %}</code></li>
-                    <li>{{ 'UTM Campaign Parameter'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getParam("utm_campaign")}}{% endverbatim %}</code></li>
+                    <li>{{ 'UTM Source Parameter'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getParam("utm_source")}{% endverbatim %}</code></li>
+                    <li>{{ 'UTM Medium Parameter'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getParam("utm_medium")}{% endverbatim %}</code></li>
+                    <li>{{ 'UTM Campaign Parameter'|t('sprout-module-forms') }} <code>{% verbatim %}{craft.app.request.getParam("utm_campaign")}{% endverbatim %}</code></li>
                 </ul>
             </blockquote>
         </div>

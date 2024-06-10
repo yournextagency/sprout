@@ -78,15 +78,8 @@ class FormElementQuery extends ElementQuery
             'sprout_forms.name',
             'sprout_forms.handle',
             'sprout_forms.titleFormat',
-            'sprout_forms.displaySectionTitles',
-            'sprout_forms.redirectUri',
-            'sprout_forms.submissionMethod',
-            'sprout_forms.errorDisplayMethod',
-            'sprout_forms.messageOnSuccess',
-            'sprout_forms.messageOnError',
-            'sprout_forms.submitButtonText',
             'sprout_forms.formTypeUid',
-            'sprout_forms.enableCaptchas',
+            'sprout_forms.formTypeSettings',
         ]);
 
         if ($this->totalSubmissions) {

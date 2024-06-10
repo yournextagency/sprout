@@ -69,21 +69,9 @@ class FormElement extends Element
 
     public ?string $titleFormat = null;
 
-    public bool $displaySectionTitles = false;
-
-    public ?LinkInterface $redirectUri = null;
-
-    public string $submissionMethod = 'sync';
-
-    public string $errorDisplayMethod = 'inline';
-
-    public string $messageOnSuccess = '';
-
-    public string $messageOnError = '';
-
-    public string $submitButtonText = '';
-
     public ?string $formTypeUid = null;
+
+    public array $formTypeSettings = [];
 
     public bool $enableCaptchas = true;
 
@@ -191,6 +179,7 @@ class FormElement extends Element
 
         // Add sortOrder to customized form type tabs
         $formTypeTabs = $formType->getFieldLayout()?->getTabs() ?? [];
+
         $formTypeTabSortCount = 20;
         foreach ($formTypeTabs as $index => $tab) {
             $formTypeTabs[$index]->layout = $fieldLayout;
@@ -468,15 +457,10 @@ class FormElement extends Element
 
             $record->name = $this->name;
             $record->titleFormat = $this->titleFormat;
-            $record->displaySectionTitles = $this->displaySectionTitles;
-            $record->redirectUri = Db::prepareValueForDb($this->redirectUri);
-            $record->submissionMethod = $this->submissionMethod;
-            $record->errorDisplayMethod = $this->errorDisplayMethod;
-            $record->messageOnSuccess = $this->messageOnSuccess;
-            $record->messageOnError = $this->messageOnError;
-            $record->submitButtonText = $this->submitButtonText;
             $record->formTypeUid = $this->formTypeUid;
-            $record->enableCaptchas = $this->enableCaptchas;
+
+            $formType = $this->getFormType();
+            $record->formTypeSettings = $formType->prepareFormTypeSettingsForDb($this->formTypeSettings);
 
             if ($this->duplicateOf) {
                 $record->name = $this->name . ' - ' . Craft::t('sprout-module-forms', 'Copy');
@@ -824,26 +808,11 @@ class FormElement extends Element
             'targetClass' => FormRecord::class,
             'except' => self::SCENARIO_ESSENTIALS,
         ];
+        $rules[] = [['titleFormat'], 'required'];
 
         $rules[] = [['submissionFieldLayoutConfig'], 'safe'];
-        $rules[] = [['titleFormat'], 'required'];
-        $rules[] = [['displaySectionTitles'], 'safe'];
-        $rules[] = [
-            ['redirectUri'], function($attribute) {
-                /** @var AbstractLink $link */
-                $link = $this->$attribute;
-                if ($link && !$link->validate()) {
-                    $this->addError($attribute, $link->getErrorSummary(true)[0]);
-                }
-            },
-        ];
-        $rules[] = [['submissionMethod'], 'safe'];
-        $rules[] = [['errorDisplayMethod'], 'safe'];
-        $rules[] = [['messageOnSuccess'], 'safe'];
-        $rules[] = [['messageOnError'], 'safe'];
-        $rules[] = [['submitButtonText'], 'safe'];
         $rules[] = [['formTypeUid'], 'safe'];
-        $rules[] = [['enableCaptchas'], 'safe'];
+        $rules[] = [['formTypeSettings'], 'safe'];
 
         return $rules;
     }

@@ -18,23 +18,21 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
 
     public ?string $customTemplatesFolder = null;
 
+    // Features
     public array $featureSettings = [];
-
-    public ?string $defaultEmailTypeUid = null;
 
     public array $enabledFormFieldTypes = [];
 
-    public ?string $submissionMethod = null;
-
-    public ?string $errorDisplayMethod = null;
-
+    // Behavior
     public bool $enableSaveData = true;
+
+    public bool $enableEditSubmissionViaFrontEnd = false;
 
     public array|string $allowedAssetVolumes = [];
 
     public ?string $defaultUploadLocationSubpath = null;
 
-    public bool $enableEditSubmissionViaFrontEnd = false;
+    public array $formTypeMetadata = [];
 
     public ?FormElement $form = null;
 
@@ -131,6 +129,15 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
         return $options;
     }
 
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [['name', 'handle'], 'required'];
+
+        return $rules;
+    }
+
     public function getConfig(): array
     {
         $config = [
@@ -140,11 +147,11 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
             'customTemplatesFolder' => $this->customTemplatesFolder,
             'featureSettings' => $this->featureSettings,
             'enabledFormFieldTypes' => $this->enabledFormFieldTypes,
-            'submissionMethod' => $this->submissionMethod,
-            'errorDisplayMethod' => $this->errorDisplayMethod,
+            'enableSaveData' => $this->enableSaveData,
+            'enableEditSubmissionViaFrontEnd' => $this->enableEditSubmissionViaFrontEnd,
             'allowedAssetVolumes' => $this->allowedAssetVolumes,
             'defaultUploadLocationSubpath' => $this->defaultUploadLocationSubpath,
-            'enableEditSubmissionViaFrontEnd' => $this->enableEditSubmissionViaFrontEnd,
+            'formTypeMetadata' => $this->formTypeMetadata,
         ];
 
         $fieldLayout = $this->getFieldLayout();
