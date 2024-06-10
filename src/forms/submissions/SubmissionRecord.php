@@ -27,16 +27,16 @@ class SubmissionRecord extends ActiveRecord
 
     public function getElement(): ActiveQueryInterface
     {
-        return $this->hasOne(Element::class, ['id' => 'id']);
+        return self::hasOne(Element::class, ['id' => 'id']);
     }
 
     public function getForm(): ActiveQueryInterface
     {
-        return $this->hasMany(FormRecord::class, ['formId' => 'id']);
+        return self::hasMany(FormRecord::class, ['formId' => 'id']);
     }
 
     public function getSubmissionStatuses(): ActiveQueryInterface
     {
-        return $this->hasMany(SubmissionStatusRecord::class, ['statusId' => 'id']);
+        return self::hasMany(SubmissionStatusRecord::class, ['statusId' => 'id']);
     }
 }

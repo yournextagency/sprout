@@ -33,6 +33,6 @@ class DataSetRecord extends ActiveRecord
 
     public function getElement(): ActiveQueryInterface
     {
-        return $this->hasOne(Element::class, ['id' => 'id']);
+        return self::hasOne(Element::class, ['id' => 'id']);
     }
 }

@@ -24,12 +24,9 @@ use yii\db\ActiveQueryInterface;
  * @property string $submitButtonText
  * @property string $formTypeUid
  * @property bool $enableCaptchas
- * @property string $oldHandle
  */
 class FormRecord extends ActiveRecord
 {
-    private string $_oldHandle;
-
     public static function tableName(): string
     {
         return SproutTable::FORMS;
@@ -37,6 +34,6 @@ class FormRecord extends ActiveRecord
 
     public function getElement(): ActiveQueryInterface
     {
-        return $this->hasOne(Element::class, ['id' => 'id']);
+        return self::hasOne(Element::class, ['id' => 'id']);
     }
 }
