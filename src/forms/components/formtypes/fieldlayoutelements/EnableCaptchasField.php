@@ -31,4 +31,9 @@ class EnableCaptchasField extends LightswitchField
     {
         return Craft::t('sprout-module-forms', 'Enable the globally configured captchas for this form.');
     }
+
+    protected function selectorIcon(): ?string
+    {
+        return 'shield';
+    }
 }

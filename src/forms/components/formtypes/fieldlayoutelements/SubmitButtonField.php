@@ -26,4 +26,9 @@ class SubmitButtonField extends TextField
     {
         return Craft::t('sprout-module-forms', 'The text displayed for the submit button.');
     }
+
+    protected function selectorIcon(): ?string
+    {
+        return 'flag-checkered';
+    }
 }

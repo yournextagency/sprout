@@ -31,4 +31,9 @@ class SuccessMessageField extends TextareaField
     {
         return Craft::t('sprout-module-forms', 'Thank you for your submission.');
     }
+
+    protected function selectorIcon(): ?string
+    {
+        return 'thumbs-up';
+    }
 }

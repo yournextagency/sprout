@@ -21,4 +21,9 @@ class RedirectUrlField extends EnhancedLinkField
     {
         return Craft::t('sprout-module-forms', 'Where should the user be redirected upon form submission?');
     }
+
+    protected function selectorIcon(): ?string
+    {
+        return 'sign-post';
+    }
 }

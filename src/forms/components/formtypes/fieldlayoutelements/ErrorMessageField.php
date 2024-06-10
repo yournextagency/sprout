@@ -30,4 +30,9 @@ class ErrorMessageField extends TextareaField
     {
         return Craft::t('sprout-module-forms', 'We were unable to process your submission. Please correct any errors and submit the form again.');
     }
+
+    protected function selectorIcon(): ?string
+    {
+        return 'triangle-exclamation';
+    }
 }

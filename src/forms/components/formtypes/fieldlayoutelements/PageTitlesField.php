@@ -31,4 +31,9 @@ class PageTitlesField extends LightswitchField
     {
         return Craft::t('sprout-module-forms', 'Display Page Titles on Forms.');
     }
+
+    protected function selectorIcon(): ?string
+    {
+        return 'tags';
+    }
 }
