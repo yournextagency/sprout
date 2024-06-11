@@ -117,7 +117,7 @@ class FormBuilderHelper
      */
     public static function getFormFieldUiData(FormFieldInterface $field): array
     {
-        $svg = Craft::getAlias($field->getSvgIconPath());
+        $svg = Cp::iconSvg($field->selectorIcon());
 
         $exampleInputHtml = $field->getExampleInputHtml();
 

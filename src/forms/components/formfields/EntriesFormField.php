@@ -23,9 +23,9 @@ class EntriesFormField extends CraftEntries implements FormFieldInterface
         return GroupLabel::label(GroupLabel::GROUP_RELATIONS);
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/newspaper-o.svg';
+        return 'newspaper';
     }
 
     public function getFieldInputFolder(): string

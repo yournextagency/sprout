@@ -44,9 +44,9 @@ class InvisibleFormField extends Field implements FormFieldInterface, Previewabl
         return true;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/eye-slash.svg';
+        return 'eye-slash';
     }
 
     public function getFieldInputFolder(): string

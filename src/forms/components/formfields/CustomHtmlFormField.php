@@ -47,9 +47,9 @@ class CustomHtmlFormField extends Field implements FormFieldInterface, Previewab
         return false;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/code.svg';
+        return 'code';
     }
 
     public function getFieldInputFolder(): string

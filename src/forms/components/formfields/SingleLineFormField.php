@@ -59,9 +59,9 @@ class SingleLineFormField extends PlainText implements FormFieldInterface
         }
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/font.svg';
+        return 'font';
     }
 
     public function getFieldInputFolder(): string

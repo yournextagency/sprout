@@ -40,9 +40,9 @@ class PrivateNotesFormField extends Field implements FormFieldInterface
         return true;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/sticky-note.svg';
+        return 'clipboard';
     }
 
     public function getFieldInputFolder(): string

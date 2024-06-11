@@ -60,9 +60,9 @@ class NumberFormField extends CraftNumber implements FormFieldInterface
         }
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/hashtag.svg';
+        return 'hashtag';
     }
 
     public function getFieldInputFolder(): string

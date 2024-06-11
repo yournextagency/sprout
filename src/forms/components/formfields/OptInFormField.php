@@ -69,9 +69,9 @@ class OptInFormField extends Field implements FormFieldInterface, PreviewableFie
         return false;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/check-square.svg';
+        return 'square-check';
     }
 
     public function getFieldInputFolder(): string

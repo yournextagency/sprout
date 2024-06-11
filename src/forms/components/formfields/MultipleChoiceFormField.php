@@ -30,9 +30,9 @@ class MultipleChoiceFormField extends CraftRadioButtons implements FormFieldInte
         return true;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/dot-circle-o.svg';
+        return 'circle-dot';
     }
 
     public function getFieldInputFolder(): string

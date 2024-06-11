@@ -96,9 +96,9 @@ class DateFormField extends CraftDate implements FormFieldInterface
         );
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/calendar.svg';
+        return 'calendar';
     }
 
     public function getFieldInputFolder(): string

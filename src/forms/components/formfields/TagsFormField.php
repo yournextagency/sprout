@@ -23,9 +23,9 @@ class TagsFormField extends CraftTags implements FormFieldInterface
         return GroupLabel::label(GroupLabel::GROUP_RELATIONS);
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/tags.svg';
+        return 'tags';
     }
 
     public function getFieldInputFolder(): string

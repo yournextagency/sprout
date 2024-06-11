@@ -26,9 +26,9 @@ class DropdownFormField extends CraftDropdownField implements FormFieldInterface
         return CraftDropdownField::class;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/chevron-circle-down.svg';
+        return 'angle-down';
     }
 
     public function getFieldInputFolder(): string

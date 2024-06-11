@@ -26,9 +26,9 @@ class CheckboxesFormField extends CraftCheckboxesField implements FormFieldInter
         return true;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/check-square.svg';
+        return 'square-check';
     }
 
     public function getFieldInputFolder(): string

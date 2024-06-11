@@ -23,9 +23,9 @@ class CategoriesFormField extends CraftCategories implements FormFieldInterface
         return GroupLabel::label(GroupLabel::GROUP_RELATIONS);
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/folder-open.svg';
+        return 'folder-open';
     }
 
     public function getFieldInputFolder(): string

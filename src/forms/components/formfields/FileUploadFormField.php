@@ -88,9 +88,9 @@ class FileUploadFormField extends CraftAssets implements FormFieldInterface
         return $variables;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/cloud-upload.svg';
+        return 'cloud-arrow-up';
     }
 
     public function getFieldInputFolder(): string

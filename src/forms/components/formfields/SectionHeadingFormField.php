@@ -56,9 +56,9 @@ class SectionHeadingFormField extends Field implements FormFieldInterface
         return false;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/header.svg';
+        return 'text';
     }
 
     public function getFieldInputFolder(): string

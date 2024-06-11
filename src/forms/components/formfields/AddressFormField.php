@@ -31,9 +31,9 @@ class AddressFormField extends CraftAddressesField implements FormFieldInterface
         return true;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/map-marker-alt.svg';
+        return 'location-dot';
     }
 
     public function getFieldInputFolder(): string

@@ -36,9 +36,9 @@ class EmailDropdownFormField extends CraftDropdownField implements FormFieldInte
         return Schema::TYPE_STRING;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/share.svg';
+        return 'share';
     }
 
     public function getFieldInputFolder(): string

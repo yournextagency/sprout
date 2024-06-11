@@ -25,9 +25,9 @@ class UsersFormField extends CraftUsers implements FormFieldInterface
         return GroupLabel::label(GroupLabel::GROUP_RELATIONS);
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/users.svg';
+        return 'users';
     }
 
     public function getFieldInputFolder(): string

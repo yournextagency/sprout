@@ -31,7 +31,7 @@ trait FormFieldTrait
     /**
      * The icon to display for your form field
      */
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
         return '';
     }

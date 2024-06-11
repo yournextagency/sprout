@@ -47,9 +47,9 @@ class NameFormField extends Field implements FormFieldInterface, PreviewableFiel
         return $this->hasMultipleLabels;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/user.svg';
+        return 'user';
     }
 
     public function getFieldInputFolder(): string

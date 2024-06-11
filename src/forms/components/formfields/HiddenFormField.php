@@ -39,9 +39,9 @@ class HiddenFormField extends Field implements FormFieldInterface, PreviewableFi
         return true;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/user-secret.svg';
+        return 'user-secret';
     }
 
     public function getFieldInputFolder(): string

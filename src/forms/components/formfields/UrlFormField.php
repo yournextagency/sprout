@@ -37,9 +37,9 @@ class UrlFormField extends CraftUrl implements FormFieldInterface
         return Craft::t('sprout-module-forms', 'URL');
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/chain.svg';
+        return 'link';
     }
 
     public function getFieldInputFolder(): string

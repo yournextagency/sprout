@@ -57,9 +57,9 @@ class ParagraphFormField extends CraftPlainText implements FormFieldInterface
         }
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/paragraph.svg';
+        return 'paragraph';
     }
 
     public function getFieldInputFolder(): string

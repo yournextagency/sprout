@@ -37,9 +37,9 @@ class GenderFormField extends Field implements FormFieldInterface
         return false;
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/envelope.svg';
+        return 'envelope';
     }
 
     public function getFieldInputFolder(): string

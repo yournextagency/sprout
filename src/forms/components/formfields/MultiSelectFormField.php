@@ -25,9 +25,9 @@ class MultiSelectFormField extends CraftMultiSelect implements FormFieldInterfac
         return Craft::t('sprout-module-forms', 'Multi Select');
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/bars.svg';
+        return 'bars';
     }
 
     public function getFieldInputFolder(): string

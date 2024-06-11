@@ -37,9 +37,9 @@ class RegularExpressionFormField extends Field implements FormFieldInterface, Pr
         return Craft::t('sprout-module-forms', 'Regex');
     }
 
-    public function getSvgIconPath(): string
+    public function selectorIcon(): string
     {
-        return '@Sprout/Assets/dist/static/fields/icons/puzzle-piece.svg';
+        return 'puzzle-piece';
     }
 
     public function getFieldInputFolder(): string
