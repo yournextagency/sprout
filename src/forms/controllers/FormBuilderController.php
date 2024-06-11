@@ -198,7 +198,7 @@ class FormBuilderController extends BaseController
                 //'tabId' => 'form-field',
                 'label' => Craft::t('sprout-module-forms', 'Metadata'),
                 'url' => '#form-field-metadata',
-                'visible' => true,
+                'visible' => false,
                 //'class' => $tab->hasErrors ? 'error' : null,
             ],
             //'form-field-rules' => [
