@@ -71,8 +71,9 @@
     {% endnamespace %}
 {% endset %}
 
-{% namespace 'layoutElement' %}
-    <div id="form-field-general">
+<div id="form-field-general">
+    {# Don't wrap namespace around div.id or tab switching won't work       #}
+    {% namespace 'layoutElement' %}
         {% if field.allowRequired() %}
             {{ forms.lightswitchField({
                 label: "Required"|t('sprout-module-forms'),
@@ -85,12 +86,14 @@
         {% endif %}
 
         {{ fieldTabHtml }}
-    </div>
+    {% endnamespace %}
+</div>
 
-    <div id="form-field-metadata" class="hidden">
+<div id="form-field-metadata" class="hidden">
+    {% namespace 'layoutElement' %}
         {{ metadataTabHtml }}
-    </div>
-{% endnamespace %}
+    {% endnamespace %}
+</div>
 
 <div id="form-field-rules" class="hidden">
 

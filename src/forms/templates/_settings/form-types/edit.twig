@@ -24,11 +24,14 @@
 
 {% block content %}
 
+    {% set errorClassGeneral = formType.hasErrors('name') or formType.hasErrors('handle') %}
+
     <header id="content-header" class="pane-header">
         {% set tabs = {
             general: {
                 label: 'General'|t('sprout-module-forms'),
-                url: '#general'
+                url: '#general',
+                class: errorClassGeneral ? 'error' : null,
             },
             features: {
                 label: 'Features'|t('sprout-module-forms'),
