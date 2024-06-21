@@ -3,7 +3,6 @@
 namespace BarrelStrength\Sprout\forms\components\elements;
 
 use BarrelStrength\Sprout\core\helpers\ComponentHelper;
-use BarrelStrength\Sprout\core\helpers\ElementRenderHelper;
 use BarrelStrength\Sprout\core\relations\RelationsHelper;
 use BarrelStrength\Sprout\forms\components\elements\actions\ChangeFormType;
 use BarrelStrength\Sprout\forms\components\elements\conditions\FormCondition;
@@ -18,14 +17,15 @@ use BarrelStrength\Sprout\forms\forms\FormRecord;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
+use BarrelStrength\Sprout\forms\submissions\SubmissionElementFieldLayoutBehavior;
 use BarrelStrength\Sprout\forms\submissions\SubmissionsHelper;
 use BarrelStrength\Sprout\transactional\components\elements\TransactionalEmailElement;
-use BarrelStrength\Sprout\uris\links\AbstractLink;
 use BarrelStrength\Sprout\uris\links\LinkInterface;
 use BarrelStrength\Sprout\uris\links\Links;
 use Craft;
 use craft\base\Element;
 use craft\base\Field;
+use craft\base\FieldLayoutProviderInterface;
 use craft\behaviors\FieldLayoutBehavior;
 use craft\db\Query;
 use craft\db\Table;
@@ -57,7 +57,7 @@ use yii\web\Response;
 /**
  * @mixin FieldLayoutBehavior
  */
-class FormElement extends Element
+class FormElement extends Element implements FieldLayoutProviderInterface
 {
     public const INTERNAL_SPROUT_EVENT_REGISTER_FORM_FEATURE_TABS = 'registerInternalSproutFormFeatureTabs';
 
@@ -65,7 +65,9 @@ class FormElement extends Element
 
     public ?string $handle = null;
 
-    public ?string $submissionFieldLayoutConfig = null;
+    public ?string $submissionFieldLayoutUid = null;
+
+    private ?string $submissionFieldLayoutConfig = null;
 
     public ?string $titleFormat = null;
 
@@ -149,7 +151,7 @@ class FormElement extends Element
         $this->_formType = $formType;
     }
 
-    public function getFieldLayout(): ?FieldLayout
+    public function getFieldLayout(): FieldLayout
     {
         //if ($this->_fieldLayout) {
         //    return $this->_fieldLayout;
@@ -245,32 +247,13 @@ class FormElement extends Element
         return $this->_fieldLayout = $fieldLayout;
     }
 
-    public function getSubmissionLayoutUid(): string
+    public function getSubmissionFieldLayout(array $config = []): FieldLayout|SubmissionElementFieldLayoutBehavior
     {
-        return 'SPROUT-UID-SUBMISSION-LAYOUT';
-    }
-
-    public function getSubmissionFieldLayout(): FieldLayout
-    {
-
-        if ($this->submissionFieldLayoutConfig) {
-            $config = Json::decodeIfJson($this->submissionFieldLayoutConfig) ?? [];
-
-            $layout = FormBuilderHelper::createSubmissionFieldLayoutFromConfig($config);
-        } else {
-            $layout = new FieldLayout();
-            $layout->type = SubmissionElement::class;
-
-            $layoutTab = new FieldLayoutTab();
-            $layoutTab->name = Craft::t('sprout-module-forms', 'Page');
-            $layoutTab->uid = StringHelper::UUID();
-            $layout->setTabs([$layoutTab]);
+        if ($config) {
+            return SubmissionsHelper::getSubmissionFieldLayoutFromConfig($this, $config);
         }
 
-        // layout is never saved, it has no id and we don't want to store one on the element
-        $layout->uid = $this->getSubmissionLayoutUid();
-
-        return $layout;
+        return SubmissionsHelper::getSubmissionFieldLayout($this);
     }
 
     public static function find(): FormElementQuery
@@ -465,11 +448,36 @@ class FormElement extends Element
             if ($this->duplicateOf) {
                 $record->name = $this->name . ' - ' . Craft::t('sprout-module-forms', 'Copy');
                 $record->handle = StringHelper::toHandle($this->name) . '_' . StringHelper::randomString(6);
-                $record->submissionFieldLayoutConfig = $this->duplicateSubmissionFieldLayoutConfig();
+
+                // @todo - Duplicate field layout and fields (since they are independent per form)
+                // update all fieldLayoutElement uids and fieldUids to match update
+                //$record->submissionFieldLayoutConfig = $this->duplicateSubmissionFieldLayoutConfig();
             } else {
                 $record->handle = $this->handle;
-                $record->submissionFieldLayoutConfig = $this->submissionFieldLayoutConfig;
             }
+
+            $oldSubmissionFieldLayout = $this->getSubmissionFieldLayout();
+            $oldCustomFieldsByUid = $oldSubmissionFieldLayout->getCustomFieldsByUid();
+
+            $newSubmissionFieldLayoutConfig = Json::decode($this->getSubmissionFieldLayoutConfig());
+            $newSubmissionFieldLayout = SubmissionsHelper::getSubmissionFieldLayoutFromConfig($this, $newSubmissionFieldLayoutConfig);
+            $newCustomFieldsByUid = $newSubmissionFieldLayout->getCustomFieldsByUid();
+
+            $newFieldsToCreate = array_diff_key($newCustomFieldsByUid, $oldCustomFieldsByUid);
+            $existingFieldsToUpdate = array_intersect_key($newCustomFieldsByUid, $oldCustomFieldsByUid);
+            $fieldsToDelete = array_diff_key($oldCustomFieldsByUid, $newCustomFieldsByUid);
+
+            foreach ($fieldsToDelete as $field) {
+                Craft::$app->getFields()->deleteField($field);
+            }
+
+            foreach (array_merge($newFieldsToCreate, $existingFieldsToUpdate) as $field) {
+                Craft::$app->getFields()->saveField($field);
+            }
+
+            Craft::$app->getFields()->saveLayout($newSubmissionFieldLayout);
+
+            $record->submissionFieldLayoutUid = $newSubmissionFieldLayout->uid;
 
             $record->save(false);
 
@@ -510,11 +518,11 @@ class FormElement extends Element
 
     public function duplicateSubmissionFieldLayoutConfig(): ?string
     {
-        if (!$this->submissionFieldLayoutConfig) {
+        if (!$this->getSubmissionFieldLayoutConfig()) {
             return null;
         }
 
-        $layout = Json::decodeIfJson($this->submissionFieldLayoutConfig);
+        $layout = Json::decodeIfJson($this->getSubmissionFieldLayoutConfig());
 
         if (!$layout) {
             return null;
@@ -827,6 +835,12 @@ class FormElement extends Element
         if (isset($config['redirectUri'])) {
             $config['redirectUri'] = Links::toLinkField($config['redirectUri']) ?: null;
         }
+
+        if (isset($config['submissionFieldLayoutConfig'])) {
+            $this->setSubmissionFieldLayoutConfig($config['submissionFieldLayoutConfig']);
+            unset($config['submissionFieldLayoutConfig']);
+        }
+
         parent::__construct($config);
     }
 
@@ -850,6 +864,16 @@ class FormElement extends Element
         parent::setAttributes($values, $safeOnly);
     }
 
+    public function setSubmissionFieldLayoutConfig(string $value): void
+    {
+        $this->submissionFieldLayoutConfig = $value;
+    }
+
+    public function getSubmissionFieldLayoutConfig(): ?string
+    {
+        return $this->submissionFieldLayoutConfig;
+    }
+
     public function render(array $variables = []): Markup
     {
         $formTemplateFolder = null;
@@ -871,8 +895,13 @@ class FormElement extends Element
             throw new TwigLoaderError($e->getMessage());
         }
 
-        SubmissionsHelper::setFormMetadataSessionVariable($this->id);
+        SubmissionsHelper::setFormMetadataSessionVariable($this);
 
         return new Markup(implode("\n", $output), Craft::$app->charset);
+    }
+
+    public function getHandle(): ?string
+    {
+        return $this->handle;
     }
 }

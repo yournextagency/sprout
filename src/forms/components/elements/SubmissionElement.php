@@ -337,7 +337,20 @@ class SubmissionElement extends Element
     {
         $metadata[Craft::t('sprout-module-forms', 'Form Name')] = $this->getForm()->name;
 
-        foreach ($this->formMetadata as $key => $value) {
+        $formTypeMetadata = $this->getForm()->getFormType()->formTypeMetadata;
+
+        $formMetadata = array_merge($this->formMetadata, $formTypeMetadata);
+
+        foreach ($formMetadata as $key => $value) {
+            $metadata[$key] = Html::input('text', '', $value, [
+                'class' => 'text small',
+                'disabled' => 'disabled',
+                'readonly' => 'readonly',
+                'style' => 'border:none;margin:0;padding:0!important;',
+            ]);
+        }
+
+        foreach ($formTypeMetadata as $key => $value) {
             $metadata[$key] = Html::input('text', '', $value, [
                 'class' => 'text small',
                 'disabled' => 'disabled',

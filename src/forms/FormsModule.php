@@ -36,6 +36,7 @@ use BarrelStrength\Sprout\forms\forms\SubmissionStatuses;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
 use BarrelStrength\Sprout\forms\formtypes\FormTypes;
 use BarrelStrength\Sprout\forms\integrations\FormIntegrations;
+use BarrelStrength\Sprout\forms\submissions\SubmissionsHelper;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailTypes;
 use BarrelStrength\Sprout\transactional\notificationevents\NotificationEvents;
 use Craft;
@@ -190,6 +191,12 @@ class FormsModule extends Module implements SproutModuleInterface, MigrationInte
                 $event->types[] = FormElement::class;
                 $event->types[] = SubmissionElement::class;
             }
+        );
+
+        Event::on(
+            FieldLayout::class,
+            FieldLayout::EVENT_DEFINE_BEHAVIORS,
+            [SubmissionsHelper::class, 'attachSubmissionElementFieldLayoutBehavior']
         );
 
         Event::on(

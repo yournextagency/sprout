@@ -74,7 +74,7 @@ class FormElementQuery extends ElementQuery
         $this->joinElementTable('sprout_forms');
 
         $this->query->select([
-            'sprout_forms.submissionFieldLayoutConfig',
+            'sprout_forms.submissionFieldLayoutUid',
             'sprout_forms.name',
             'sprout_forms.handle',
             'sprout_forms.titleFormat',

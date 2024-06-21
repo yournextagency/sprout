@@ -9,7 +9,7 @@ use yii\db\ActiveQueryInterface;
 
 /**
  * @property int $id
- * @property string $submissionFieldLayoutConfig
+ * @property string $submissionFieldLayoutUid
  * @property string $name
  * @property string $handle
  * @property string $titleFormat

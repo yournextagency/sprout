@@ -25,6 +25,7 @@
     data-source-fields='{{ form.getSourceFields()|json_encode|raw }}'
 >
 
+    {{ hiddenInput('submissionFieldLayoutUid', form.submissionFieldLayoutUid) }}
     <input id="field-layout-settings" type="hidden" name="submissionFieldLayoutConfig" x-bind:value="FieldLayoutHelper.submissionFieldLayoutConfig">
 
     {# Tabs #}

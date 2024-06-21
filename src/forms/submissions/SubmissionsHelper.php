@@ -2,47 +2,150 @@
 
 namespace BarrelStrength\Sprout\forms\submissions;
 
-use BarrelStrength\Sprout\datastudio\datasources\DataSources;
-use BarrelStrength\Sprout\forms\components\datasources\SubmissionsDataSource;
-use BarrelStrength\Sprout\forms\components\notificationevents\SaveSubmissionNotificationEvent;
+use BarrelStrength\Sprout\forms\components\elements\FormElement;
+use BarrelStrength\Sprout\forms\components\elements\SubmissionElement;
+use BarrelStrength\Sprout\forms\formfields\CustomFormField;
+use BarrelStrength\Sprout\forms\forms\FormBuilderHelper;
 use BarrelStrength\Sprout\forms\forms\Forms;
 use BarrelStrength\Sprout\forms\FormsModule;
-use BarrelStrength\Sprout\transactional\notificationevents\NotificationEvents;
-use craft\events\RegisterComponentTypesEvent;
 use Craft;
+use craft\events\DefineBehaviorsEvent;
+use craft\helpers\ArrayHelper;
+use craft\helpers\StringHelper;
+use craft\models\FieldLayout;
+use craft\models\FieldLayoutTab;
 
 class SubmissionsHelper
 {
-    public static function getEnabledFormMetadataSettings(): array
+    public static function attachSubmissionElementFieldLayoutBehavior(DefineBehaviorsEvent $event): void
     {
-        $settings = FormsModule::getInstance()->getSettings();
-
-        foreach ($settings->formMetadata as $metadataSettings) {
-            if ($metadataSettings['enabled']) {
-                $enabledFormMetadata[$metadataSettings['label']] = $metadataSettings['metadatumFormat'];
-            }
+        if ($event->sender->type === SubmissionElement::class) {
+            $event->behaviors[SubmissionElementFieldLayoutBehavior::class] = SubmissionElementFieldLayoutBehavior::class;
         }
-
-        return $enabledFormMetadata ?? [];
     }
 
-    public static function setFormMetadataSessionVariable(int $formId): void
+    public static function getSubmissionFieldLayout(FormElement $form): FieldLayout|SubmissionElementFieldLayoutBehavior
     {
-        $enabledFormMetadata = self::getEnabledFormMetadataSettings();
+        $layout = null;
+
+        if ($form->submissionFieldLayoutUid) {
+            $layout = Craft::$app->getFields()->getLayoutByUid($form->submissionFieldLayoutUid);
+        }
+
+        if (!$layout) {
+            $layout = new FieldLayout([
+                'type' => SubmissionElement::class,
+            ]);
+
+            $layoutTab = new FieldLayoutTab();
+            $layoutTab->name = Craft::t('sprout-module-forms', 'Page');
+            $layoutTab->uid = StringHelper::UUID();
+            $layout->setTabs([$layoutTab]);
+
+            $layoutElements = $layoutTab->getElements();
+
+            $layoutTab->setElements($layoutElements);
+        }
+
+        $layout->provider = $form;
+
+        return $layout;
+    }
+
+    public static function getSubmissionFieldLayoutFromConfig(FormElement $form, array $config = null): FieldLayout|SubmissionElementFieldLayoutBehavior
+    {
+        $tabConfigs = ArrayHelper::remove($config, 'tabs');
+
+        $layout = new FieldLayout([
+                'type' => SubmissionElement::class,
+                'provider' => $form,
+                'uid' => $form->submissionFieldLayoutUid ?? StringHelper::UUID(),
+            ] + $config);
+
+        if (is_array($tabConfigs)) {
+            $layout->setTabs(array_values(array_map(
+                static fn(array $tabConfig) => self::createSubmissionFieldLayoutTabFromConfig($form, $layout, $tabConfig),
+                $tabConfigs,
+            )));
+        } else {
+            $layout->setTabs([]);
+        }
+
+        return $layout;
+    }
+
+    public static function createSubmissionFieldLayoutTabFromConfig(FormElement $form, FieldLayout $fieldLayout, array $tabConfig): FieldLayoutTab
+    {
+        $elementConfigs = ArrayHelper::remove($tabConfig, 'elements');
+
+        $tab = new FieldLayoutTab($tabConfig);
+        $tab->layout = $fieldLayout;
+
+        $fieldLayoutElements = [];
+
+        foreach ($elementConfigs as $layoutElementConfig) {
+            $field = Craft::$app->getFields()->getFieldByUid($layoutElementConfig['fieldUid'] ?? null);
+
+            if ($field === null) {
+                $fieldConfig = $layoutElementConfig['formField'] ?? null;
+
+                $fieldType = $fieldConfig['type'];
+                $fieldSettings = $fieldConfig['settings'] ?? [];
+
+                unset(
+                    $fieldConfig['type'],
+                    $fieldConfig['settings'],
+                );
+
+                $field = new $fieldType($fieldConfig);
+                $field->setAttributes($fieldSettings, false);
+                $field->context = 'sproutForms:' . $form->id;
+            }
+
+            unset($layoutElementConfig['formField']);
+
+            $fieldLayoutElement = new CustomFormField($field);
+            $fieldLayoutElement->layout = $fieldLayout;
+            $fieldLayoutElement->required = $layoutElementConfig['required'] === true;
+            $fieldLayoutElement->width = $layoutElementConfig['width'];
+            $fieldLayoutElement->uid = $layoutElementConfig['uid'];
+            $fieldLayoutElement->formField = FormBuilderHelper::getFormFieldData($field);
+
+            // only need to do this in the controller for the form builder?
+            //$fieldLayoutElement->formFieldUi =  FormBuilderHelper::getFormFieldUiData($field);
+
+            $fieldLayoutElements[] = $fieldLayoutElement;
+        }
+
+        $tab->setElements($fieldLayoutElements);
+
+        return $tab;
+    }
+
+    public static function setFormMetadataSessionVariable(FormElement $form): void
+    {
+        $settings = FormsModule::getInstance()->getSettings();
+        $formType = $form->getFormType();
+
+        $formMetadata = array_merge(
+            $settings->formMetadata,
+            $formType->formTypeMetadata
+        );
 
         $formMetadataValues = [];
-        foreach ($enabledFormMetadata as $key => $value) {
-            $formMetadataValues[$key] = Craft::$app->getView()->renderObjectTemplate(
-                $value,
+
+        foreach ($formMetadata as $formMetadatum) {
+            $formMetadataValues[$formMetadatum['label']] = Craft::$app->getView()->renderObjectTemplate(
+                $formMetadatum['metadatumFormat'],
                 Forms::getFormMetadataVariables()
             );
         }
 
-        Craft::$app->getSession()->set('formMetadata:' .$formId, $formMetadataValues);
+        Craft::$app->getSession()->set('formMetadata:' . $form->id, $formMetadataValues);
     }
 
     public static function getFormMetadataSessionVariable(int $formId): array
     {
-        return Craft::$app->getSession()->get('formMetadata:' .$formId) ?? [];
+        return Craft::$app->getSession()->get('formMetadata:' . $formId) ?? [];
     }
 }

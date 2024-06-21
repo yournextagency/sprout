@@ -10,9 +10,9 @@ use BarrelStrength\Sprout\forms\FormsModule;
 use Craft;
 use craft\elements\conditions\users\UserCondition;
 use craft\helpers\Html;
+use craft\helpers\Json;
 use craft\helpers\Template;
 use craft\web\Controller as BaseController;
-use craft\helpers\Json;
 use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
@@ -34,7 +34,7 @@ class FormBuilderController extends BaseController
         return $this->asJson([
             'success' => true,
             'formId' => $formId,
-            'layout' => $layout->getConfig(),
+            'layout' => $layout->getFormBuilderConfig(),
         ]);
     }
 
@@ -244,8 +244,8 @@ class FormBuilderController extends BaseController
 
     public function actionEditFormFieldSlideoutResponse(): Response
     {
-        $layoutElement =  $this->request->getBodyParam('layoutElement');
-        $layoutElement['required'] = $layoutElement['required']  === '1';
+        $layoutElement = $this->request->getBodyParam('layoutElement');
+        $layoutElement['required'] = $layoutElement['required'] === '1';
 
         // Return params and let JS update field model in layout
         return $this->asJson([

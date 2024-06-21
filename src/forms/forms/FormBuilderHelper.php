@@ -2,14 +2,11 @@
 
 namespace BarrelStrength\Sprout\forms\forms;
 
-use BarrelStrength\Sprout\forms\components\elements\SubmissionElement;
 use BarrelStrength\Sprout\forms\components\formfields\MissingFormField;
 use BarrelStrength\Sprout\forms\formfields\CustomFormField;
 use BarrelStrength\Sprout\forms\formfields\FormFieldInterface;
 use Craft;
 use craft\base\FieldInterface;
-use craft\base\FieldLayoutElement;
-use craft\helpers\ArrayHelper;
 use craft\helpers\Cp;
 use craft\helpers\StringHelper;
 use craft\models\FieldLayout;
@@ -24,43 +21,6 @@ class FormBuilderHelper
         }
 
         return $field ?? new MissingFormField();
-    }
-
-    public static function createSubmissionFieldLayoutFromConfig(array $config): FieldLayout
-    {
-        $tabConfigs = ArrayHelper::remove($config, 'tabs');
-        $layout = new FieldLayout($config);
-        $layout->type = SubmissionElement::class;
-
-        if (is_array($tabConfigs)) {
-            $layout->setTabs(array_values(array_map(
-                static fn(array $tabConfig) => self::createSubmissionFieldLayoutTabFromConfig($layout, ['layout' => $layout] + $tabConfig),
-                $tabConfigs,
-            )));
-        } else {
-            $layout->setTabs([]);
-        }
-
-        return $layout;
-    }
-
-    public static function appendFormFieldUiData(FieldLayout $layout): array
-    {
-        $tabs = $layout->getTabs();
-        $fieldLayoutElements = [];
-
-        foreach ($tabs as $tab) {
-            /** @var FieldLayoutElement $fieldLayoutElements */
-            $fieldLayoutElements = array_map(static function($fieldLayoutElement) {
-                $field = $fieldLayoutElement->getField();
-                $formFieldUiData = self::getFormFieldUiData($field);
-                $fieldLayoutElement->formFieldUi = $formFieldUiData;
-
-                return $fieldLayoutElement;
-            }, $tab->getElements());
-        }
-
-        return $fieldLayoutElements;
     }
 
     public static function createSubmissionFieldLayoutTabFromConfig(FieldLayout $fieldLayout, array $config): FieldLayoutTab
@@ -107,7 +67,7 @@ class FormBuilderHelper
             'name' => $field->name ?? $field::displayName(),
             'handle' => $field->handle, // Default created in JS
             'instructions' => $field->instructions,
-            'settings'  => $field->getSettings(),
+            'settings' => $field->getSettings(),
         ];
     }
 
