@@ -5,6 +5,8 @@ namespace BarrelStrength\Sprout\forms\formtypes;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
+use BarrelStrength\Sprout\uris\links\LinkInterface;
+use BarrelStrength\Sprout\uris\links\Links;
 use Craft;
 use craft\base\FieldLayoutProviderInterface;
 use craft\base\SavableComponent;
@@ -12,6 +14,53 @@ use craft\models\FieldLayout;
 
 abstract class FormType extends SavableComponent implements FormTypeInterface, FieldLayoutProviderInterface
 {
+    public function __construct($config = [])
+    {
+        //if (isset($config['redirectUrl'])) {
+        //    $config['redirectUrl'] = Links::toLinkField($config['redirectUrl']) ?: null;
+        //}
+
+        //if (isset($config['submissionMethod']) || $config['submissionMethod'] === null) {
+            unset($config['submissionMethod']);
+        //}
+        //if (isset($config['errorDisplayMethod']) || $config['errorDisplayMethod'] === null) {
+            unset($config['errorDisplayMethod']);
+        //}
+
+        parent::__construct($config);
+    }
+
+    public function setAttributes($values, $safeOnly = true): void
+    {
+        // @todo - How to clean this up and use across form types?
+        $redirectUrl = $values['redirectUrl'] ?? null;
+
+        if ($redirectUrl && !$redirectUrl instanceof LinkInterface) {
+            $type = $values['redirectUrl']['type'] ?? null;
+
+            if ($type !== null) {
+                if (isset($values['redirectUrl'][$type])) {
+                    // When saving form element page
+                    $attributes = array_merge(
+                        ['type' => $type],
+                        $values['redirectUrl'][$type] ?? []
+                    );
+                } else {
+                    // When loading Form Element page
+                    $attributes = $values['redirectUrl'];
+                }
+
+                $values['redirectUrl'] = Links::toLinkField($attributes) ?: null;
+            }
+        }
+
+        parent::setAttributes($values, $safeOnly);
+
+        // reindex keys to allow re-ordering
+        $this->formTypeMetadata = array_values($this->formTypeMetadata);
+    }
+
+    //  General
     public ?string $name = null;
 
     public ?string $handle = null;
@@ -140,6 +189,7 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
 
     public function getConfig(): array
     {
+        ;
         $config = [
             'type' => static::class,
             'name' => $this->name,
@@ -152,6 +202,7 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
             'allowedAssetVolumes' => $this->allowedAssetVolumes,
             'defaultUploadLocationSubpath' => $this->defaultUploadLocationSubpath,
             'formTypeMetadata' => $this->formTypeMetadata,
+            'customSettings' => $this->getSettings(),
         ];
 
         $fieldLayout = $this->getFieldLayout();

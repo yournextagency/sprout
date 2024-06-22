@@ -16,24 +16,6 @@ class FormElementQuery extends ElementQuery
 
     public ?string $formTypeUid = null;
 
-    //    public string $titleFormat;
-    //
-    //    public bool $displaySectionTitles = false;
-    //
-    //    public string $redirectUri;
-    //
-    //    public string $submissionMethod;
-    //
-    //    public string $errorDisplayMethod;
-    //
-    //    public string $messageOnSuccess;
-    //
-    //    public string $messageOnError;
-    //
-    //    public string $submitButtonText;
-    //
-    //    public bool $enableCaptchas = false;
-
     public int $totalSubmissions = 0;
 
     //public int $numberOfFields = 0;

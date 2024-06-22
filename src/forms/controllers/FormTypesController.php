@@ -4,14 +4,20 @@ namespace BarrelStrength\Sprout\forms\controllers;
 
 use BarrelStrength\Sprout\core\helpers\ComponentHelper;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
+use BarrelStrength\Sprout\forms\components\elements\SubmissionElement;
 use BarrelStrength\Sprout\forms\components\events\DefineFormFeatureSettingsEvent;
+use BarrelStrength\Sprout\forms\formfields\CustomFormField;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
 use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
 use Craft;
+use craft\base\FieldLayoutElement;
+use craft\db\Query;
+use craft\fieldlayoutelements\CustomField;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
+use craft\models\FieldLayout;
 use craft\web\assets\userpermissions\UserPermissionsAsset;
 use craft\web\Controller;
 use yii\web\Response;
@@ -148,13 +154,13 @@ class FormTypesController extends Controller
         $formType->featureSettings = Craft::$app->getRequest()->getBodyParam('featureSettings');
         $formType->enabledFormFieldTypes = Craft::$app->getRequest()->getBodyParam('enabledFormFieldTypes');
 
-        $formType->submissionMethod = Craft::$app->getRequest()->getBodyParam('submissionMethod');
-        $formType->errorDisplayMethod = Craft::$app->getRequest()->getBodyParam('errorDisplayMethod');
         $formType->enableSaveData = Craft::$app->getRequest()->getBodyParam('enableSaveData');
-
         $formType->allowedAssetVolumes = Craft::$app->getRequest()->getBodyParam('allowedAssetVolumes');
         $formType->defaultUploadLocationSubpath = Craft::$app->getRequest()->getBodyParam('defaultUploadLocationSubpath');
         $formType->enableEditSubmissionViaFrontEnd = Craft::$app->getRequest()->getBodyParam('enableEditSubmissionViaFrontEnd');
+
+        $customSettings = Craft::$app->getRequest()->getBodyParam('customSettings', []);
+        $formType->setAttributes($customSettings, false);
 
         $formType->customTemplatesFolder = Craft::$app->getRequest()->getBodyParam('customTemplatesFolder');
 

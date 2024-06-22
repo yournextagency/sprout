@@ -132,10 +132,7 @@ class FormElement extends Element implements FieldLayoutProviderInterface
         }
 
         $formType = FormTypeHelper::getFormTypeByUid($this->formTypeUid);
-
-        if (!$formType) {
-            $formType = FormTypeHelper::getDefaultFormType();
-        }
+        $formType?->setAttributes($this->formTypeSettings, false);
 
         if (!$formType) {
             throw new MissingComponentException('No Form Type found.');
@@ -443,7 +440,7 @@ class FormElement extends Element implements FieldLayoutProviderInterface
             $record->formTypeUid = $this->formTypeUid;
 
             $formType = $this->getFormType();
-            $record->formTypeSettings = $formType->prepareFormTypeSettingsForDb($this->formTypeSettings);
+            $record->formTypeSettings = $formType->getSettings();
 
             if ($this->duplicateOf) {
                 $record->name = $this->name . ' - ' . Craft::t('sprout-module-forms', 'Copy');
@@ -459,8 +456,8 @@ class FormElement extends Element implements FieldLayoutProviderInterface
             $oldSubmissionFieldLayout = $this->getSubmissionFieldLayout();
             $oldCustomFieldsByUid = $oldSubmissionFieldLayout->getCustomFieldsByUid();
 
-            $newSubmissionFieldLayoutConfig = Json::decode($this->getSubmissionFieldLayoutConfig());
-            $newSubmissionFieldLayout = SubmissionsHelper::getSubmissionFieldLayoutFromConfig($this, $newSubmissionFieldLayoutConfig);
+            $newSubmissionFieldLayoutConfig = $this->getSubmissionFieldLayoutConfig();
+            $newSubmissionFieldLayout = $this->getSubmissionFieldLayout($newSubmissionFieldLayoutConfig);
             $newCustomFieldsByUid = $newSubmissionFieldLayout->getCustomFieldsByUid();
 
             $newFieldsToCreate = array_diff_key($newCustomFieldsByUid, $oldCustomFieldsByUid);
@@ -522,7 +519,7 @@ class FormElement extends Element implements FieldLayoutProviderInterface
             return null;
         }
 
-        $layout = Json::decodeIfJson($this->getSubmissionFieldLayoutConfig());
+        $layout = $this->getSubmissionFieldLayoutConfig();
 
         if (!$layout) {
             return null;
@@ -739,18 +736,15 @@ class FormElement extends Element implements FieldLayoutProviderInterface
                 $field = $formFields[$type];
                 unset($formFields[$type]);
 
-                $fieldData['formField'] = FormBuilderHelper::getFormFieldData($field);
-                $fieldData['formFieldUi'] = FormBuilderHelper::getFormFieldUiData($field);
-                $fieldData['groupName'] = $groupName; // Form Field Sidebar UI specific
-                $sourceFields[] = $fieldData;
+                $sourceFields[] = $field->getFormBuilderSourceFieldData();
             }
         }
 
         // if we have more fields add them to the group 'custom'
         if (count($formFields) > 0) {
             foreach ($formFields as $formField) {
-                $fieldData['formField'] = FormBuilderHelper::getFormFieldData($formField);
-                $fieldData['formFieldUi'] = FormBuilderHelper::getFormFieldUiData($formField);
+                $fieldData = $field->getFormBuilderSourceFieldData();
+                // Ensure all custom fields are grouped together
                 $fieldData['groupName'] = Craft::t('sprout-module-forms', 'Custom');
                 $sourceFields[] = $fieldData;
             }
@@ -832,10 +826,6 @@ class FormElement extends Element implements FieldLayoutProviderInterface
             $this->title = $config['name'];
         }
 
-        if (isset($config['redirectUri'])) {
-            $config['redirectUri'] = Links::toLinkField($config['redirectUri']) ?: null;
-        }
-
         if (isset($config['submissionFieldLayoutConfig'])) {
             $this->setSubmissionFieldLayoutConfig($config['submissionFieldLayoutConfig']);
             unset($config['submissionFieldLayoutConfig']);
@@ -844,34 +834,14 @@ class FormElement extends Element implements FieldLayoutProviderInterface
         parent::__construct($config);
     }
 
-    public function setAttributes($values, $safeOnly = true): void
-    {
-        $redirectUri = $values['redirectUri'] ?? null;
-
-        if (!$redirectUri instanceof LinkInterface) {
-            $type = $values['redirectUri']['type'] ?? null;
-
-            if ($type !== null) {
-                $attributes = array_merge(
-                    ['type' => $type],
-                    $values['redirectUri'][$type] ?? []
-                );
-
-                $values['redirectUri'] = Links::toLinkField($attributes) ?: null;
-            }
-        }
-
-        parent::setAttributes($values, $safeOnly);
-    }
-
     public function setSubmissionFieldLayoutConfig(string $value): void
     {
         $this->submissionFieldLayoutConfig = $value;
     }
 
-    public function getSubmissionFieldLayoutConfig(): ?string
+    public function getSubmissionFieldLayoutConfig(): array
     {
-        return $this->submissionFieldLayoutConfig;
+        return Json::decodeIfJson($this->submissionFieldLayoutConfig) ?? [];
     }
 
     public function render(array $variables = []): Markup

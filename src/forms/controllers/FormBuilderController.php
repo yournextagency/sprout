@@ -29,8 +29,6 @@ class FormBuilderController extends BaseController
         $form = Craft::$app->getElements()->getElementById($formId, FormElement::class);
         $layout = $form->getSubmissionFieldLayout();
 
-        FormBuilderHelper::appendFormFieldUiData($layout);
-
         return $this->asJson([
             'success' => true,
             'formId' => $formId,

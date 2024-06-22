@@ -162,7 +162,7 @@ class OptimizeMetadata extends Component
     {
         $elementMetadataAttributes = [];
 
-        if ($this->element !== null) {
+        if ($this->element) {
             $elementMetadataAttributes = MetaModule::getInstance()->elementMetadata->getRawMetadataFromElement($this->element);
         }
 

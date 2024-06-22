@@ -52,7 +52,7 @@ class SubmissionsHelper
         return $layout;
     }
 
-    public static function getSubmissionFieldLayoutFromConfig(FormElement $form, array $config = null): FieldLayout|SubmissionElementFieldLayoutBehavior
+    public static function getSubmissionFieldLayoutFromConfig(FormElement $form, array $config = []): FieldLayout|SubmissionElementFieldLayoutBehavior
     {
         $tabConfigs = ArrayHelper::remove($config, 'tabs');
 
@@ -102,6 +102,10 @@ class SubmissionsHelper
                 $field->context = 'sproutForms:' . $form->id;
             }
 
+            $label = $layoutElementConfig['formField']['name'] ?? null;
+            $instructions = $layoutElementConfig['formField']['instructions'] ?? null;
+            $handle = $layoutElementConfig['formField']['handle'] ?? null;
+
             unset($layoutElementConfig['formField']);
 
             $fieldLayoutElement = new CustomFormField($field);
@@ -109,10 +113,9 @@ class SubmissionsHelper
             $fieldLayoutElement->required = $layoutElementConfig['required'] === true;
             $fieldLayoutElement->width = $layoutElementConfig['width'];
             $fieldLayoutElement->uid = $layoutElementConfig['uid'];
-            $fieldLayoutElement->formField = FormBuilderHelper::getFormFieldData($field);
-
-            // only need to do this in the controller for the form builder?
-            //$fieldLayoutElement->formFieldUi =  FormBuilderHelper::getFormFieldUiData($field);
+            $fieldLayoutElement->label = $label;
+            $fieldLayoutElement->instructions = $instructions;
+            $fieldLayoutElement->handle = $handle;
 
             $fieldLayoutElements[] = $fieldLayoutElement;
         }

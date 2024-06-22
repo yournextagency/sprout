@@ -42,8 +42,8 @@
                 url: '#behavior'
             },
             formFieldLayout: {
-                label: 'Template Fields'|t('sprout-module-forms'),
-                url: '#fields'
+                label: 'Templates'|t('sprout-module-forms'),
+                url: '#form-templates'
             },
         } %}
         {% include "_includes/tabs" with {
@@ -331,7 +331,13 @@
 
     </div>
 
-    <div id="fields" class="hidden">
+    <div id="form-templates" class="hidden">
+
+        {% namespace 'customSettings' %}
+            {{ formType.getSettingsHtml()|raw }}
+            <hr>
+        {% endnamespace %}
+
         {% set fieldLayoutInstructions = "The content fields that can be used in this form type."|t('sprout-module-forms') %}
 
         {{ forms.fieldLayoutDesignerField({

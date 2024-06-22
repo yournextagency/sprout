@@ -9,6 +9,8 @@ use BarrelStrength\Sprout\forms\components\formtypes\fieldlayoutelements\Redirec
 use BarrelStrength\Sprout\forms\components\formtypes\fieldlayoutelements\SubmitButtonField;
 use BarrelStrength\Sprout\forms\components\formtypes\fieldlayoutelements\SuccessMessageField;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
+use BarrelStrength\Sprout\uris\links\LinkInterface;
+use BarrelStrength\Sprout\uris\links\Links;
 use Craft;
 use craft\events\DefineFieldLayoutFieldsEvent;
 use craft\fieldlayoutelements\HorizontalRule;
@@ -18,6 +20,28 @@ use craft\models\FieldLayoutTab;
 
 class DefaultFormType extends FormType
 {
+    public string $submitButtonText = '';
+
+    public ?LinkInterface $redirectUrl = null;
+
+    public string $messageOnSuccess = '';
+
+    public string $messageOnError = '';
+
+    // @todo - Maybe make this a global setting that allows the setting to be toggled on/off
+    // Form Type Globally: Allow user to enable/disable section titles?
+    // Maybe also for captchas...
+    public bool $displaySectionTitles = false;
+
+    public ?string $submissionMethod = 'sync';
+
+    public ?string $errorDisplayMethod = 'inline';
+
+    public function getRedirectUrl(): ?LinkInterface
+    {
+        return Links::toLinkField($this->redirectUrl) ?: null;
+    }
+
     public static function displayName(): string
     {
         return Craft::t('sprout-module-forms', 'Default Templates');
@@ -62,21 +86,15 @@ class DefaultFormType extends FormType
         ]);
 
         $fieldLayoutTab->setElements([
-            new SubmitButtonField([
-                'mandatory' => true,
-            ]),
+            new SubmitButtonField(),
             new RedirectUrlField([
                 'mandatory' => true,
             ]),
             new HorizontalRule([
                 'uid' => 'SPROUT-UID-FORMS-HORIZONTAL-RULE-SUBJECT-CONTENT-1',
             ]),
-            new SuccessMessageField([
-                'mandatory' => true,
-            ]),
-            new ErrorMessageField([
-                'mandatory' => true,
-            ]),
+            new SuccessMessageField(),
+            new ErrorMessageField(),
             new HorizontalRule([
                 'uid' => 'SPROUT-UID-FORMS-HORIZONTAL-RULE-SUBJECT-CONTENT-2',
             ]),
@@ -93,5 +111,29 @@ class DefaultFormType extends FormType
         ]);
 
         return $this->_fieldLayout = $fieldLayout;
+    }
+
+    public function getSettingsHtml(): ?string
+    {
+        return Craft::$app->getView()->renderTemplate('sprout-module-forms/_components/formtypes/default/settings', [
+            'formType' => $this,
+        ]);
+    }
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        //$rules[] = [
+        //    ['redirectUrl'], function($attribute) {
+        //        /** @var AbstractLink $link */
+        //        $link = $this->$attribute;
+        //        if ($link && !$link->validate()) {
+        //            $this->addError($attribute, $link->getErrorSummary(true)[0]);
+        //        }
+        //    },
+        //];
+
+        return $rules;
     }
 }

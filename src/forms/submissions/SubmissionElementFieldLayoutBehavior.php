@@ -18,12 +18,12 @@ class SubmissionElementFieldLayoutBehavior extends Behavior
 {
     public function getFormBuilderConfig(): array
     {
-        $layout = self::appendFormFieldUiData($this->owner);
+        $layout = self::populateFormBuilderAttributes($this->owner);
 
         return $layout->getConfig();
     }
 
-    public static function appendFormFieldUiData(FieldLayout $layout): FieldLayout
+    public static function populateFormBuilderAttributes(FieldLayout $layout): FieldLayout
     {
         $tabs = $layout->getTabs();
 
@@ -31,6 +31,10 @@ class SubmissionElementFieldLayoutBehavior extends Behavior
             /** @var FieldLayoutElement $fieldLayoutElements */
             array_map(static function($fieldLayoutElement) {
                 $field = $fieldLayoutElement->getField();
+
+                $formFieldData = FormBuilderHelper::getFormFieldData($field);
+                $fieldLayoutElement->formField = $formFieldData;
+
                 $formFieldUiData = FormBuilderHelper::getFormFieldUiData($field);
                 $fieldLayoutElement->formFieldUi = $formFieldUiData;
 

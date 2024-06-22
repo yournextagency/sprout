@@ -87,14 +87,16 @@ class FormTypeHelper
             'customTemplatesFolder' => $formTypeSettings['customTemplatesFolder'] ?? null,
             'featureSettings' => $formTypeSettings['featureSettings'] ?? null,
             'enabledFormFieldTypes' => $formTypeSettings['enabledFormFieldTypes'] ?? null,
-            'submissionMethod' => $formTypeSettings['submissionMethod'] ?? null,
-            'errorDisplayMethod' => $formTypeSettings['errorDisplayMethod'] ?? null,
+            'enableEditSubmissionViaFrontEnd' => $formTypeSettings['enableEditSubmissionViaFrontEnd'] ?? null,
             'enableSaveData' => $formTypeSettings['enableSaveData'] ?? true,
             'allowedAssetVolumes' => $formTypeSettings['allowedAssetVolumes'] ?? [],
             'defaultUploadLocationSubpath' => $formTypeSettings['defaultUploadLocationSubpath'] ?? null,
-            'enableEditSubmissionViaFrontEnd' => $formTypeSettings['enableEditSubmissionViaFrontEnd'] ?? null,
+
             'uid' => $uid ?? StringHelper::UUID(),
         ]);
+
+        $customSettings = $formTypeSettings['customSettings'] ?? [];
+        $formType->setAttributes($customSettings, false);
 
         if (isset($formTypeSettings['fieldLayouts'])) {
             $config = reset($formTypeSettings['fieldLayouts']);

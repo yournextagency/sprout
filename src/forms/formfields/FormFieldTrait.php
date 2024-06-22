@@ -3,6 +3,7 @@
 namespace BarrelStrength\Sprout\forms\formfields;
 
 use BarrelStrength\Sprout\forms\components\elements\SubmissionElement;
+use BarrelStrength\Sprout\forms\forms\FormBuilderHelper;
 use BarrelStrength\Sprout\forms\forms\RenderingOptionsHelper;
 use BarrelStrength\Sprout\forms\FormsModule;
 use Craft;
@@ -120,6 +121,19 @@ trait FormFieldTrait
         $fieldClassReflection = new ReflectionClass($this);
 
         return strtolower($fieldClassReflection->getShortName());
+    }
+
+
+    public function getFormBuilderSourceFieldData(): array
+    {
+        $fieldData['formField'] = FormBuilderHelper::getFormFieldData($this);
+        $fieldData['formFieldUi'] = FormBuilderHelper::getFormFieldUiData($this);
+        $fieldData['groupName'] = self::getGroupLabel();
+        return [
+            'groupName' => self::getGroupLabel(),
+            'formField' => $fieldData['formField'],
+            'formFieldUi' => $fieldData['formFieldUi'],
+        ];
     }
 
     public function getRenderingOptions($renderingOptions = []): array

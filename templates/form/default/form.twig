@@ -10,12 +10,13 @@
 {%- set renderingOptions = renderingOptions is defined and renderingOptions is not empty ? renderingOptions : {} -%}
 {%- set submission = sprout.modules.forms.submissions.getSubmission(form) -%}
 {%- set lastSubmission = sprout.forms.lastSubmission(form.id) -%}
-{%- set globalErrorsEnabled = form.errorDisplayMethod in ['both', 'global'] ? true : false -%}
+{%- set globalErrorsEnabled = form.formType.errorDisplayMethod in ['both', 'global'] ? true : false -%}
+{%- set globalErrorsEnabled = false -%}
 {%- set errors = submission.getErrors()|length ? submission.getErrors() : false -%}
 {%- set errorClass = renderingOptions.errorClass is defined ? renderingOptions.errorClass : 'errors' -%}
 {%- set id = renderingOptions.id is defined ? renderingOptions.id : form.handle ~ '-form' -%}
 {%- set class = renderingOptions.class is defined ? renderingOptions.class : form.handle ~ '-form' -%}
-{%- set redirectUri = form.redirectUri.getUrl() -%}
+{%- set redirectUri = form.formType.redirectUrl.getUrl() -%}
 {#{%- set rules = form.getRules() -%}#}
 
 {%- set globalErrorListHtml -%}
@@ -34,7 +35,8 @@
     method="post"
     accept-charset="utf-8"
     enctype="multipart/form-data"
-    data-submission-method="{{ form.submissionMethod }}"
+    data-submission-method="{{ form.formType.submissionMethod }}"
+    data-submission-method="sync"
     data-label="{{ id }}"
     {%- if id %} id="{{ id }}"{% endif -%}
     {%- if class %} class="{{ class -}}{%- if errors %} {{ errorClass }}{% endif -%}"{% endif -%}
@@ -52,8 +54,8 @@
         <input type="hidden" aria-hidden="true" name="redirect" value="{{ redirectUri|hash }}">
     {% endif %}
 
-    {% if globalErrorsEnabled and errors|length and (form.messageOnError or globalErrorListHtml) %}
-        {% set errorMessage = view.renderObjectTemplate(form.messageOnError, submission) %}
+    {% if globalErrorsEnabled and errors|length and (form.formType.messageOnError or globalErrorListHtml) %}
+        {% set errorMessage = view.renderObjectTemplate(form.formType.messageOnError, submission) %}
         {# REMOVED: id="{{ id }}-message-box" class="sproutforms-message-errors" #}
         <div data-label="{{ id }}-message-box" data-description="error-message">
             {{ errorMessage|markdown }}
@@ -61,8 +63,8 @@
         </div>
     {% endif %}
 
-    {% if lastSubmission and form.id == lastSubmission.getForm().id and form.messageOnSuccess %}
-        {% set successMessageTemplate = form.messageOnSuccess ?? '' %}
+    {% if lastSubmission and form.id == lastSubmission.getForm().id and form.formType.messageOnSuccess %}
+        {% set successMessageTemplate = form.formType.messageOnSuccess ?? '' %}
         {% set successMessage = view.renderObjectTemplate(successMessageTemplate, lastSubmission) %}
         {# REMOVED: id="{{ id }}-message-box" class="sproutforms-message-errors" #}
         <div data-label="{{ id }}-message-box" data-description="success-message">
@@ -84,7 +86,7 @@
     {{ form.getCaptchaHtml()|raw }}
 
     <div data-label="form-submit">
-        <button type="submit">{{ form.submitButtonText is not empty ? form.submitButtonText : 'Submit'|t('site') }}</button>
+        <button type="submit">{{ form.formType.submitButtonText is not empty ? form.formType.submitButtonText : 'Submit'|t('site') }}</button>
     </div>
 </form>
 

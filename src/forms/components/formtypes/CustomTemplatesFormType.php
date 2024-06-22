@@ -37,8 +37,8 @@ class CustomTemplatesFormType extends FormType
         $fieldLayout = $event->sender;
 
         if ($fieldLayout->type === self::class) {
-            $event->fields[] = RedirectUrlField::class;
-            $event->fields[] = EnableCaptchasField::class;
+            $event->fields[RedirectUrlField::class] = RedirectUrlField::class;
+            $event->fields[EnableCaptchasField::class] = EnableCaptchasField::class;
         }
     }
 

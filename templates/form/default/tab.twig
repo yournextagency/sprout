@@ -2,7 +2,7 @@
 
 <section data-label="form-tab">
 
-    {% if form.displaySectionTitles -%}
+    {% if form.formType.displaySectionTitles -%}
         <h3>{{ tab.name }}</h3>
     {%- endif %}
 
@@ -14,7 +14,8 @@
         {%- set required = layoutElement.required -%}
         {%- set value = submission is not empty ? submission.getFieldValue(name) : null -%}
         {%- set errors = submission is not empty ? submission.getErrors(name) : null -%}
-        {%- set inlineErrorsEnabled = form.errorDisplayMethod in ['both', 'inline'] ? true : false -%}
+        {%- set inlineErrorsEnabled = form.formType.errorDisplayMethod in ['both', 'inline'] ? true : false -%}
+        {%- set inlineErrorsEnabled = true -%}
 
         {%- set fieldNamespace = field.getNamespace() ?? null %}
         {%- set fieldRenderingOptions = field.getRenderingOptions(renderingOptions.fields.container ?? []) %}

@@ -26,4 +26,9 @@ class RedirectUrlField extends EnhancedLinkField
     {
         return 'sign-post';
     }
+
+    protected function value(?ElementInterface $element = null): mixed
+    {
+        return $element?->getFormType()?->getRedirectUrl();
+    }
 }

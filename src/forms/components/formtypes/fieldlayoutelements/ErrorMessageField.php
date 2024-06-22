@@ -35,4 +35,9 @@ class ErrorMessageField extends TextareaField
     {
         return 'triangle-exclamation';
     }
+
+    protected function value(?ElementInterface $element = null): mixed
+    {
+        return $element?->getFormType()?->messageOnError;
+    }
 }

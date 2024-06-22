@@ -154,9 +154,10 @@ class SubmissionsController extends BaseController
             return $this->redirectWithValidationErrors($submission);
         }
 
-        if ($this->form->submissionMethod === SubmissionMethod::SYNC) {
-            $this->createLastSubmissionId($submission);
-        }
+        // @todo - review if this should be removed and handled just by default form type
+        //if ($this->form->getFormType()->submissionMethod === SubmissionMethod::SYNC) {
+        //    $this->createLastSubmissionId($submission);
+        //}
 
         $successMessageTemplate = $submission->getForm()->messageOnSuccess ?? '';
         $successMessage = Craft::$app->getView()->renderObjectTemplate($successMessageTemplate, $submission);

@@ -36,4 +36,9 @@ class SuccessMessageField extends TextareaField
     {
         return 'thumbs-up';
     }
+
+    protected function value(?ElementInterface $element = null): mixed
+    {
+        return $element?->getFormType()?->messageOnSuccess;
+    }
 }

@@ -31,4 +31,9 @@ class SubmitButtonField extends TextField
     {
         return 'flag-checkered';
     }
+
+    protected function value(?ElementInterface $element = null): mixed
+    {
+        return $element?->getFormType()?->submitButtonText;
+    }
 }
