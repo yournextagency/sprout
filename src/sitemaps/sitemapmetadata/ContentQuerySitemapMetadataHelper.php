@@ -36,7 +36,7 @@ class ContentQuerySitemapMetadataHelper
 
     public static function getContentQueryXmlSitemapMetadata(Site $site): array
     {
-        $contentQuerySitemapMetadata = SitemapMetadataRecord::find()
+        return SitemapMetadataRecord::find()
             ->where([
                 '[[sourceKey]]' => SitemapKey::CONTENT_QUERY,
                 '[[siteId]]' => $site->id,
@@ -44,14 +44,6 @@ class ContentQuerySitemapMetadataHelper
             ])
             ->indexBy('uid')
             ->all();
-
-        $sitemapMetadata = [];
-
-        foreach ($contentQuerySitemapMetadata as $uid => $metadata) {
-            $sitemapMetadata[$uid] = new SitemapMetadataRecord($metadata);
-        }
-
-        return $sitemapMetadata;
     }
 
     public static function getContentQuerySitemapMetadata(Site $site): array
