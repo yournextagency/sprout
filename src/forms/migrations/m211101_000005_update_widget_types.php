@@ -5,6 +5,11 @@ namespace BarrelStrength\Sprout\forms\migrations;
 use craft\db\Migration;
 use craft\db\Table;
 
+/**
+ * @role temporary: Craft 4 => 5
+ * @schema sprout-module-forms
+ * @deprecated Remove in craftcms/cms:6.0
+ */
 class m211101_000005_update_widget_types extends Migration
 {
     public function safeUp(): void

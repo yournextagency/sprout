@@ -6,6 +6,11 @@ use Craft;
 use craft\db\Migration;
 use craft\db\Table;
 
+/**
+ * @role permanent
+ * @schema sprout-module-sent-email
+ * @since 4.0.0
+ */
 class m211101_000000_run_install_migration extends Migration
 {
     public const SPROUT_KEY = 'sprout';

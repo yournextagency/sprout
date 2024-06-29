@@ -5,6 +5,11 @@ namespace BarrelStrength\Sprout\forms\migrations;
 use craft\db\Migration;
 use craft\helpers\Db;
 
+/**
+ * @role temporary: Craft 4 => 5
+ * @schema sprout-module-forms
+ * @deprecated Remove in craftcms/cms:6.0
+ */
 class m211101_000000_prep_addresses_table_migration extends Migration
 {
     public const OLD_ADDRESSES_TABLE = '{{%sprout_addresses}}';

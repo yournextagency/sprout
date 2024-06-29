@@ -7,6 +7,11 @@ use craft\db\Query;
 use craft\migrations\BaseContentRefactorMigration;
 use craft\models\FieldLayout;
 
+/**
+ * @role temporary: Craft 4 => 5
+ * @schema sprout-module-data-studio
+ * @deprecated Remove in craftcms/cms:6.0
+ */
 class m240527_000000_content_refactor extends BaseContentRefactorMigration
 {
     public const DATASETS_TABLE = '{{%sprout_datasets}}';

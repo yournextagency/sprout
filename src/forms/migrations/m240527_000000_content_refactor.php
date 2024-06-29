@@ -7,6 +7,11 @@ use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
 use craft\db\Query;
 use craft\migrations\BaseContentRefactorMigration;
 
+/**
+ * @role temporary: Craft 4 => 5
+ * @schema sprout-module-forms
+ * @deprecated Remove in craftcms/cms:6.0
+ */
 class m240527_000000_content_refactor extends BaseContentRefactorMigration
 {
     public const FORMS_TABLE = '{{%sprout_forms}}';

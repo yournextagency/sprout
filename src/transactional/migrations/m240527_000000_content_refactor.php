@@ -3,11 +3,14 @@
 namespace BarrelStrength\Sprout\transactional\migrations;
 
 use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
-use Craft;
 use craft\db\Query;
 use craft\migrations\BaseContentRefactorMigration;
-use craft\models\FieldLayout;
 
+/**
+ * @role temporary: Craft 4 -> 5
+ * @schema sprout-module-core
+ * @deprecated Remove in craftcms/cms:6.0
+ */
 class m240527_000000_content_refactor extends BaseContentRefactorMigration
 {
     public const EMAILS_TABLE = '{{%sprout_emails}}';
@@ -25,7 +28,6 @@ class m240527_000000_content_refactor extends BaseContentRefactorMigration
                 $emailType->getFieldLayout(),
             );
         }
-
     }
 
     public function safeDown(): bool

@@ -4,6 +4,11 @@ namespace BarrelStrength\Sprout\core\migrations;
 
 use craft\db\Migration;
 
+/**
+ * @role permanent
+ * @schema sprout-module-core
+ * @since 4.0.0
+ */
 class m221014_000002_run_install_migration extends Migration
 {
     public const SETTINGS_TABLE = '{{%sprout_settings}}';

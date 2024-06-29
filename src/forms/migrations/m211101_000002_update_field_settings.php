@@ -10,6 +10,11 @@ use craft\db\Query;
 use craft\db\Table;
 use craft\helpers\Json;
 
+/**
+ * @role temporary: Craft 4 => 5
+ * @schema sprout-module-forms
+ * @deprecated Remove in craftcms/cms:6.0
+ */
 class m211101_000002_update_field_settings extends Migration
 {
     public function safeUp(): void

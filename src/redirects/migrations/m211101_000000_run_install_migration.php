@@ -9,6 +9,11 @@ use craft\db\Table;
 use craft\errors\ElementNotFoundException;
 use craft\records\Structure;
 
+/**
+ * @role permanent
+ * @schema sprout-module-redirects
+ * @since 4.0.0
+ */
 class m211101_000000_run_install_migration extends Migration
 {
     public const SPROUT_KEY = 'sprout';

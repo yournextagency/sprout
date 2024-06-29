@@ -4,6 +4,11 @@ namespace BarrelStrength\Sprout\forms\migrations;
 
 use craft\db\Migration;
 
+/**
+ * @role temporary: Craft 4 => 5
+ * @schema sprout-module-forms
+ * @deprecated Remove in craftcms/cms:6.0
+ */
 class m211101_000003_update_field_types extends Migration
 {
     public function safeUp(): void

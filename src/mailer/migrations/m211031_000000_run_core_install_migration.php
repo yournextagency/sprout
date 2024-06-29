@@ -5,6 +5,11 @@ namespace BarrelStrength\Sprout\mailer\migrations;
 use BarrelStrength\Sprout\core\Sprout;
 use craft\db\Migration;
 
+/**
+ * @role permanent
+ * @schema sprout-module-core
+ * @since 4.0.0
+ */
 class m211031_000000_run_core_install_migration extends Migration
 {
     public function safeUp(): void

@@ -18,8 +18,9 @@ use craft\models\FieldLayout;
 use craft\models\FieldLayoutTab;
 
 /**
- * This migration must come after the Reports migration as
- * we need to insert default data source settings
+ * @role temporary: Craft 4 => 5
+ * @schema sprout-module-forms
+ * @deprecated Remove in craftcms/cms:6.0
  */
 class m211101_000007_migrate_forms_tables extends Migration
 {

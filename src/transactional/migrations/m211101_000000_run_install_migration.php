@@ -9,6 +9,11 @@ use BarrelStrength\Sprout\mailer\migrations\helpers\MailerSchemaHelper;
 use Craft;
 use craft\db\Migration;
 
+/**
+ * @role permanent
+ * @schema sprout-module-transactional
+ * @since 4.0.0
+ */
 class m211101_000000_run_install_migration extends Migration
 {
     public const SPROUT_KEY = 'sprout';

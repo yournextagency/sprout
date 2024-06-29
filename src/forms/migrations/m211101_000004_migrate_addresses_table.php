@@ -6,6 +6,11 @@ use Craft;
 use craft\db\Migration;
 use craft\db\Query;
 
+/**
+ * @role temporary: Craft 4 => 5
+ * @schema sprout-module-forms
+ * @deprecated Remove in craftcms/cms:6.0
+ */
 class m211101_000004_migrate_addresses_table extends Migration
 {
     public const OLD_ADDRESSES_TABLE = '{{%sprout_addresses}}';
