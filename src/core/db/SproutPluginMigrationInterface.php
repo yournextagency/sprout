@@ -5,7 +5,6 @@ namespace BarrelStrength\Sprout\core\db;
 use craft\base\Plugin;
 use craft\base\PluginInterface;
 use craft\db\MigrationManager;
-use yii\base\Module;
 
 /**
  * Sprout Plugins using modules with schema must implement this interface

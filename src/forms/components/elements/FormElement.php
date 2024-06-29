@@ -12,7 +12,6 @@ use BarrelStrength\Sprout\forms\components\events\RegisterFormFeatureTabsEvent;
 use BarrelStrength\Sprout\forms\components\formtypes\DefaultFormType;
 use BarrelStrength\Sprout\forms\components\notificationevents\SaveSubmissionNotificationEvent;
 use BarrelStrength\Sprout\forms\db\SproutTable;
-use BarrelStrength\Sprout\forms\forms\FormBuilderHelper;
 use BarrelStrength\Sprout\forms\forms\FormRecord;
 use BarrelStrength\Sprout\forms\FormsModule;
 use BarrelStrength\Sprout\forms\formtypes\FormType;
@@ -20,8 +19,6 @@ use BarrelStrength\Sprout\forms\formtypes\FormTypeHelper;
 use BarrelStrength\Sprout\forms\submissions\SubmissionElementFieldLayoutBehavior;
 use BarrelStrength\Sprout\forms\submissions\SubmissionsHelper;
 use BarrelStrength\Sprout\transactional\components\elements\TransactionalEmailElement;
-use BarrelStrength\Sprout\uris\links\LinkInterface;
-use BarrelStrength\Sprout\uris\links\Links;
 use Craft;
 use craft\base\Element;
 use craft\base\Field;
@@ -446,7 +443,7 @@ class FormElement extends Element implements FieldLayoutProviderInterface
                 $record->name = $this->name . ' - ' . Craft::t('sprout-module-forms', 'Copy');
                 $record->handle = StringHelper::toHandle($this->name) . '_' . StringHelper::randomString(6);
 
-                // @todo - Duplicate field layout and fields (since they are independent per form)
+            // @todo - Duplicate field layout and fields (since they are independent per form)
                 // update all fieldLayoutElement uids and fieldUids to match update
                 //$record->submissionFieldLayoutConfig = $this->duplicateSubmissionFieldLayoutConfig();
             } else {

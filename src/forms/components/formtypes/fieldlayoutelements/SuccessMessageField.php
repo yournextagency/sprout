@@ -5,7 +5,6 @@ namespace BarrelStrength\Sprout\forms\components\formtypes\fieldlayoutelements;
 use Craft;
 use craft\base\ElementInterface;
 use craft\fieldlayoutelements\TextareaField;
-use craft\fieldlayoutelements\TextField;
 
 class SuccessMessageField extends TextareaField
 {

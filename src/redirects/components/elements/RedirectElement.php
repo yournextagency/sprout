@@ -103,12 +103,19 @@ class RedirectElement extends Element
         return Craft::createObject(RedirectCondition::class, [static::class]);
     }
 
-    public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool
-    $showCheckboxes, bool $sortable = false): string
-    {
+    public static function indexHtml(
+        ElementQueryInterface $elementQuery,
+        ?array $disabledElementIds,
+        array $viewState,
+        ?string $sourceKey,
+        ?string $context,
+        bool $includeContainer,
+        bool $selectable,
+        bool $sortable,
+    ): string {
         Craft::$app->getSession()->set('sprout-redirect-element-index-display-name', 'Old URL');
 
-        return parent::indexHtml($elementQuery, $disabledElementIds, $viewState, $sourceKey, $context, $includeContainer, $showCheckboxes, $sortable);
+        return parent::indexHtml($elementQuery, $disabledElementIds, $viewState, $sourceKey, $context, $includeContainer, $selectable, $sortable);
     }
 
     public static function defineNativeFields(DefineFieldLayoutFieldsEvent $event): void

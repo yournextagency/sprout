@@ -10,7 +10,6 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
-use yii\db\Schema;
 
 class CustomHtmlFormField extends Field implements FormFieldInterface, PreviewableFieldInterface
 {

@@ -62,5 +62,5 @@ return [
     'Port' => 'Port',
     'Comma-separated list of recipients.' => 'Comma-separated list of recipients.',
     'Host Name' => 'Host Name',
-    'Email Details' => 'Email Details'
+    'Email Details' => 'Email Details',
 ];

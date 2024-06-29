@@ -5,7 +5,6 @@ namespace BarrelStrength\Sprout\sitemaps\sitemapmetadata;
 use BarrelStrength\Sprout\sitemaps\SitemapsModule;
 use BarrelStrength\Sprout\sitemaps\SitemapsSettings;
 use Craft;
-use craft\helpers\Cp;
 use craft\helpers\UrlHelper;
 use craft\models\Site;
 use yii\web\ForbiddenHttpException;
@@ -218,7 +217,6 @@ class SitemapsMetadataHelper
         $editableSitemapCount = 0;
 
         if (Craft::$app->getIsMultiSite()) {
-
             $editableSites = Craft::$app->getSites()->getEditableSites();
             $enabledSiteUids = array_keys(array_filter($settings->siteSettings));
 
@@ -230,7 +228,6 @@ class SitemapsMetadataHelper
             }
 
             foreach ($editableSites as $editableSite) {
-
                 $locale = Craft::$app->getI18n()->getLocaleById($editableSite->language);
 
                 if (!isset($sitemapSites[$editableSite->language])) {
@@ -262,7 +259,6 @@ class SitemapsMetadataHelper
         $editableSitemapCount = 0;
 
         if (Craft::$app->getIsMultiSite()) {
-
             $siteGroups = Craft::$app->getSites()->getAllGroups();
             $enabledSiteGroupUids = array_keys(array_filter($settings->groupSettings));
 
@@ -275,7 +271,6 @@ class SitemapsMetadataHelper
             $editableSiteIds = Craft::$app->getSites()->getEditableSiteIds();
 
             foreach ($siteGroups as $siteGroup) {
-
                 $siteIdsInGroup = $siteGroup->getSiteIds();
                 $editableSiteIdsInGroup = array_intersect($editableSiteIds, $siteIdsInGroup);
 

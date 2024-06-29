@@ -12,7 +12,6 @@ use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
 use craft\elements\db\ElementQueryInterface;
-use yii\db\QueryInterface;
 
 class NotificationEventConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
 {

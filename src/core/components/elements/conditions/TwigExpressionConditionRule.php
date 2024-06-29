@@ -10,7 +10,6 @@ use craft\elements\db\ElementQueryInterface;
 use craft\helpers\Cp;
 use craft\helpers\Html;
 use yii\base\Exception;
-use yii\db\QueryInterface;
 
 class TwigExpressionConditionRule extends BaseConditionRule implements ElementConditionRuleInterface
 {

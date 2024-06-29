@@ -24,8 +24,6 @@ use craft\helpers\UrlHelper;
 use craft\models\FieldLayout;
 use craft\validators\SlugValidator;
 use craft\web\CpScreenResponseBehavior;
-use Throwable;
-use yii\web\ErrorHandler;
 use yii\web\Response;
 
 /**

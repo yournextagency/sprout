@@ -57,4 +57,3 @@ class SubmissionElementFieldLayoutBehavior extends Behavior
         return $customFieldsByUid;
     }
 }
-

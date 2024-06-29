@@ -129,7 +129,6 @@ class m211101_000007_migrate_forms_tables extends Migration
             $rowsForContentMigration = $rows;
 
             foreach ($rows as $key => $row) {
-
                 $rows[$key]['submissionFieldLayoutConfig'] = null;
 
                 if (isset($row['fieldLayoutId'])) {

@@ -9,9 +9,8 @@ use Craft;
 use craft\base\conditions\BaseMultiSelectConditionRule;
 use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
-use craft\helpers\Db;
 use craft\elements\db\ElementQueryInterface;
-use yii\db\QueryInterface;
+use craft\helpers\Db;
 
 class FormTypeConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
 {

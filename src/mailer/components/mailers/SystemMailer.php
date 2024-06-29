@@ -202,7 +202,6 @@ abstract class SystemMailer extends Mailer implements MailerSendTestInterface
                 try {
                     $message->setSubject($email->subjectLine);
                 } catch (Exception $e) {
-
                     Craft::error(
                         sprintf('Unable to parse subject line: %s', $e->getMessage()),
                         __METHOD__

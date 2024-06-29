@@ -66,5 +66,5 @@ return [
     'View Notification Emails' => 'View Notification Emails',
     'When user is updated?' => 'When user is updated?',
     'Transactional' => 'Transactional',
-    'When user is created?' => 'When user is created?'
+    'When user is created?' => 'When user is created?',
 ];

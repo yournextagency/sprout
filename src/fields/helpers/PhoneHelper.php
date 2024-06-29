@@ -4,10 +4,10 @@ namespace BarrelStrength\Sprout\fields\helpers;
 
 use BarrelStrength\Sprout\forms\fields\address\Addresses;
 use CommerceGuys\Addressing\Country\CountryRepository;
+use Craft;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberUtil;
-use Craft;
 
 class PhoneHelper
 {

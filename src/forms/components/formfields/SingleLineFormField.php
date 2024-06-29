@@ -13,7 +13,6 @@ use craft\fields\PlainText;
 use craft\fields\PlainText as CraftPlainText;
 use craft\helpers\Db;
 use LitEmoji\LitEmoji;
-use yii\db\Schema;
 
 class SingleLineFormField extends PlainText implements FormFieldInterface
 {

@@ -11,7 +11,6 @@ use craft\base\ElementInterface;
 use craft\fields\PlainText as CraftPlainText;
 use craft\helpers\Db;
 use LitEmoji\LitEmoji;
-use yii\db\Schema;
 
 class ParagraphFormField extends CraftPlainText implements FormFieldInterface
 {

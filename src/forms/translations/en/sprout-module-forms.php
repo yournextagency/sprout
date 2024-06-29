@@ -446,5 +446,5 @@ return [
     'Tab updated.' => 'Tab updated.',
     'Updating the Form Type may change your field layout and result in data loss.' => 'Updating the Form Type may change your field layout and result in data loss.',
     'Field updated.' => 'Field updated.',
-    'Choose the Form Type that will be used for the selected forms.' => 'Choose the Form Type that will be used for the selected forms.'
+    'Choose the Form Type that will be used for the selected forms.' => 'Choose the Form Type that will be used for the selected forms.',
 ];

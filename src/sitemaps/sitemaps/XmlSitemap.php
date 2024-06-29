@@ -45,9 +45,8 @@ class XmlSitemap extends Component
         string $sitemapKey,
         array $sitemapSites,
         Site $site,
-        int $pageNumber = null
-    ): array
-    {
+        int $pageNumber = null,
+    ): array {
         $urls = [];
         $sitemapsService = SitemapsModule::getInstance()->sitemaps;
 

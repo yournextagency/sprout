@@ -11,7 +11,6 @@ use craft\base\ElementInterface;
 use craft\elements\conditions\ElementConditionRuleInterface;
 use craft\elements\db\ElementQueryInterface;
 use craft\helpers\Db;
-use yii\db\QueryInterface;
 
 class EmailTypeConditionRule extends BaseMultiSelectConditionRule implements ElementConditionRuleInterface
 {

@@ -245,5 +245,5 @@ return [
     'A description of your content which will appear in search results.' => 'A description of your content which will appear in search results.',
     'Render metadata' => 'Render metadata',
     'The Title of your content which will appear in Twitter Card metadata.' => 'The Title of your content which will appear in Twitter Card metadata.',
-    'If the content of this card was authored by someone, include their Twitter username here.' => 'If the content of this card was authored by someone, include their Twitter username here.'
+    'If the content of this card was authored by someone, include their Twitter username here.' => 'If the content of this card was authored by someone, include their Twitter username here.',
 ];

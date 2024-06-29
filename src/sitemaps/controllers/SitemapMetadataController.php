@@ -117,7 +117,6 @@ class SitemapMetadataController extends Controller
         }
 
         if ($sourceKey === SitemapKey::CONTENT_QUERY) {
-
             if ($sitemapMetadata->settings) {
                 $currentConditionRules = Json::decodeIfJson($sitemapMetadata->settings);
 

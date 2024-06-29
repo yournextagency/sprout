@@ -109,11 +109,18 @@ class SentEmailElement extends Element implements EmailPreviewInterface
         return new SentEmailElementQuery(static::class);
     }
 
-    public static function indexHtml(ElementQueryInterface $elementQuery, ?array $disabledElementIds, array $viewState, ?string $sourceKey, ?string $context, bool $includeContainer, bool
-    $showCheckboxes, bool $sortable = false): string
-    {
+    public static function indexHtml(
+        ElementQueryInterface $elementQuery,
+        ?array $disabledElementIds,
+        array $viewState,
+        ?string $sourceKey,
+        ?string $context,
+        bool $includeContainer,
+        bool $selectable,
+        bool $sortable,
+    ): string {
         $html = parent::indexHtml($elementQuery, $disabledElementIds, $viewState, $sourceKey, $context, $includeContainer,
-            $showCheckboxes, $sortable);
+            $selectable, $sortable);
 
         Sprout::getInstance()->vite->register('mailer/SendEmailModal.js', false);
         Sprout::getInstance()->vite->register('sent-email/SentEmailDetailsModal.js', false);

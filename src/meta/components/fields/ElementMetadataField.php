@@ -8,7 +8,6 @@ use BarrelStrength\Sprout\meta\MetaModule;
 use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
-use craft\db\mysql\Schema;
 use craft\helpers\Html;
 use craft\helpers\Json;
 

@@ -4,7 +4,6 @@ namespace BarrelStrength\Sprout\meta\components\meta;
 
 use BarrelStrength\Sprout\meta\metadata\MetaType;
 use Craft;
-use craft\base\Field;
 
 class CanonicalUrlMetaType extends MetaType
 {

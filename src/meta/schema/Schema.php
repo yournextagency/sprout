@@ -5,7 +5,6 @@ namespace BarrelStrength\Sprout\meta\schema;
 use BarrelStrength\Sprout\forms\components\formfields\PhoneFormFieldData;
 use BarrelStrength\Sprout\meta\components\meta\CanonicalUrlMetaType;
 use BarrelStrength\Sprout\meta\components\meta\OpenGraphMetaType;
-use BarrelStrength\Sprout\meta\components\meta\RobotsMetaType;
 use BarrelStrength\Sprout\meta\components\schema\ContactPointSchema;
 use BarrelStrength\Sprout\meta\components\schema\GeoSchema;
 use BarrelStrength\Sprout\meta\components\schema\ImageObjectSchema;

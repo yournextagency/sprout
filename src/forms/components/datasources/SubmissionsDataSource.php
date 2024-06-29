@@ -157,7 +157,7 @@ class SubmissionsDataSource extends DataSource implements DateRangeInterface
                     if ($selectedOptions !== []) {
                         $value = implode(', ', $selectedOptions);
                     }
-                //} elseif ($field instanceof AddressModel) {
+                    //} elseif ($field instanceof AddressModel) {
                 //    $addressWithSpanTags = FormsModule::getInstance()->addressFormatter->getAddressDisplayHtml($field);
                 //    $value = strip_tags($addressWithSpanTags);
                 } elseif ($field instanceof NameFormFieldData) {

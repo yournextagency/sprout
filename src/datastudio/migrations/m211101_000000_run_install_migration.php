@@ -2,7 +2,6 @@
 
 namespace BarrelStrength\Sprout\datastudio\migrations;
 
-use BarrelStrength\Sprout\core\db\MigrationHelper;
 use Craft;
 use craft\db\Migration;
 use craft\db\Table;

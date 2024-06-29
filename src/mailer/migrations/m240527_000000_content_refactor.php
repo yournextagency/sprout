@@ -5,7 +5,6 @@ namespace BarrelStrength\Sprout\mailer\migrations;
 use Craft;
 use craft\db\Query;
 use craft\migrations\BaseContentRefactorMigration;
-use craft\models\FieldLayout;
 
 /**
  * @role temporary: Craft 4 -> 5

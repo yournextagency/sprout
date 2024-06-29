@@ -5,7 +5,6 @@ namespace BarrelStrength\Sprout\forms\submissions;
 use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\components\elements\SubmissionElement;
 use BarrelStrength\Sprout\forms\formfields\CustomFormField;
-use BarrelStrength\Sprout\forms\forms\FormBuilderHelper;
 use BarrelStrength\Sprout\forms\forms\Forms;
 use BarrelStrength\Sprout\forms\FormsModule;
 use Craft;

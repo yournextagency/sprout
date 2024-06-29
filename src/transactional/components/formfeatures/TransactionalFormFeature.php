@@ -15,7 +15,6 @@ use BarrelStrength\Sprout\mailer\emailtypes\EmailTypeHelper;
 use BarrelStrength\Sprout\transactional\components\elements\TransactionalEmailElement;
 use BarrelStrength\Sprout\transactional\components\emailvariants\TransactionalEmailVariant;
 use BarrelStrength\Sprout\transactional\notificationevents\BaseElementNotificationEvent;
-use BarrelStrength\Sprout\transactional\notificationevents\ElementEventInterface;
 use BarrelStrength\Sprout\transactional\TransactionalModule;
 use Craft;
 use craft\base\Element;

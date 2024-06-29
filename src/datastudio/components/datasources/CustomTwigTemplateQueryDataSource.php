@@ -184,7 +184,7 @@ class CustomTwigTemplateQueryDataSource extends DataSource
         /** @var array $firstRowColumns */
         $firstRowColumns = array_shift($rows);
 
-        if ( is_countable($firstRowColumns) && count($firstRowColumns) > 0) {
+        if (is_countable($firstRowColumns) && count($firstRowColumns) > 0) {
             $secondRow = array_shift($rows);
 
             foreach ($firstRowColumns as $key => $column) {

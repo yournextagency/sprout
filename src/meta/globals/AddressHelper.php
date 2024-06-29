@@ -24,7 +24,6 @@ class AddressHelper
         }
 
         $checkAuth = static function(AuthorizationCheckEvent $event) {
-
             $site = Cp::requestedSite();
 
             if (!$site instanceof Site) {

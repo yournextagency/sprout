@@ -2,8 +2,6 @@
 
 namespace BarrelStrength\Sprout\redirects\migrations;
 
-use BarrelStrength\Sprout\redirects\components\elements\RedirectElement;
-use BarrelStrength\Sprout\redirects\RedirectsModule;
 use Craft;
 use craft\db\Query;
 use craft\migrations\BaseContentRefactorMigration;

@@ -21,10 +21,10 @@ abstract class FormType extends SavableComponent implements FormTypeInterface, F
         //}
 
         //if (isset($config['submissionMethod']) || $config['submissionMethod'] === null) {
-            unset($config['submissionMethod']);
+        unset($config['submissionMethod']);
         //}
         //if (isset($config['errorDisplayMethod']) || $config['errorDisplayMethod'] === null) {
-            unset($config['errorDisplayMethod']);
+        unset($config['errorDisplayMethod']);
         //}
 
         parent::__construct($config);

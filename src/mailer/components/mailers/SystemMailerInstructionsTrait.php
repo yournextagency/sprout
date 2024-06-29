@@ -188,7 +188,6 @@ trait SystemMailerInstructionsTrait
         $assets = [];
 
         foreach ($object->getFieldLayout()->getCustomFields() as $field) {
-
             if (!$field instanceof Assets) {
                 continue;
             }

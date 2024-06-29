@@ -16,7 +16,6 @@ use BarrelStrength\Sprout\core\twig\SproutVariable;
 use BarrelStrength\Sprout\redirects\components\elements\RedirectElement;
 use BarrelStrength\Sprout\redirects\redirects\Redirects;
 use Craft;
-use craft\config\BaseConfig;
 use craft\console\Application as ConsoleApplication;
 use craft\events\DefineFieldLayoutFieldsEvent;
 use craft\events\ExceptionEvent;
