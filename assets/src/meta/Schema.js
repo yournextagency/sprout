@@ -1,3 +1,5 @@
+/* global $ */
+
 class SproutMetaWebsiteIdentitySettings {
 
     constructor(props) {
@@ -49,7 +51,7 @@ class SproutMetaWebsiteIdentitySettings {
 
                 // let's foreach the children
                 if (value) {
-                    $.each(value, function(key, level3) {
+                    $.each(value, function(key) {
                         name = '&nbsp;&nbsp;&nbsp;' + key.replace(/([A-Z][^A-Z\b])/g, ' $1').trim();
                         options += '<option value="' + key + '">' + name + '</option>';
                     });
@@ -66,10 +68,6 @@ class SproutMetaWebsiteIdentitySettings {
 
         // Hold selected option
         let firstSelection = '';
-        let secondSelection = '';
-
-        // Hold selection
-        let selection = '';
 
         // Selection handler for first level dropdown
         firstDropDown.on('change', function() {
@@ -77,11 +75,13 @@ class SproutMetaWebsiteIdentitySettings {
             // Get selected option
             firstSelection = firstDropDown.val();
 
+            let $organizationInfoInput = $('.organization-info :input');
+
             // Clear all dropdowns down to the hierarchy
-            clearDropDown($('.organization-info :input'), 1);
+            clearDropDown($organizationInfoInput, 1);
 
             // Disable all dropdowns down to the hierarchy
-            disableDropDown($('.organization-info :input'), 1);
+            disableDropDown($organizationInfoInput, 1);
 
             // Check current selection
             if (typeof self.items[firstSelection] === 'undefined' || firstSelection === '' || self.items[firstSelection].length <= 0) {
@@ -100,7 +100,7 @@ class SproutMetaWebsiteIdentitySettings {
 
         // Selection handler for second level dropdown
         secondDropDown.on('change', function() {
-            let lastValue = secondDropDown.val();
+            secondDropDown.val();
             // Final work goes here
         });
     }
@@ -110,21 +110,24 @@ class SproutMetaWebsiteIdentitySettings {
         let mainEntityValues = self.mainEntityValues;
 
         //Main entity dropdowns
-        $('.mainentity-firstdropdown select').change(function() {
+        let $firstDropdownSelectInput = $('.mainentity-firstdropdown select');
+        let $secondDropdownSelectInput = $('.mainentity-seconddropdown select');
+
+        $firstDropdownSelectInput.change(function() {
             if (this.value === 'barrelstrength-sprout-schema-personschema') {
-                $('.mainentity-seconddropdown select').addClass('hidden');
+                $secondDropdownSelectInput.addClass('hidden');
             } else {
-                $('.mainentity-seconddropdown select').removeClass('hidden');
+                $secondDropdownSelectInput.removeClass('hidden');
             }
         });
 
         // check if we need load depending dropdowns
         if (mainEntityValues) {
-            if (mainEntityValues.hasOwnProperty('schemaTypeId') && mainEntityValues.schemaTypeId) {
-                $('.mainentity-firstdropdown select').val(mainEntityValues.schemaTypeId).change();
+            if (Object.prototype.hasOwnProperty.call(mainEntityValues, 'schemaTypeId') && mainEntityValues.schemaTypeId) {
+                $firstDropdownSelectInput.val(mainEntityValues.schemaTypeId).change();
             }
-            if (mainEntityValues.hasOwnProperty('schemaOverrideTypeId') && mainEntityValues.schemaOverrideTypeId) {
-                $('.mainentity-seconddropdown select').val(mainEntityValues.schemaOverrideTypeId).change();
+            if (Object.prototype.hasOwnProperty.call(mainEntityValues, 'schemaOverrideTypeId') && mainEntityValues.schemaOverrideTypeId) {
+                $secondDropdownSelectInput.val(mainEntityValues.schemaOverrideTypeId).change();
             }
         }
 

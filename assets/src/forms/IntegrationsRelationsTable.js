@@ -1,3 +1,4 @@
+/* global $, Craft */
 class IntegrationsRelationsTable {
 
     constructor(formId, siteId) {
@@ -63,13 +64,13 @@ class IntegrationsRelationsTable {
             : [];
 
         Craft.sendActionRequest('POST', 'sprout-module-forms/form-integrations/edit-integration-slideout', {
-                data: {
-                    formId: self.formId,
-                    integrationUid: integrationUid,
-                    integrationTypeUid: integrationTypeUid,
-                    integrationsFormFieldMetadata: integrationsFormFieldMetadata,
-                },
-            })
+            data: {
+                formId: self.formId,
+                integrationUid: integrationUid,
+                integrationTypeUid: integrationTypeUid,
+                integrationsFormFieldMetadata: integrationsFormFieldMetadata,
+            },
+        })
             .then((response) => {
                 console.log('create slideout response', response);
 
@@ -112,10 +113,10 @@ class IntegrationsRelationsTable {
         let self = this;
 
         Craft.sendActionRequest('POST', 'sprout-module-forms/form-integrations/edit-integration-slideout', {
-                data: {
-                    elementId: self.elementId,
-                },
-            })
+            data: {
+                elementId: self.elementId,
+            },
+        })
             .then((response) => {
                 console.log('integrations table html response', response);
 

@@ -1,5 +1,4 @@
-/* global Craft */
-/* global Garnish */
+/* global $, Craft, Garnish */
 
 if (typeof Craft.SproutMeta === typeof undefined) {
     Craft.SproutMeta = {};
@@ -109,63 +108,63 @@ Craft.SproutMeta.EditableTable = Garnish.Base.extend(
                     '>';
 
                 switch (col.type) {
-                    case 'selectOther': {
-                        const isOwnership = baseName.indexOf('ownership') > -1;
-                        if (isOwnership) {
-                            rowHtml += '<div class="field sprout-selectother"><div class="select sprout-selectotherdropdown"><select onchange="setDefault(this)" name="' + name + '">';
-                        } else {
-                            rowHtml += '<div class="field sprout-selectother"><div class="select sprout-selectotherdropdown"><select name="' + name + '">';
-                        }
+                case 'selectOther': {
+                    const isOwnership = baseName.indexOf('ownership') > -1;
+                    if (isOwnership) {
+                        rowHtml += '<div class="field sprout-selectother"><div class="select sprout-selectotherdropdown"><select onchange="setDefault(this)" name="' + name + '">';
+                    } else {
+                        rowHtml += '<div class="field sprout-selectother"><div class="select sprout-selectotherdropdown"><select name="' + name + '">';
+                    }
 
-                        let hasOptgroups = false;
+                    let hasOptgroups = false;
 
-                        let firstRow = 'disabled selected';
+                    let firstRow = 'disabled selected';
 
-                        for (let key in col.options) {
-                            const option = col.options[key];
+                    for (let key in col.options) {
+                        const option = col.options[key];
 
-                            if (typeof option.optgroup !== 'undefined') {
-                                if (hasOptgroups) {
-                                    rowHtml += '</optgroup>';
-                                } else {
-                                    hasOptgroups = true;
-                                }
-
-                                rowHtml += '<optgroup label="' + option.optgroup + '">';
+                        if (typeof option.optgroup !== 'undefined') {
+                            if (hasOptgroups) {
+                                rowHtml += '</optgroup>';
                             } else {
-                                const optionLabel = (typeof option.label !== 'undefined' ? option.label : option),
-                                    optionValue = (typeof option.value !== 'undefined' ? option.value : key),
-                                    optionDisabled = (typeof option.disabled !== 'undefined' ? option.disabled : false);
-
-                                rowHtml += '<option ' + firstRow + ' value="' + optionValue + '"' + (optionValue === value ? ' selected' : '') + (optionDisabled ? ' disabled' : '') + '>' + optionLabel + '</option>';
+                                hasOptgroups = true;
                             }
 
-                            firstRow = '';
+                            rowHtml += '<optgroup label="' + option.optgroup + '">';
+                        } else {
+                            const optionLabel = (typeof option.label !== 'undefined' ? option.label : option),
+                                optionValue = (typeof option.value !== 'undefined' ? option.value : key),
+                                optionDisabled = (typeof option.disabled !== 'undefined' ? option.disabled : false);
+
+                            rowHtml += '<option ' + firstRow + ' value="' + optionValue + '"' + (optionValue === value ? ' selected' : '') + (optionDisabled ? ' disabled' : '') + '>' + optionLabel + '</option>';
                         }
 
-                        if (hasOptgroups) {
-                            rowHtml += '</optgroup>';
-                        }
-
-                        rowHtml += '</select></div>';
-
-                        rowHtml += '<div class="texticon clearable sprout-selectothertext hidden"><input class="text fullwidth" type="text" name="' + name + '" value="" autocomplete="off"><div class="clear" title="Clear"></div></div>';
-
-                        rowHtml += '</div>';
-
-                        break;
+                        firstRow = '';
                     }
 
-                    case 'checkbox': {
-                        rowHtml += '<input type="hidden" name="' + name + '">' +
+                    if (hasOptgroups) {
+                        rowHtml += '</optgroup>';
+                    }
+
+                    rowHtml += '</select></div>';
+
+                    rowHtml += '<div class="texticon clearable sprout-selectothertext hidden"><input class="text fullwidth" type="text" name="' + name + '" value="" autocomplete="off"><div class="clear" title="Clear"></div></div>';
+
+                    rowHtml += '</div>';
+
+                    break;
+                }
+
+                case 'checkbox': {
+                    rowHtml += '<input type="hidden" name="' + name + '">' +
                             '<input type="checkbox" name="' + name + '" value="1"' + (value ? ' checked' : '') + '>';
 
-                        break;
-                    }
+                    break;
+                }
 
-                    default: {
-                        rowHtml += '<input class="text fullwidth" type="text" name="' + name + '" value="' + value + '">';
-                    }
+                default: {
+                    rowHtml += '<input class="text fullwidth" type="text" name="' + name + '" value="' + value + '">';
+                }
                 }
 
                 rowHtml += '</td>';

@@ -59,7 +59,7 @@ class SproutFormsAddressField {
         };
 
         let body = Object.keys(data).map(function(key) {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
+            return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
         }).join('&');
 
         xhr.send(body);

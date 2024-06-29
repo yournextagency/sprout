@@ -1,5 +1,5 @@
-/** global: Craft */
-/** global: Garnish */
+/* global Craft */
+
 /**
  * DataSet index class
  */

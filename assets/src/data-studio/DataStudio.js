@@ -1,3 +1,5 @@
+/* global $, Craft */
+
 import './data-studio.css';
 import './visualizations.css';
 
@@ -101,7 +103,7 @@ class SproutDataStudioDataTables {
 
                 self.resizeTable();
             },
-            drawCallback: function(settings) {
+            drawCallback: function() {
                 // bubbles up after search, sort, filter, etc.
                 self.stylePagination();
                 Craft.initUiElements(self.sproutResultsTable);

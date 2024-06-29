@@ -1,3 +1,4 @@
+/* global $, Craft, Garnish */
 let $relationModal = $('#sprout-relations-modal');
 
 let $modal = new Garnish.Modal($relationModal, {

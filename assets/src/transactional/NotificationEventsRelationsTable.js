@@ -1,3 +1,5 @@
+/* global $, Craft */
+
 class NotificationEventsRelationsTable {
 
     constructor(elementId, siteId) {
@@ -45,15 +47,15 @@ class NotificationEventsRelationsTable {
                 console.log('on change email type event', event);
 
                 Craft.sendActionRequest('POST', 'sprout-module-mailer/email/create-email', {
-                        data: {
-                            emailTypeUid: event.target.value,
-                            emailVariant: 'BarrelStrength\\Sprout\\transactional\\components\\emailvariants\\TransactionalEmailVariant',
-                            emailVariantSettings: {
-                                eventId: 'BarrelStrength\\Sprout\\forms\\components\\notificationevents\\SaveSubmissionNotificationEvent',
-                                // emailTypeUid: event.target.value,
-                            },
+                    data: {
+                        emailTypeUid: event.target.value,
+                        emailVariant: 'BarrelStrength\\Sprout\\transactional\\components\\emailvariants\\TransactionalEmailVariant',
+                        emailVariantSettings: {
+                            eventId: 'BarrelStrength\\Sprout\\forms\\components\\notificationevents\\SaveSubmissionNotificationEvent',
+                            // emailTypeUid: event.target.value,
                         },
-                    })
+                    },
+                })
                     .then((response) => {
                         console.log('create slideout response', response);
 
@@ -80,10 +82,10 @@ class NotificationEventsRelationsTable {
         let self = this;
 
         Craft.sendActionRequest('POST', 'sprout-module-transactional/form-relations-table/get-relations-table', {
-                data: {
-                    elementId: self.elementId,
-                },
-            })
+            data: {
+                elementId: self.elementId,
+            },
+        })
             .then((response) => {
                 console.log('reports table html response', response);
 

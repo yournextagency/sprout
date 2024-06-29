@@ -1,3 +1,5 @@
+/* global $ */
+
 class SproutMetaWebsiteIdentity {
 
     constructor(props) {
@@ -37,10 +39,6 @@ class SproutMetaWebsiteIdentity {
         // Hold selected option
         let firstSelection = '';
         let secondSelection = '';
-        let thirdSelection = '';
-
-        // Hold selection
-        let selection = '';
 
         // Selection handler for first level dropdown
         firstDropDown.on('change', function() {
@@ -48,18 +46,20 @@ class SproutMetaWebsiteIdentity {
             // Get selected option
             firstSelection = firstDropDown.val();
 
+            let $organizationInfoInput = $('#organization :input');
+
             // Clear all dropdowns down to the hierarchy
-            self.clearDropDown($('#organization :input'), 1);
+            self.clearDropDown($organizationInfoInput, 1);
 
             // Disable all dropdowns down to the hierarchy
-            self.disableDropDown($('#organization :input'), 1);
+            self.disableDropDown($organizationInfoInput, 1);
 
             // Check current selection
             if (firstSelection === '') {
                 return;
             }
 
-            if (self.items[firstSelection].hasOwnProperty('children')) {
+            if (Object.prototype.hasOwnProperty.call(self.items[firstSelection], 'children')) {
                 // Enable second level DropDown
                 self.enableDropDown(secondDropDown);
 
@@ -75,23 +75,24 @@ class SproutMetaWebsiteIdentity {
             firstSelection = $('#main-entity-first-dropdown').val();
             secondSelection = secondDropDown.val();
 
+            let $organizationInfoInput = $('#organization :input');
+
             // Clear all dropdowns down to the hierarchy
-            self.clearDropDown($('#organization :input'), 2);
+            self.clearDropDown($organizationInfoInput, 2);
 
             // Disable all dropdowns down to the hierarchy
-            self.disableDropDown($('#organization :input'), 2);
+            self.disableDropDown($organizationInfoInput, 2);
 
             // Check current selection
             if (secondSelection === '') {
                 return;
             }
 
-            let secondChildren = [];
             let children = self.items[firstSelection]['children'];
-            let pos = null;
+
             for (let i = 0; i < children.length; i++) {
                 if (children[i].name === secondSelection) {
-                    if (children[i].hasOwnProperty('children')) {
+                    if (Object.prototype.hasOwnProperty.call(children[i], 'children')) {
                         // Enable third level DropDown
                         self.enableDropDown(thirdDropDown);
 
@@ -111,13 +112,13 @@ class SproutMetaWebsiteIdentity {
 
         // check if we need load depending dropdowns
         if (websiteIdentity) {
-            if (websiteIdentity.hasOwnProperty('organizationSubTypes') && websiteIdentity.organizationSubTypes[0]) {
+            if (Object.prototype.hasOwnProperty.call(websiteIdentity, 'organizationSubTypes') && websiteIdentity.organizationSubTypes[0]) {
                 $('#main-entity-first-dropdown').val(websiteIdentity.organizationSubTypes[0]).trigger('change');
             }
-            if (websiteIdentity.hasOwnProperty('organizationSubTypes') && websiteIdentity.organizationSubTypes[1]) {
+            if (Object.prototype.hasOwnProperty.call(websiteIdentity, 'organizationSubTypes') && websiteIdentity.organizationSubTypes[1]) {
                 $('#main-entity-second-dropdown').val(websiteIdentity.organizationSubTypes[1]).trigger('change');
             }
-            if (websiteIdentity.hasOwnProperty('organizationSubTypes') && websiteIdentity.organizationSubTypes[2]) {
+            if (Object.prototype.hasOwnProperty.call(websiteIdentity, 'organizationSubTypes') && websiteIdentity.organizationSubTypes[2]) {
                 $('#main-entity-third-dropdown').val(websiteIdentity.organizationSubTypes[2]).trigger('change');
             }
         }

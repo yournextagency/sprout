@@ -1,3 +1,4 @@
+/* global $, Garnish */
 
 let Sprout = window.Sprout || {};
 

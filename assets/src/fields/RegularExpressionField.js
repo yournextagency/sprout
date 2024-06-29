@@ -1,4 +1,4 @@
-/* global Craft */
+/* global $, Craft, Garnish */
 
 if (typeof Craft.SproutRegularExpressionField === typeof undefined) {
     Craft.SproutRegularExpressionField = {};

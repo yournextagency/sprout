@@ -1,3 +1,5 @@
+/* global $, Craft, Garnish */
+
 import './send-email-modal.scss';
 
 window.SendEmailModal = function(emailId) {
@@ -14,10 +16,10 @@ window.SendEmailModal = function(emailId) {
     let failMessage = Craft.t('sprout-module-mailer', 'Unable to send email.');
 
     Craft.sendActionRequest('POST', getSendEmailHtmlAction, {
-            data: {
-                emailId: emailId,
-            },
-        })
+        data: {
+            emailId: emailId,
+        },
+    })
         .then((response) => {
             if (response.data.success) {
 
@@ -66,8 +68,6 @@ window.SendEmailModal = function(emailId) {
                 // Additional JS (optionally provided by Mailer)
                 Craft.appendBodyHtml(response.data.js);
 
-                let success = false;
-
                 let modal = new Garnish.Modal($form, {
                     onShow: () => {
                         setTimeout(() => {
@@ -87,8 +87,8 @@ window.SendEmailModal = function(emailId) {
                     let postData = Garnish.getPostData(event.target);
 
                     Craft.sendActionRequest('POST', sendEmailAction, {
-                            data: Craft.expandPostArray(postData),
-                        })
+                        data: Craft.expandPostArray(postData),
+                    })
                         .then((response) => {
                             if (response.data.success) {
                                 Craft.cp.displayNotice(successMessage);

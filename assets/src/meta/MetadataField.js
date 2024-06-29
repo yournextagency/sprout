@@ -1,6 +1,7 @@
-/* global Craft */
+/* global $, Garnish */
+
 import Tagify from '@yaireo/tagify';
-import '@yaireo/tagify/dist/tagify.css'
+import '@yaireo/tagify/dist/tagify.css';
 
 class SproutMetaMetadataField {
     constructor(props) {
@@ -71,7 +72,6 @@ class SproutMetaMetadataField {
 
             let type = this.metaBadgeInfo[key]['type'];
             let fieldHandle = this.metaBadgeInfo[key]['handle'];
-            let badgeClass = this.metaBadgeInfo[key]['badgeClass'];
 
             let targetLabelId = '#fields-' + fieldHandle + '-label';
             let targetInputId = '#fields-' + fieldHandle + '-field input';

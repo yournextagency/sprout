@@ -1,3 +1,5 @@
+/* global Craft */
+
 class IntegrationTypesSettings {
 
     constructor(id) {

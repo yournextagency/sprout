@@ -1,6 +1,6 @@
-import './url-field.scss';
+/* global $, Craft, Garnish */
 
-/* global Craft */
+import './url-field.scss';
 
 if (typeof Craft.SproutUrlField === typeof undefined) {
     Craft.SproutUrlField = {};

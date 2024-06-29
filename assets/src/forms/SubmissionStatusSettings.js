@@ -1,3 +1,5 @@
+/* global Craft */
+
 class SubmissionStatusSettings {
 
     constructor(id) {

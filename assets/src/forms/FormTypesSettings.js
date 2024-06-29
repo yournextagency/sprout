@@ -1,3 +1,5 @@
+/* global Craft */
+
 class FormTypesSettings {
 
     constructor(id) {

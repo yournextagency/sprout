@@ -1,10 +1,11 @@
+/* global $, Craft */
 window.SentEmailDetailsModal = function(emailId) {
 
     Craft.sendActionRequest('POST', 'sprout-module-sent-email/sent-email/get-sent-email-details-modal-html', {
-            data: {
-                emailId: emailId,
-            },
-        })
+        data: {
+            emailId: emailId,
+        },
+    })
         .then((response) => {
             if (response.data.success) {
 

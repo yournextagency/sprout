@@ -1,3 +1,4 @@
+/* global $, Craft */
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
@@ -27,7 +28,7 @@ export const SproutAdminTable = (settings) => ({
     getSlideoutEditor(action) {
         const slideout = new Craft.CpScreenSlideout(action);
 
-        slideout.on('submit', ev => {
+        slideout.on('submit', () => {
             this.refreshTable();
         });
 
@@ -61,7 +62,7 @@ export const SproutAdminTable = (settings) => ({
             data: {
                 id: id,
             },
-        }).then((response) => {
+        }).then(() => {
             this.refreshTable();
         }).catch(() => {
             console.log('Nope.');

@@ -1,3 +1,4 @@
+/* global $, Craft */
 class DataSourceRelationsTable {
 
     constructor(elementId, siteId) {
@@ -43,10 +44,10 @@ class DataSourceRelationsTable {
         if (newSelectField) {
             newSelectField.addEventListener('change', function(event) {
                 Craft.sendActionRequest('POST', 'sprout-module-data-studio/data-set/create-data-set', {
-                        data: {
-                            type: event.target.value,
-                        },
-                    })
+                    data: {
+                        type: event.target.value,
+                    },
+                })
                     .then((response) => {
                         console.log('create slideout response', response);
 
@@ -73,10 +74,10 @@ class DataSourceRelationsTable {
         let self = this;
 
         Craft.sendActionRequest('POST', 'sprout-module-data-studio/form-relations-table/get-relations-table', {
-                data: {
-                    elementId: self.elementId,
-                },
-            })
+            data: {
+                elementId: self.elementId,
+            },
+        })
             .then((response) => {
                 console.log('reports table html response', response);
 

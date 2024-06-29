@@ -1,3 +1,4 @@
+/* global Craft */
 export const SitemapMetadataRow = () => ({
 
     row: null,
