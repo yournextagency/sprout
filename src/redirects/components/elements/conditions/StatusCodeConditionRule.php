@@ -41,6 +41,6 @@ class StatusCodeConditionRule extends BaseMultiSelectConditionRule implements El
     public function matchElement(ElementInterface $element): bool
     {
         /** @var RedirectElement $element */
-        return $this->matchValue($element->statusCode);
+        return $this->matchValue((string)$element->statusCode);
     }
 }
