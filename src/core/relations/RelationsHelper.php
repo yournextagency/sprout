@@ -68,7 +68,7 @@ class RelationsHelper
         ]);
         Event::trigger(static::class, self::EVENT_ADD_SOURCE_ELEMENT_RELATIONS, $event);
 
-        $elements = array_merge([], ...$relations, ...$event->sourceElements);
+        $elements = array_merge([], ...$relations, ...[$event->sourceElements]);
 
         return array_map(static function($element) {
             return [
