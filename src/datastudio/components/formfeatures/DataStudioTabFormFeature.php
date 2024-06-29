@@ -12,6 +12,7 @@ use BarrelStrength\Sprout\forms\components\events\DefineFormFeatureSettingsEvent
 use BarrelStrength\Sprout\forms\components\events\RegisterFormFeatureTabsEvent;
 use Craft;
 use craft\base\Element;
+use craft\base\ElementInterface;
 use craft\helpers\Cp;
 use craft\helpers\Html;
 use craft\models\FieldLayoutTab;
@@ -58,7 +59,7 @@ class DataStudioTabFormFeature implements RelationsTableInterface
         $event->tabs[] = $reportsTab;
     }
 
-    public static function getRelationsTableField(Element $element): RelationsTableField
+    public static function getRelationsTableField(ElementInterface $element): RelationsTableField
     {
         $reportRows = self::getDataSourceRelations($element);
 
@@ -97,7 +98,7 @@ class DataStudioTabFormFeature implements RelationsTableInterface
         ]);
     }
 
-    public static function getDataSourceRelations(Element $element): array
+    public static function getDataSourceRelations(ElementInterface $element): array
     {
         if (!$element instanceof FormElement) {
             return [];

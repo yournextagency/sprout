@@ -18,6 +18,7 @@ use BarrelStrength\Sprout\transactional\notificationevents\BaseElementNotificati
 use BarrelStrength\Sprout\transactional\TransactionalModule;
 use Craft;
 use craft\base\Element;
+use craft\base\ElementInterface;
 use craft\helpers\Cp;
 use craft\helpers\Html;
 use craft\models\FieldLayoutTab;
@@ -68,7 +69,7 @@ class TransactionalFormFeature implements RelationsTableInterface
         //array_splice($event->tabs, $index, 0, [$notificationsTab]);
     }
 
-    public static function getRelationsTableField(Element $element): RelationsTableField
+    public static function getRelationsTableField(ElementInterface $element): RelationsTableField
     {
         $notificationEventRows = self::getTransactionalRelations($element);
 
@@ -105,7 +106,7 @@ class TransactionalFormFeature implements RelationsTableInterface
         ]);
     }
 
-    public static function getTransactionalRelations(Element $element): array
+    public static function getTransactionalRelations(ElementInterface $element): array
     {
         $notificationEventTypes = TransactionalModule::getInstance()->notificationEvents->getNotificationEventRelationsTypes();
 
