@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.1 - UNRELEASED
+
+### Fixed 
+
+- Fixed potential logic error in migrations with field layout config settings
+
 ## 5.0.0 - 2024-06-30
 
 ### Added

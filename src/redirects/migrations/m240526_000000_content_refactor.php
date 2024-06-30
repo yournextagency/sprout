@@ -21,7 +21,7 @@ class m240526_000000_content_refactor extends BaseContentRefactorMigration
     {
         $fieldLayouts = Craft::$app->getProjectConfig()->get('sprout.sprout-module-redirects.fieldLayouts');
 
-        if ($fieldLayout = reset($fieldLayouts)) {
+        if (is_array($fieldLayouts) && $fieldLayout = reset($fieldLayouts)) {
             $layout = FieldLayout::createFromConfig($fieldLayout);
         } else {
             $layout = new FieldLayout([
