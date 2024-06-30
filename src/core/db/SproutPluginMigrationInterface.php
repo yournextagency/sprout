@@ -2,7 +2,6 @@
 
 namespace BarrelStrength\Sprout\core\db;
 
-use craft\base\Plugin;
 use craft\base\PluginInterface;
 use craft\db\MigrationManager;
 
