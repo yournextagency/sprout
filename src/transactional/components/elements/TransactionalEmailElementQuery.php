@@ -10,7 +10,7 @@ use yii\db\Expression;
 
 class TransactionalEmailElementQuery extends EmailElementQuery
 {
-    public ?string $emailVariantType = TransactionalEmailVariant::class;
+    public string|array|null $emailVariantType = TransactionalEmailVariant::class;
 
     public ?array $notificationEventFilterRule = null;
 

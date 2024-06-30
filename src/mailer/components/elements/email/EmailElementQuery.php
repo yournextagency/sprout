@@ -11,7 +11,7 @@ class EmailElementQuery extends ElementQuery
 {
     public ?string $subjectLine = null;
 
-    public ?string $emailVariantType = null;
+    public string|array|null $emailVariantType = null;
 
     public ?string $emailTypeUid = null;
 
@@ -22,7 +22,7 @@ class EmailElementQuery extends ElementQuery
         return $this;
     }
 
-    public function emailVariantType(string $value): static
+    public function emailVariantType(string|array $value): static
     {
         $this->emailVariantType = $value;
 
