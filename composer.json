@@ -2,7 +2,7 @@
     "name": "barrelstrength/sprout",
     "description": "The Sprout Framework module",
     "type": "craft-module",
-    "version": "5.0.0-alpha.1",
+    "version": "5.0.0",
     "license": "proprietary",
     "authors": [
         {
@@ -18,7 +18,7 @@
         "rss": "https://github.com/barrelstrength/craft-sprout/commits/v2.atom"
     },
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.2",
         "craftcms/cms": "^5.0",
         "league/csv": "^9.8",
         "giggsey/libphonenumber-for-php": "^8.13",

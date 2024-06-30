@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.0 - 2024-06-30
+
+### Added
+
+- Added Craft 5 compatibility
+
 ## 4.1.9 - 2024-03-10
 
 ### Fixed 
