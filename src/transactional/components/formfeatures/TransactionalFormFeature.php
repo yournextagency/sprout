@@ -17,7 +17,6 @@ use BarrelStrength\Sprout\transactional\components\emailvariants\TransactionalEm
 use BarrelStrength\Sprout\transactional\notificationevents\BaseElementNotificationEvent;
 use BarrelStrength\Sprout\transactional\TransactionalModule;
 use Craft;
-use craft\base\Element;
 use craft\base\ElementInterface;
 use craft\helpers\Cp;
 use craft\helpers\Html;

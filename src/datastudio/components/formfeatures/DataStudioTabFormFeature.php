@@ -11,7 +11,6 @@ use BarrelStrength\Sprout\forms\components\elements\FormElement;
 use BarrelStrength\Sprout\forms\components\events\DefineFormFeatureSettingsEvent;
 use BarrelStrength\Sprout\forms\components\events\RegisterFormFeatureTabsEvent;
 use Craft;
-use craft\base\Element;
 use craft\base\ElementInterface;
 use craft\helpers\Cp;
 use craft\helpers\Html;
