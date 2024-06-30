@@ -6,6 +6,7 @@ use BarrelStrength\Sprout\meta\components\fields\ElementMetadataField;
 use BarrelStrength\Sprout\meta\MetaModule;
 use Craft;
 use craft\base\Element;
+use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\db\Query;
 use craft\db\Table;
@@ -19,7 +20,7 @@ class ElementMetadata extends Component
     /**
      * Returns the metadata for an Element's Element Metadata as a Metadata model
      */
-    public function getRawMetadataFromElement(Element $element): array
+    public function getRawMetadataFromElement(ElementInterface $element): array
     {
         if ($this->_rawMetadata !== null) {
             return $this->_rawMetadata;
@@ -37,7 +38,7 @@ class ElementMetadata extends Component
     /**
      * Returns the Field handle of the first Element Metadata field found in an Element Field Layout
      */
-    public function getElementMetadataFieldHandle(Element $element = null): ?string
+    public function getElementMetadataFieldHandle(ElementInterface $element = null): ?string
     {
         if ($element === null) {
             return null;

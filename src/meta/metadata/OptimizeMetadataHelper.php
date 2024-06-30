@@ -74,8 +74,10 @@ class OptimizeMetadataHelper
         return UrlHelper::urlWithScheme($imageUrl, $protocol);
     }
 
-    public static function getSelectedFieldForOptimizedMetadata(int $fieldId)
+    public static function getSelectedFieldForOptimizedMetadata(string $fieldId)
     {
+        $fieldId = (int)$fieldId;
+
         $field = Craft::$app->getFields()->getFieldById($fieldId);
 
         if (!$field) {
