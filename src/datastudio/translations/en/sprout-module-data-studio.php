@@ -134,4 +134,6 @@ return [
     'ID' => 'ID',
     'Date Created' => 'Date Created',
     'Sprout Module | Data Studio' => 'Sprout Module | Data Studio',
+    'Data Set not found.' => 'Data Set not found.',
+    'Data Source not found.' => 'Data Source not found.'
 ];
