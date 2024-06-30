@@ -10,6 +10,7 @@ use BarrelStrength\Sprout\redirects\RedirectsModule;
 use Craft;
 use craft\base\Element;
 use craft\helpers\Cp;
+use craft\helpers\UrlHelper;
 use craft\models\Site;
 use craft\web\Controller;
 use yii\web\ForbiddenHttpException;
@@ -52,9 +53,27 @@ class RedirectsController extends Controller
 
         $settings = RedirectsModule::getInstance()->getSettings();
 
+        $sites = Craft::$app->getSites()->getEditableSites();
+
+        $crumbs = [
+            [
+                'icon' => Cp::earthIcon(),
+                'label' => $site->name,
+                'menu' => [
+                    'label' => Craft::t('sprout-module-redirects', 'Select site'),
+                    'items' => Cp::siteMenuItems($sites, $site),
+                ],
+            ],
+            [
+                'label' => Craft::t('sprout-module-redirects', 'Redirects'),
+                'url' => UrlHelper::cpUrl('sprout/redirects'),
+            ]
+        ];
+
         return $this->renderTemplate('sprout-module-redirects/_redirects/settings.twig', [
             'settings' => $settings,
             'site' => $site,
+            'crumbs' => $crumbs,
         ]);
     }
 

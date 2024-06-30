@@ -3,26 +3,12 @@
 {% import "_includes/forms" as forms %}
 {% import "sprout-module-core/_macros/sproutcp" as sproutCp %}
 
-{% set crumbs = [
-    { label: "Redirects"|t('sprout-module-redirects'), url: cpUrl('sprout/redirects') },
-    { label: "Settings"|t('sprout-module-redirects'), url: cpUrl('sprout/redirects/settings') }
-] %}
-
 {% set selectedSubnavItem = 'redirect-settings' %}
 
 {% set title = "Settings"|t('sprout-module-redirects') %}
 {% set redirectUrl = currentSection['url'] ?? craft.app.request.url %}
 {% set actionUrl = currentSection['actionUrl'] ?? 'sprout-module-redirects/redirects/save-db-settings' %}
 {% set fullPageForm = true %}
-
-{% block contextMenu %}
-    {% if craft.app.getIsMultiSite() %}
-        {% include "_elements/sitemenu" with {
-            selectedSiteId: site.id,
-            urlFormat: craft.app.request.pathInfo~"?site={handle}"
-        } %}
-    {% endif %}
-{% endblock %}
 
 {% set sidebar %}
     <!-- Template: {{ _self }}.twig -->
