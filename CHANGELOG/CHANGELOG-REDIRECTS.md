@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.0.1 - UNRELEASED
+## 5.0.1 - 2024-06-30
 
 ### Fixed
 
