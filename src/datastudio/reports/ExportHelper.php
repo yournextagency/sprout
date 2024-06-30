@@ -3,7 +3,7 @@
 namespace BarrelStrength\Sprout\datastudio\reports;
 
 use craft\helpers\Json;
-use League\Csv\ByteSequence;
+use League\Csv\Bom;
 use League\Csv\Writer;
 use SplTempFileObject;
 
@@ -29,7 +29,7 @@ class ExportHelper
         }
 
         $csv = Writer::createFromFileObject(new SplTempFileObject());
-        $csv->setOutputBOM(ByteSequence::BOM_UTF8);
+        $csv->setOutputBOM(Bom::Utf8);
 
         // Defaults to comma-delimited
         if ($delimiter) {

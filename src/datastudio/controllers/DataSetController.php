@@ -65,10 +65,6 @@ class DataSetController extends Controller
             throw new ForbiddenHttpException('User is not authorized to perform this action.');
         }
 
-        if (!$dataSource) {
-            throw new NotFoundHttpException('Data Source not found.');
-        }
-
         [$labels, $values] = DataSetHelper::getLabelsAndValues($dataSet, $dataSource);
 
         //$visualizationSettings = $dataSet->getSetting('visualization');
@@ -171,6 +167,10 @@ class DataSetController extends Controller
         }
 
         $site = Cp::requestedSite();
+
+        if (!$site instanceof Site) {
+            throw new ForbiddenHttpException('User not authorized to edit content in any sites.');
+        }
 
         $currentUser = Craft::$app->getUser()->getIdentity();
         $dataSetId = Craft::$app->getRequest()->getParam('dataSetId');

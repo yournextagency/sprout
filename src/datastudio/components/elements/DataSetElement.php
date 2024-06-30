@@ -27,6 +27,7 @@ use craft\models\FieldLayout;
 use craft\validators\HandleValidator;
 use craft\web\CpScreenResponseBehavior;
 use Exception;
+use yii\base\InvalidConfigException;
 use yii\base\InvalidValueException;
 use yii\web\Response;
 
@@ -254,12 +255,12 @@ class DataSetElement extends Element
         return $settings->getFieldLayout();
     }
 
-    public function getDataSource(): ?DataSource
+    public function getDataSource(): DataSource
     {
         $dataSource = new $this->type($this->settings);
 
         if (!$dataSource instanceof DataSource) {
-            return null;
+            throw new InvalidConfigException('Data Source not found: ' . $this->type);
         }
 
         $dataSource->setDataSet($this);
