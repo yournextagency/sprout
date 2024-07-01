@@ -4,7 +4,9 @@ namespace BarrelStrength\Sprout\transactional\components\notificationevents;
 
 use BarrelStrength\Sprout\transactional\notificationevents\BaseElementNotificationEvent;
 use Craft;
+use craft\base\ElementInterface;
 use craft\elements\conditions\users\UserCondition;
+use craft\elements\User;
 use craft\elements\User as UserElement;
 use craft\web\User as UserComponent;
 use yii\base\Event;
@@ -82,6 +84,9 @@ class UserLoggedInNotificationEvent extends BaseElementNotificationEvent
             return false;
         }
 
-        return $this->matchElement($event->identity);
+        /** @var User|ElementInterface $user */
+        $user = $event->identity;
+
+        return $this->matchElement($user);
     }
 }
