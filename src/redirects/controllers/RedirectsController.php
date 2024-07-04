@@ -67,7 +67,7 @@ class RedirectsController extends Controller
             [
                 'label' => Craft::t('sprout-module-redirects', 'Redirects'),
                 'url' => UrlHelper::cpUrl('sprout/redirects'),
-            ]
+            ],
         ];
 
         return $this->renderTemplate('sprout-module-redirects/_redirects/settings.twig', [

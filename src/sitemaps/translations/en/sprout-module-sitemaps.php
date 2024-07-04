@@ -81,5 +81,5 @@ return [
     'Enjoy fine-grained control over your XML Sitemaps for standalone, multi-lingual, and multi-regional sites. Sitemaps are managed directly within Craft – no template updates required.' => 'Enjoy fine-grained control over your XML Sitemaps for standalone, multi-lingual, and multi-regional sites. Sitemaps are managed directly within Craft – no template updates required.',
     'Select site' => 'Select site',
     'Select widget type' => 'Select widget type',
-    'sitemap.xml' => 'sitemap.xml'
+    'sitemap.xml' => 'sitemap.xml',
 ];

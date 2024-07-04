@@ -65,5 +65,5 @@ return [
     '{% if object.field == \'send\' %}true{% endif %}' => '{% if object.field == \'send\' %}true{% endif %}',
     'Fields' => 'Fields',
     'Is Revision' => 'Is Revision',
-    'Is Draft' => 'Is Draft'
+    'Is Draft' => 'Is Draft',
 ];
