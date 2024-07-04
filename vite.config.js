@@ -78,7 +78,7 @@ export default ({command}) => ({
     server: {
         host: '0.0.0.0',
         /* .com/core/fonts/... in production, dev... */
-        origin: 'https://demo.projectmothership.com.ddev.site:3002', // https://nystudio107.com/blog/using-vite-js-next-generation-frontend-tooling-with-craft-cms#vite-processed-assets
+        origin: 'https://5.projectmothership.com.ddev.site:3002', // https://nystudio107.com/blog/using-vite-js-next-generation-frontend-tooling-with-craft-cms#vite-processed-assets
         port: 39999, // DDEV Internal Port
         strictPort: true,
         hmr: {
