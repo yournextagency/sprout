@@ -28,7 +28,7 @@ class ElementMetadata extends Component
 
         $fieldHandle = $this->getElementMetadataFieldHandle($element);
 
-        if ($metadata = $element->{$fieldHandle} ?? null) {
+        if ($fieldHandle && $metadata = $element->{$fieldHandle} ?? null) {
             $this->_rawMetadata = $metadata->getRawData();
         }
 
@@ -63,15 +63,15 @@ class ElementMetadata extends Component
         $targetSettings = [
             [
                 'type' => 'optimizedTitleField',
-                'targetFieldHandles' => $settings['optimizedTitleFieldFormat'],
+                'targetFieldHandles' => $settings['optimizedTitleFieldFormat'] ?? $settings['optimizedTitleField'],
                 'badgeClass' => 'sprout-metatitle-info',
             ], [
                 'type' => 'optimizedDescriptionField',
-                'targetFieldHandles' => $settings['optimizedDescriptionFieldFormat'],
+                'targetFieldHandles' => $settings['optimizedDescriptionFieldFormat'] ?? $settings['optimizedDescriptionField'],
                 'badgeClass' => 'sprout-metadescription-info',
             ], [
                 'type' => 'optimizedImageField',
-                'targetFieldHandles' => $settings['optimizedImageFieldFormat'],
+                'targetFieldHandles' => $settings['optimizedImageFieldFormat'] ?? $settings['optimizedImageField'],
                 'badgeClass' => 'sprout-metaimage-info',
             ],
         ];
@@ -93,7 +93,7 @@ class ElementMetadata extends Component
                 ];
             }
         }
-
+        
         return $metaFieldHandles;
     }
 
