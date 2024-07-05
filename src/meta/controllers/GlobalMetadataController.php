@@ -6,11 +6,13 @@ use BarrelStrength\Sprout\fields\FieldsModule;
 use BarrelStrength\Sprout\meta\globals\Globals;
 use BarrelStrength\Sprout\meta\MetaModule;
 use Craft;
+use craft\elements\Address;
 use craft\helpers\Cp;
 use craft\helpers\DateTimeHelper;
 use craft\helpers\UrlHelper;
 use craft\models\Site;
 use craft\web\Controller;
+use http\Exception\RuntimeException;
 use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
@@ -49,16 +51,16 @@ class GlobalMetadataController extends Controller
             $globals->siteId = $site->id;
         }
 
-        //$locationField = Cp::addressCardsHtml(
-        //    addresses: [$globals->addressModel],
-        //    config: [
-        //        'name' => 'locationAddressId',
-        //        'maxAddresses' => 1,
-        //    ]
-        //);
+        if (!$globals->addressModel) {
+            $address = $this->createAddress($globals, $site);
+            $globals->addressModel = $address;
+        }
 
-        // @todo - Cp::addressCardsHtml no longer exists. Explore options. None provided in C5 upgrade notes.
-        $locationField = '';
+        $locationField = Cp::elementCardHtml($globals->addressModel, [
+            'context' => 'field',
+            'inputName' => 'locationAddressId',
+            'showActionMenu' => true,
+        ]);
 
         $sites = Craft::$app->getSites()->getEditableSites();
 
@@ -165,5 +167,25 @@ class GlobalMetadataController extends Controller
         Craft::$app->getSession()->setNotice(Craft::t('sprout-module-meta', 'Globals saved.'));
 
         return $this->redirectToPostedUrl($globals);
+    }
+
+    public function createAddress(Globals $globals, Site $site): Address
+    {
+        $address = new Address();
+        $address->title = Craft::t('sprout-module-meta', 'Website Identity');
+        Craft::$app->getElements()->saveElement($address);
+
+        $updatedGlobals = new Globals([
+            'siteId' => $site->id,
+            'identity' => array_merge($globals->getIdentity(), [
+                'locationAddressId' => $address->id,
+            ]),
+        ]);
+
+        if (!MetaModule::getInstance()->globalMetadata->saveGlobalMetadata('identity', $updatedGlobals)) {
+            throw new RuntimeException('Error configuring global address.');
+        }
+
+        return $address;
     }
 }

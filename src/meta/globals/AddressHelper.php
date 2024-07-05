@@ -49,5 +49,6 @@ class AddressHelper
 
         Event::on(Address::class, Elements::EVENT_AUTHORIZE_VIEW, $checkAuth);
         Event::on(Address::class, Elements::EVENT_AUTHORIZE_SAVE, $checkAuth);
+        Event::on(Address::class, Elements::EVENT_AUTHORIZE_CREATE_DRAFTS, $checkAuth);
     }
 }

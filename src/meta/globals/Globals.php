@@ -73,15 +73,7 @@ class Globals extends Model
 
             /** @var Address $address */
             $address = Craft::$app->getElements()->getElementById($elementId);
-            $this->addressModel = $address;
-        } elseif (Craft::$app->getRequest()->getIsCpRequest()) {
-            // @todo - this elseif should probably be delegated elsewhere
-            $address = new Address();
-            $address->title = Craft::t('sprout-module-meta', 'Address');
 
-            Craft::$app->getElements()->saveElement($address);
-
-            $this->identity['locationAddressId'] = $address->id;
             $this->addressModel = $address;
         }
 
