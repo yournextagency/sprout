@@ -2,10 +2,16 @@
 
 namespace BarrelStrength\Sprout\redirects\components\elements\db;
 
+use BarrelStrength\Sprout\redirects\components\elements\RedirectElement;
 use BarrelStrength\Sprout\redirects\RedirectsModule;
 use craft\elements\db\ElementQuery;
 use craft\helpers\Db;
 
+/**
+ * @template TKey of array-key
+ * @template TElement of RedirectElement
+ * @extends ElementQuery<TKey,TElement>
+ */
 class RedirectElementQuery extends ElementQuery
 {
     public ?string $oldUrl = null;

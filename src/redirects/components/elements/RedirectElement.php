@@ -31,7 +31,6 @@ use craft\helpers\Cp;
 use craft\helpers\Html;
 use craft\helpers\UrlHelper;
 use craft\models\FieldLayout;
-use craft\web\CpScreenResponseBehavior;
 use DateTime;
 use yii\base\Exception;
 use yii\helpers\Markdown;
@@ -357,7 +356,7 @@ class RedirectElement extends Element
             ],
         ];
 
-        /** @var Response|CpScreenResponseBehavior $response */
+        /** @var \craft\web\Response $response -mixes in CpScreenResponseBehavior */
         $response->crumbs($crumbs);
     }
 
@@ -445,7 +444,7 @@ class RedirectElement extends Element
     /**
      * Add validation to unique oldUrls
      */
-    public function uniqueUrl($attribute): void
+    public function uniqueUrl(string $attribute): void
     {
         $redirect = self::find()
             ->siteId($this->siteId)
@@ -463,7 +462,7 @@ class RedirectElement extends Element
         }
     }
 
-    public function hasTrailingSlashIfAbsolute($attribute): void
+    public function hasTrailingSlashIfAbsolute(string $attribute): void
     {
         if (!UrlHelper::isAbsoluteUrl($this->{$attribute} ?? RedirectHelper::SLASH_CHARACTER)) {
             return;
@@ -624,7 +623,7 @@ class RedirectElement extends Element
     /**
      * Add validation so a user can't save a 404 in "enabled" status
      */
-    public function validateStatusCode($attribute): void
+    public function validateStatusCode(string $attribute): void
     {
         if ($this->enabled && $this->$attribute == StatusCode::PAGE_NOT_FOUND) {
             $this->addError($attribute, 'Cannot enable a 404 Redirect. Update Redirect status code.');

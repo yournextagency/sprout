@@ -34,13 +34,19 @@ class StatusCodeConditionRule extends BaseMultiSelectConditionRule implements El
 
     public function modifyQuery(ElementQueryInterface $query): void
     {
-        /** @var RedirectElementQuery $query */
+        if (!$query instanceof RedirectElementQuery) {
+            return;
+        }
+
         $query->statusCode($this->paramValue());
     }
 
     public function matchElement(ElementInterface $element): bool
     {
-        /** @var RedirectElement $element */
+        if (!$element instanceof RedirectElement) {
+            return false;
+        }
+
         return $this->matchValue((string)$element->statusCode);
     }
 }

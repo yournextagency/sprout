@@ -30,13 +30,19 @@ class MatchStrategyConditionRule extends BaseMultiSelectConditionRule implements
 
     public function modifyQuery(ElementQueryInterface $query): void
     {
-        /** @var RedirectElementQuery $query */
+        if (!$query instanceof RedirectElementQuery) {
+            return;
+        }
+
         $query->matchStrategy($this->paramValue());
     }
 
     public function matchElement(ElementInterface $element): bool
     {
-        /** @var RedirectElement $element */
+        if (!$element instanceof RedirectElement) {
+            return false;
+        }
+
         return $this->matchValue($element->matchStrategy);
     }
 }

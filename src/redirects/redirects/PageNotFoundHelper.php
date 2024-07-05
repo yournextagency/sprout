@@ -9,6 +9,7 @@ use BarrelStrength\Sprout\redirects\db\SproutTable;
 use BarrelStrength\Sprout\redirects\RedirectsModule;
 use BarrelStrength\Sprout\redirects\RedirectsSettings;
 use Craft;
+use craft\base\ElementInterface;
 use craft\db\Query;
 use craft\db\Table;
 use craft\helpers\DateTimeHelper;
@@ -17,13 +18,17 @@ use craft\models\Site;
 
 class PageNotFoundHelper
 {
-    public static function save404Redirect($absoluteUrl, Site $site, RedirectsSettings $settings): ?RedirectElement
+    public static function save404Redirect(string $absoluteUrl, Site $site, RedirectsSettings $settings): ?RedirectElement
     {
         $request = Craft::$app->getRequest();
 
         $redirect = new RedirectElement();
 
         $baseUrl = Craft::getAlias($site->getBaseUrl());
+
+        if (!is_string($baseUrl)) {
+            return null;
+        }
 
         $baseUrlMatch = mb_strpos($absoluteUrl, $baseUrl) === 0;
 
@@ -61,8 +66,12 @@ class PageNotFoundHelper
         return $redirect;
     }
 
-    public static function remove404RedirectIfExists(RedirectElement $redirect): void
+    public static function remove404RedirectIfExists(ElementInterface $redirect): void
     {
+        if (!$redirect instanceof RedirectElement) {
+            return;
+        }
+
         if (ElementHelper::isDraftOrRevision($redirect)) {
             return;
         }
@@ -89,7 +98,11 @@ class PageNotFoundHelper
             return;
         }
 
-        if ($element = Craft::$app->getElements()->getElementById($existing404RedirectId)) {
+        $existing404RedirectId = (int)$existing404RedirectId;
+
+        $element = RedirectElement::findOne($existing404RedirectId);
+
+        if ($element instanceof RedirectElement) {
             Craft::$app->getElements()->deleteElement($element, true);
         }
     }

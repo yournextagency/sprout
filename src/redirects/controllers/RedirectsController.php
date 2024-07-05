@@ -113,7 +113,7 @@ class RedirectsController extends Controller
         }
 
         $moduleId = RedirectsModule::getModuleId();
-        $settings = Craft::$app->getRequest()->getBodyParam('settings');
+        $settings = $this->request->getBodyParam('settings');
 
         if (($settingsRecord = SettingsHelper::saveDbSettings($moduleId, $settings, $site->id)) === null) {
             Craft::$app->getSession()->setError(Craft::t('sprout-module-redirects', 'Couldn’t save settings.'));

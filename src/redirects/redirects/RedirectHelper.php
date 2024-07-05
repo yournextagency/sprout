@@ -41,7 +41,7 @@ class RedirectHelper
     /**
      * Update the current statusCode in the record
      */
-    public static function updateStatusCode($ids, $statusCode): int
+    public static function updateStatusCode(array $ids, int $statusCode): int
     {
         return Craft::$app->getDb()->createCommand()->update(
             SproutTable::REDIRECTS,
@@ -54,7 +54,7 @@ class RedirectHelper
      * Find a regex url using the preg_match php function and replace
      * capture groups if any using the preg_replace php function also check normal urls
      */
-    public static function findUrl($absoluteUrl, Site $site): ?RedirectElement
+    public static function findUrl(string $absoluteUrl, Site $site): ?RedirectElement
     {
         $absoluteUrl = urldecode($absoluteUrl);
         $baseSiteUrl = Craft::getAlias($site->getBaseUrl());
@@ -186,7 +186,7 @@ class RedirectHelper
         return Template::raw($html);
     }
 
-    public static function isExcludedUrlPattern($absoluteUrl, array $excludedUrlPatterns): bool
+    public static function isExcludedUrlPattern(string $absoluteUrl, array $excludedUrlPatterns): bool
     {
         foreach ($excludedUrlPatterns as $excludedUrlPattern) {
 

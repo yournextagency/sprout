@@ -121,7 +121,7 @@ class RedirectsSettings extends BaseConfig
             return $this->_siteExcludedUrlPatterns;
         }
 
-        $this->_siteExcludedUrlPatterns = SettingsRecord::find()
+        $settings = SettingsRecord::find()
             ->select('settings')
             ->where([
                 'siteId' => $siteId,
@@ -130,7 +130,11 @@ class RedirectsSettings extends BaseConfig
             ])
             ->scalar();
 
-        return $this->_siteExcludedUrlPatterns;
+        if (!is_string($settings)) {
+            return null;
+        }
+
+        return $settings;
     }
 
     public function getExcludedUrlPatterns(int $siteId): array
