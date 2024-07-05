@@ -39,7 +39,7 @@ class WebsiteIdentityPlaceSchema extends Schema
         $this->addTelephone('telephone', $schema['telephone']);
 
         if (isset($schema['locationAddressId']) && $schema['locationAddressId']) {
-            $this->addAddress('locationAddressId');
+            $this->addAddress('address');
         }
 
         if (isset($schema['latitude'], $schema['longitude']) && $schema['latitude'] && $schema['longitude']) {

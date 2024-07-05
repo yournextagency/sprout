@@ -61,7 +61,7 @@ class WebsiteIdentityOrganizationSchema extends Schema
         }
 
         if (isset($schema['locationAddressId']) && $schema['locationAddressId']) {
-            $this->addAddress('locationAddressId');
+            $this->addAddress('address');
         }
 
         if (isset($schema['foundingDate']['date'])) {
