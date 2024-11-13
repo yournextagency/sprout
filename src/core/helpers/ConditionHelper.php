@@ -10,7 +10,11 @@ class ConditionHelper
 {
     public static function registerConditionRuleTypes(RegisterConditionRulesEvent $event): void
     {
-        $elementType = $event->sender?->elementType;
+        if ($event->sender && property_exists($event->sender, 'elementType')) {
+            $elementType = $event->sender->elementType;
+        } else {
+            $elementType = null;
+        }
 
         if ($elementType === null) {
             return;
