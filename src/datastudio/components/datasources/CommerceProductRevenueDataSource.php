@@ -60,14 +60,15 @@ class CommerceProductRevenueDataSource extends DataSource implements DateRangeIn
             [[variants.id]] as variantId,
             [[products.id]] as productId,
             SUM([[lineitems.total]]) as total,
-            SUM([[lineitems.saleAmount]]) as saleAmount,
+            SUM([[lineitems.promotionalAmount]]) as saleAmount,
             SUM([[lineitems.salePrice]] * [[lineitems.qty]]) as productRevenue,
             SUM([[lineitems.qty]]) as quantitySold,
-            [[variants.sku]] as SKU')
+            [[purchasables.sku]] as SKU')
             ->from('{{%commerce_orders}} as orders')
             ->leftJoin('{{%commerce_lineitems}} as lineitems', '[[orders.id]] = [[lineitems.orderId]]')
             ->leftJoin('{{%commerce_variants}} as variants', '[[lineitems.purchasableId]] = [[variants.id]]')
-            ->leftJoin('{{%commerce_products}} as products', '[[variants.productId]] = [[products.id]]')
+            ->leftJoin('{{%commerce_products}} as products', '[[variants.primaryOwnerId]] = [[products.id]]')
+            ->leftJoin('{{%commerce_purchasables}} as purchasables', '[[variants.id]] = [[purchasables.id]]')
             ->leftJoin(['elements' => Table::ELEMENTS], '[[orders.id]] = [[elements.id]]')
             ->where(['elements.dateDeleted' => null]);
 
